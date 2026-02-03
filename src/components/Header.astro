@@ -1,0 +1,62 @@
+---
+import MenuButton from "./MenuButton.astro";
+import LogoButton from "./LogoButton.astro";
+import MobileSideMenu from "./MobileSideMenu.astro";
+---
+
+<header class="header">
+    <div class="menu-button-container">
+        <MenuButton id="open-menu" />
+    </div>
+
+    <div class="logo-button-container">
+        <LogoButton />
+    </div>
+
+    <div class="spacer"></div>
+</header>
+
+<MobileSideMenu />
+
+<style>
+    .header {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        gap: 1rem;
+        border-bottom: 1px solid #333;
+        background-color: #000;
+        position: relative;
+        z-index: 50;
+        width: 100%;
+    }
+
+    .menu-button-container {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .logo-button-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .spacer {
+        flex: 1;
+    }
+</style>
+
+<script>
+    const openBtn = document.getElementById("open-menu");
+    const closeBtn = document.getElementById("close-menu");
+    const sideMenu = document.getElementById("side-menu");
+
+    openBtn?.addEventListener("click", () => {
+        sideMenu?.classList.add("active");
+    });
+
+    closeBtn?.addEventListener("click", () => {
+        sideMenu?.classList.remove("active");
+    });
+</script>

@@ -1,0 +1,19 @@
+---
+import { X } from "@lucide/astro";
+
+const { id } = Astro.props;
+---
+
+<button id={id} class="close-btn">
+    <X color="white" />
+</button>
+
+<style>
+    .close-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+    }
+</style>

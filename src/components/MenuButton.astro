@@ -1,0 +1,19 @@
+---
+import { Menu } from "@lucide/astro";
+
+const { id } = Astro.props;
+---
+
+<button id={id} class="menu-btn" aria-label="Abrir menú">
+    <Menu color="white" />
+</button>
+
+<style>
+    .menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+    }
+</style>
