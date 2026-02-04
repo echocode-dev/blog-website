@@ -1,0 +1,21 @@
+---
+import { Search } from "@lucide/astro";
+
+const { id } = Astro.props;
+---
+
+<button id={id} class="menu-btn" aria-label="Abrir menú">
+    <Search color="#f0ebd8" />
+</button>
+
+<style>
+    .menu-btn {
+        background: none;
+        border: 1px solid #f0ebd8;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        padding: 0.5rem;
+    }
+</style>

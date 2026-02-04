@@ -1,19 +1,30 @@
 ---
-import MenuButton from "./MenuButton.astro";
+import MobileMenuButton from "./MobileMenuButton.astro";
 import LogoButton from "./LogoButton.astro";
 import MobileSideMenu from "./MobileSideMenu.astro";
+import SearchBox from "./SearchBox.astro";
 ---
 
 <header class="header">
-    <div class="menu-button-container">
-        <MenuButton id="open-menu" />
+    <div class="mobile-menu-button-container">
+        <MobileMenuButton id="open-menu" />
     </div>
 
     <div class="logo-button-container">
         <LogoButton />
     </div>
 
+    <nav class="nav-links">
+        <div class="nav-link"><a href="#">Featured</a></div>
+        <div class="nav-link"><a href="#">Recents</a></div>
+        <div class="nav-link"><a href="#">Blog</a></div>
+    </nav>
+
     <div class="spacer"></div>
+
+    <div class="search-box-container">
+        <SearchBox />
+    </div>
 </header>
 
 <MobileSideMenu />
@@ -22,16 +33,15 @@ import MobileSideMenu from "./MobileSideMenu.astro";
     .header {
         display: flex;
         align-items: center;
-        padding: 1rem;
+        padding: 1rem 2.5rem;
         gap: 1rem;
-        border-bottom: 1px solid #333;
-        background-color: #000;
+        border-bottom: 1px solid #f0ebd8;
+        background-color: #1d2d44;
         position: relative;
         z-index: 50;
-        width: 100%;
     }
 
-    .menu-button-container {
+    .mobile-menu-button-container {
         flex: 1;
         display: flex;
         justify-content: flex-start;
@@ -42,8 +52,49 @@ import MobileSideMenu from "./MobileSideMenu.astro";
         justify-content: center;
     }
 
+    .nav-links {
+        display: none;
+    }
+
     .spacer {
         flex: 1;
+    }
+
+    .search-box-container {
+        display: none;
+    }
+
+    @media screen and (min-width: 636px) {
+        .mobile-menu-button-container {
+            display: none;
+        }
+
+        .header {
+            gap: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+        }
+
+        .nav-links a {
+            color: #f0ebd8;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 1rem 0;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .search-box-container {
+            display: flex;
+        }
     }
 </style>
 

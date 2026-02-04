@@ -1,0 +1,30 @@
+---
+import SearchButton from "./SearchButton.astro";
+---
+
+<div class="search-container">
+    <input type="text" placeholder="Search" />
+    <SearchButton />
+</div>
+
+<style>
+    .search-container {
+        display: flex;
+        height: 44px;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+
+    .search-container input {
+        flex: 1;
+        height: auto;
+
+        color: #f0ebd8;
+        padding: 0 10px;
+        border: 1px solid #f0ebd8;
+        border-radius: 5px;
+        background: none;
+
+        box-sizing: border-box;
+    }
+</style>
