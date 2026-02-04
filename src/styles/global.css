@@ -1,8 +1,39 @@
+:root {
+    --bg-page: #e0e1dd;
+    --bg-navbar: #1d2d44;
+    --color-secondary: #748cab;
+
+    --text-main: #0d1321;
+    --text-navbar: #f0ebd8;
+
+    --border-color: #f0ebd8;
+}
+
+[data-theme="dark"] {
+    --bg-page: #1d2d44;
+    --bg-navbar: #14213d;
+    --color-secondary: #748cab;
+
+    --text-main: #f0ebd8;
+    --text-navbar: #f0ebd8;
+
+    --border-color: #f0ebd8;
+}
+
 body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: system-ui, sans-serif;
     margin: 0;
-    padding: 0;
     width: 100%;
+    min-height: 100vh;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    background-color: #e0e1dd;
-    font-family: sans-serif;
 }

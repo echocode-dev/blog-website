@@ -5,13 +5,13 @@ const { id } = Astro.props;
 ---
 
 <button id={id} class="menu-btn" aria-label="Abrir menú">
-    <Search color="#f0ebd8" />
+    <Search color="var(--text-navbar)" />
 </button>
 
 <style>
     .menu-btn {
         background: none;
-        border: 1px solid #f0ebd8;
+        border: 1px solid var(--border-color);
         border-radius: 5px;
         cursor: pointer;
         padding: 0;

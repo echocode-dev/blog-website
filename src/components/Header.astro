@@ -35,8 +35,8 @@ import SearchBox from "./SearchBox.astro";
         align-items: center;
         padding: 1rem 2.5rem;
         gap: 1rem;
-        border-bottom: 1px solid #f0ebd8;
-        background-color: #1d2d44;
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--bg-navbar);
         position: relative;
         z-index: 50;
     }
@@ -83,7 +83,7 @@ import SearchBox from "./SearchBox.astro";
         }
 
         .nav-links a {
-            color: #f0ebd8;
+            color: var(--text-navbar);
             font-weight: 600;
             text-decoration: none;
             font-size: 1.2rem;
