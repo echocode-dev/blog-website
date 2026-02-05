@@ -1,6 +1,7 @@
 :root {
-    --bg-page: #e0e1dd;
+    --bg-page: #f0ebd8;
     --bg-navbar: #1d2d44;
+    --bg-content: #e0e1dd;
     --color-secondary: #748cab;
 
     --text-main: #0d1321;
@@ -12,6 +13,7 @@
 [data-theme="dark"] {
     --bg-page: #1d2d44;
     --bg-navbar: #14213d;
+    --bg-content: #14213d;
     --color-secondary: #748cab;
 
     --text-main: #f0ebd8;
@@ -30,6 +32,27 @@ body {
     transition:
         background-color 0.3s ease,
         color 0.3s ease;
+}
+
+.post-container a {
+    color: inherit;
+    font-weight: 600;
+    font-style: italic;
+}
+
+pre.astro-code {
+    width: fit-content;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+}
+
+article section {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+article section > section {
+    margin-left: 1.2rem; /* Aumenta este valor para más sangría */
 }
 
 *,

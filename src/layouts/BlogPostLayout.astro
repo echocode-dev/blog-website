@@ -1,0 +1,98 @@
+---
+import TOC from "../components/TOC.astro";
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter, headings } = Astro.props;
+---
+
+<BaseLayout pageTitle={frontmatter.title}>
+    <main class="post-container">
+        {
+            headings && headings.length > 0 && (
+                <nav class="article-toc">
+                    <h3>Table of Content</h3>
+                    <TOC headings={headings} />
+                </nav>
+            )
+        }
+
+        <div class="post-content-container">
+            <section>
+                <h1>{frontmatter.title}</h1>
+                <p>{frontmatter.summary}</p>
+            </section>
+
+            <article>
+                <slot />
+            </article>
+        </div>
+
+        <aside class="sidebar">
+            <div class="related-posts">
+                <h3>Related posts</h3>
+            </div>
+
+            <div class="ad">
+                <p>ola soy un anuncio</p>
+            </div>
+        </aside>
+    </main>
+</BaseLayout>
+
+<style>
+    .post-container {
+        display: flex;
+        padding: 1rem 2.5rem;
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    .post-content-container {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 2.5rem;
+        border: 1px solid var(--text-main);
+        border-radius: 5px;
+        background-color: var(--bg-content);
+    }
+
+    .article-toc {
+        height: fit-content;
+        min-width: 20%;
+        max-width: 20%;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--text-main);
+        border-radius: 5px;
+        background-color: var(--bg-content);
+    }
+
+    .article-toc :global(li) {
+        margin: 0.3rem 0rem;
+        line-height: 1.4;
+    }
+
+    .sidebar {
+        min-width: 20%;
+        max-width: 20%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 2rem;
+    }
+
+    .related-posts {
+        height: fit-content;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--text-main);
+        border-radius: 5px;
+        background-color: var(--bg-content);
+    }
+
+    .ad {
+        height: fit-content;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--text-main);
+        border-radius: 5px;
+        background-color: var(--bg-content);
+    }
+</style>
