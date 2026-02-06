@@ -34,7 +34,12 @@ body {
         color 0.3s ease;
 }
 
-.post-container a {
+li {
+    margin: 0.3rem 0rem;
+    line-height: 1.4;
+}
+
+a {
     color: inherit;
     font-weight: 600;
     font-style: italic;
