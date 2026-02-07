@@ -24,7 +24,8 @@ const { frontmatter, headings } = Astro.props;
         <div class="post-content-container">
             <section>
                 <h1>{frontmatter.title}</h1>
-                <p>{frontmatter.summary}</p>
+                <p class="post-info">Posted by {frontmatter.author} on {frontmatter.pubDate.toLocaleDateString()}.</p>
+                <p class="post-summary">{frontmatter.summary}</p>
             </section>
 
             <div class="post-content-boxes">
@@ -116,6 +117,14 @@ const { frontmatter, headings } = Astro.props;
         justify-content: center;
     }
 
+    .post-info {
+        color: var(--text-subtle);
+    }
+
+    .post-summary {
+        font-size: 1.2rem;
+    }
+
     .post-content-container article {
         padding: 0 1rem;
     }
@@ -150,7 +159,7 @@ const { frontmatter, headings } = Astro.props;
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
     }
 
     .article-toc {
