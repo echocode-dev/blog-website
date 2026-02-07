@@ -101,7 +101,7 @@ const { frontmatter, headings } = Astro.props;
     .post-container {
         display: flex;
         flex-direction: column;
-        padding: 1rem 1rem;
+        padding: 1rem 0.5rem;
         gap: 2rem;
         justify-content: center;
     }
@@ -109,7 +109,7 @@ const { frontmatter, headings } = Astro.props;
     .post-content-container {
         display: flex;
         flex-direction: column;
-        padding: 1rem 0.5rem;
+        padding: 1rem 1rem;
         border: 1px solid var(--text-main);
         border-radius: 5px;
         background-color: var(--bg-content);
@@ -117,11 +117,11 @@ const { frontmatter, headings } = Astro.props;
     }
 
     .post-content-container article {
-        padding: 0 1.5rem;
+        padding: 0 1rem;
     }
 
     .post-content-container section {
-        padding: 0 1.5rem;
+        padding: 0 1rem;
     }
 
     .mobile-toc {
@@ -150,7 +150,7 @@ const { frontmatter, headings } = Astro.props;
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        margin-bottom: 2rem;
+        margin: 2rem 0;
     }
 
     .article-toc {
