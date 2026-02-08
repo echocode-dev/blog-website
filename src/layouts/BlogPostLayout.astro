@@ -10,7 +10,7 @@ const relatedPosts = [
 const { frontmatter, headings } = Astro.props;
 ---
 
-<BaseLayout pageTitle={frontmatter.title}>
+<BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary}>
     <main class="post-container">
         {
             headings && headings.length > 0 && (

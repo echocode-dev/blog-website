@@ -4,7 +4,7 @@ import { X } from "@lucide/astro";
 const { id } = Astro.props;
 ---
 
-<button id={id} class="close-btn">
+<button id={id} class="close-btn" aria-label="Close menu">
     <X color="var(--text-navbar)" />
 </button>
 
