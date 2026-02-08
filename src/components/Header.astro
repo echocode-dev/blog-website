@@ -3,6 +3,7 @@ import MobileMenuButton from "./MobileMenuButton.astro";
 import LogoButton from "./LogoButton.astro";
 import MobileSideMenu from "./MobileSideMenu.astro";
 import SearchBox from "./SearchBox.astro";
+import ThemeIcon from "./ThemeIcon.astro";
 ---
 
 <header class="header">
@@ -25,6 +26,10 @@ import SearchBox from "./SearchBox.astro";
     <div class="search-box-container">
         <SearchBox />
     </div>
+
+    <div class="theme-button-container">
+        <ThemeIcon />
+    </div>
 </header>
 
 <MobileSideMenu />
@@ -33,31 +38,32 @@ import SearchBox from "./SearchBox.astro";
     .header {
         display: flex;
         align-items: center;
-        padding: 0.5rem 2.5rem;
         gap: 1rem;
         border-bottom: 1px solid var(--border-color);
         background-color: var(--bg-navbar);
         position: relative;
         z-index: 50;
-    }
-
-    .mobile-menu-button-container {
-        flex: 1;
-        display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
+        padding: 1rem 0.5rem;
+        flex-wrap: wrap;
     }
 
     .logo-button-container {
         display: flex;
         justify-content: center;
+        margin: 0px auto;
+    }
+
+    .mobile-menu-button-container {
+        margin: 0px auto;
+    }
+
+    .theme-button-container {
+        margin: 0px auto;
     }
 
     .nav-links {
         display: none;
-    }
-
-    .spacer {
-        flex: 1;
     }
 
     .search-box-container {
@@ -65,6 +71,10 @@ import SearchBox from "./SearchBox.astro";
     }
 
     @media screen and (min-width: 894px) {
+        .header {
+            padding: 0.5rem 2.5rem;
+        }
+
         .mobile-menu-button-container {
             display: none;
         }
@@ -115,6 +125,10 @@ import SearchBox from "./SearchBox.astro";
 
         .search-box-container {
             display: flex;
+        }
+
+        .spacer {
+            flex: 1;
         }
     }
 </style>
