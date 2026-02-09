@@ -48,11 +48,13 @@ a {
 }
 
 pre.astro-code {
-    width: fit-content;
+    max-width: 100%;
     border-radius: 5px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     font-family: "Fira Mono", monospace;
+    overflow-x: auto;
+    box-sizing: border-box;
 }
 
 article section {
