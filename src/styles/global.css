@@ -51,6 +51,8 @@ pre.astro-code {
     width: fit-content;
     border-radius: 5px;
     padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-family: "Fira Mono", monospace;
 }
 
 article section {
@@ -59,7 +61,7 @@ article section {
 }
 
 article section > section {
-    margin-left: 1.2rem; /* Aumenta este valor para más sangría */
+    margin-left: 1.2rem;
 }
 
 *,
