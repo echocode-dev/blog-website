@@ -1,13 +1,21 @@
 ---
+import { getCollection } from "astro:content";
 import TOC from "../components/TOC.astro";
 import BaseLayout from "./BaseLayout.astro";
 
-const relatedPosts = [
-    { title: "Post A", url: "#" },
-    { title: "Post B", url: "#" },
-];
-
 const { frontmatter, headings } = Astro.props;
+
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+    .filter((post) => post.id !== Astro.params.slug)
+    .map((post) => {
+        const commonTags = post.data.tags.filter((tag) => frontmatter.tags.includes(tag)).length;
+
+        return { ...post, commonTags };
+    })
+    .filter((post) => post.commonTags > 0)
+    .sort((a, b) => b.commonTags - a.commonTags)
+    .slice(0, 5);
 ---
 
 <BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary}>
@@ -39,7 +47,7 @@ const { frontmatter, headings } = Astro.props;
                 }
 
                 <div class="mobile-ad">
-                    <p>ola soy un anuncio</p>
+                    <p>AD PLACEHOLDER</p>
                 </div>
             </div>
 
@@ -51,34 +59,34 @@ const { frontmatter, headings } = Astro.props;
         <aside class="sidebar">
             <div class="related-posts">
                 <h3>Related posts</h3>
-                <ul>
+                <div class="related-post-list">
                     {
                         relatedPosts.map((post) => (
-                            <li>
-                                <a href={post.url}>{post.title}</a>
-                            </li>
+                            <div class="related-post-item">
+                                <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+                            </div>
                         ))
                     }
-                </ul>
+                </div>
             </div>
 
             <div class="ad">
-                <p>ola soy un anuncio</p>
+                <p>AD PLACEHOLDER</p>
             </div>
         </aside>
 
         <div id="mobile-related-content-source" style="display: none;">
             <div class="mobile-related-wrapper">
-                <h3 class="mobile-related-title">Recent posts</h3>
-                <ul class="mobile-related-list">
+                <h3>Recent posts</h3>
+                <div class="related-post-list">
                     {
                         relatedPosts.map((post) => (
-                            <li>
-                                <a href={post.url}>{post.title}</a>
-                            </li>
+                            <div class="related-post-item">
+                                <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+                            </div>
                         ))
                     }
-                </ul>
+                </div>
             </div>
         </div>
     </main>
@@ -132,6 +140,13 @@ const { frontmatter, headings } = Astro.props;
 
     .post-content-container section {
         padding: 0 1rem;
+    }
+
+    .related-post-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
     }
 
     .mobile-toc {
@@ -207,6 +222,8 @@ const { frontmatter, headings } = Astro.props;
 
         .sidebar {
             display: flex;
+            min-width: 20%;
+            max-width: 20%;
             flex-direction: column;
             flex: 1;
             gap: 2rem;
