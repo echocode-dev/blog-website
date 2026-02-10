@@ -92,20 +92,6 @@ const relatedPosts = allPosts
     </main>
 </BaseLayout>
 
-<script>
-    const injectRelatedPosts = () => {
-        const source = document.getElementById("mobile-related-content-source");
-        const target = document.getElementById("mobile-related-posts-target");
-
-        if (source && target) {
-            target.innerHTML = source.innerHTML;
-        }
-    };
-
-    document.addEventListener("astro:page-load", injectRelatedPosts);
-    injectRelatedPosts();
-</script>
-
 <style>
     .post-container {
         display: flex;
@@ -212,6 +198,8 @@ const relatedPosts = allPosts
         .article-toc {
             display: block;
             height: fit-content;
+            position: sticky;
+            top: 1rem;
             min-width: 20%;
             max-width: 20%;
             padding: 0.5rem 1rem;
@@ -247,3 +235,138 @@ const relatedPosts = allPosts
         }
     }
 </style>
+
+<script>
+    const injectRelatedPosts = () => {
+        const source = document.getElementById("mobile-related-content-source");
+        const target = document.getElementById("mobile-related-posts-target");
+
+        if (source && target) {
+            target.innerHTML = source.innerHTML;
+        }
+    };
+
+    document.addEventListener("astro:page-load", injectRelatedPosts);
+    injectRelatedPosts();
+
+    addIntersectionObserver();
+
+    function addIntersectionObserver() {
+        const observerOptions = {
+            rootMargin: "-10% 0px -70% 0px",
+            threshold: [0, 0.25, 0.5, 0.75, 1],
+        };
+
+        let currentActive: Element | null = null;
+        const visibleSections = new Set<Element>();
+        let isUserClicking = false;
+        let clickTimeout: number | null = null;
+
+        const observer = new IntersectionObserver((entries) => {
+            // Skip observer updates if user just clicked
+            if (isUserClicking) return;
+
+            // Update the set of visible sections
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    visibleSections.add(entry.target);
+                } else {
+                    visibleSections.delete(entry.target);
+                }
+            });
+
+            if (visibleSections.size > 0) {
+                // Get all visible sections sorted by position
+                const sortedSections = Array.from(visibleSections).sort((a, b) => {
+                    return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+                });
+
+                // Find the topmost section that should be active
+                // Prefer the deepest nested section among those near the top
+                let sectionToActivate = sortedSections[0];
+
+                for (const section of sortedSections) {
+                    const rect = section.getBoundingClientRect();
+                    // If this section is very close to the top (within the trigger zone)
+                    if (rect.top <= window.innerHeight * 0.2) {
+                        // Check if it's deeper than current selection
+                        if (sectionToActivate.contains(section)) {
+                            sectionToActivate = section;
+                        }
+                    } else {
+                        break; // Sections are sorted, so we can stop
+                    }
+                }
+
+                const heading = sectionToActivate.querySelector(
+                    ":scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6",
+                );
+                if (!heading) return;
+                const id = heading.getAttribute("id");
+                if (!id) return;
+                const tocLi = document.querySelector(`nav.article-toc a[href="#${id}"]`)?.closest("li.toc-li");
+
+                // Only update if it's different from current
+                if (tocLi && tocLi !== currentActive) {
+                    // Remove active from all (including subheadings)
+                    document.querySelectorAll("nav.article-toc li.toc-li").forEach((li) => {
+                        li.classList.remove("active");
+                    });
+                    // Add active to current
+                    tocLi.classList.add("active");
+                    currentActive = tocLi;
+                }
+            }
+        }, observerOptions);
+
+        // Observe ALL sections (including nested ones created by rehype-sectionize)
+        document.querySelectorAll("article section").forEach((section) => {
+            observer.observe(section);
+        });
+
+        // Add click handlers to TOC links
+        document.querySelectorAll("nav.article-toc a").forEach((link) => {
+            link.addEventListener("click", (e) => {
+                const href = (e.currentTarget as HTMLAnchorElement).getAttribute("href");
+                if (!href || !href.startsWith("#")) return;
+
+                const targetId = href.substring(1);
+                const tocLi = document.querySelector(`nav.article-toc a[href="#${targetId}"]`)?.closest("li.toc-li");
+
+                if (tocLi) {
+                    // Immediately update active state
+                    document.querySelectorAll("nav.article-toc li.toc-li").forEach((li) => {
+                        li.classList.remove("active");
+                    });
+                    tocLi.classList.add("active");
+                    currentActive = tocLi;
+
+                    // Disable observer updates temporarily
+                    isUserClicking = true;
+                    if (clickTimeout) clearTimeout(clickTimeout);
+                    clickTimeout = window.setTimeout(() => {
+                        isUserClicking = false;
+                    }, 1000); // Re-enable after 1 second
+                }
+            });
+        });
+
+        // Activate first heading on page load if at the top
+        const firstSection = document.querySelector("article section");
+        if (firstSection) {
+            const heading = firstSection.querySelector(
+                ":scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6",
+            );
+            if (heading) {
+                const id = heading.getAttribute("id");
+                if (id) {
+                    const tocLi = document.querySelector(`nav.article-toc a[href="#${id}"]`)?.closest("li.toc-li");
+                    if (tocLi) {
+                        tocLi.classList.add("active");
+                        currentActive = tocLi;
+                    }
+                }
+            }
+        }
+    }
+</script>

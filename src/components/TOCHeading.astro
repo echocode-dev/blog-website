@@ -1,14 +1,20 @@
 ---
+import { ChevronRight } from "@lucide/astro";
 const { heading } = Astro.props;
 ---
 
-<li>
-    <a href={"#" + heading.slug}>
-        {heading.text}
-    </a>
+<li class="toc-li">
+    <div class="article-toc-item">
+        <div class="chevron-wrapper">
+            <ChevronRight color="var(--text-main)" />
+        </div>
+        <a href={"#" + heading.slug}>
+            {heading.text}
+        </a>
+    </div>
     {
         heading.subheadings.length > 0 && (
-            <ul>
+            <ul class="subheadings">
                 {heading.subheadings.map((subheading: any) => (
                     <Astro.self heading={subheading} />
                 ))}
@@ -16,3 +22,46 @@ const { heading } = Astro.props;
         )
     }
 </li>
+
+<style>
+    .article-toc-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.3s ease;
+    }
+
+    .chevron-wrapper {
+        display: flex;
+        transition: transform 0.3s ease;
+    }
+
+    .article-toc-item a {
+        font-weight: initial;
+        text-decoration: none;
+        color: var(--text-main);
+        transition:
+            font-weight 0.3s ease,
+            color 0.3s ease;
+        display: block;
+        padding: 0.2rem 0;
+    }
+
+    :global(li.toc-li.active) > .article-toc-item .chevron-wrapper {
+        transform: rotate(90deg);
+    }
+
+    :global(li.toc-li.active) > .article-toc-item a {
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    li {
+        list-style: none;
+        text-align: left;
+    }
+
+    .subheadings {
+        padding-left: 1.5rem;
+    }
+</style>
