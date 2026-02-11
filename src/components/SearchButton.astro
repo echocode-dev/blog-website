@@ -4,12 +4,13 @@ import { Search } from "@lucide/astro";
 const { id } = Astro.props;
 ---
 
-<button id={id} class="menu-btn" aria-label="Search">
-    <Search color="var(--text-navbar)" />
+<button id={id} class="search-btn" aria-label="Search">
+    <Search />
 </button>
 
 <style>
-    .menu-btn {
+    .search-btn {
+        color: var(--text-navbar);
         background: none;
         border: 1px solid var(--border-color);
         border-radius: 5px;
