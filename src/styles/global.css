@@ -6,6 +6,7 @@
 
     --text-main: #0d1321;
     --text-subtle: #4c4c4c;
+    --text-secondary: #4e4e63;
     --text-navbar: #f0ebd8;
 
     --border-color: #f0ebd8;
@@ -19,17 +20,19 @@
 
     --text-main: #f0ebd8;
     --text-subtle: #5b5b5b;
+    --text-secondary: #aba48e;
     --text-navbar: #f0ebd8;
 
     --border-color: #f0ebd8;
 }
 
 body {
+    display: flex;
+    flex-direction: column;
     background-color: var(--bg-page);
     color: var(--text-main);
     font-family: "Inter Variable", sans-serif;
     margin: 0;
-    width: 100%;
     min-height: 100vh;
     transition:
         background-color 0.3s ease,
@@ -49,7 +52,7 @@ a {
 
 pre.astro-code {
     max-width: 100%;
-    border-radius: 5px;
+    border-radius: 12px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     font-family: "Fira Mono", monospace;

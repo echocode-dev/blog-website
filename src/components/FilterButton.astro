@@ -1,18 +1,18 @@
 ---
-import { Search } from "@lucide/astro";
+import { Funnel } from "@lucide/astro";
 
 const { id } = Astro.props;
 ---
 
-<button id={id} class="search-btn" aria-label="Search">
-    <Search />
+<button id={id} class="filter-btn" aria-label="Filter">
+    <Funnel />
 </button>
 
 <style>
-    .search-btn {
-        color: var(--text-navbar);
+    .filter-btn {
+        color: var(--text-secondary);
         background: none;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--text-subtle);
         border-radius: 32px;
         cursor: pointer;
         padding: 0;

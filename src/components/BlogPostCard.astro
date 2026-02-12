@@ -26,7 +26,7 @@ var options = { year: "numeric", month: "short", day: "numeric" };
         display: flex;
         flex-direction: column;
         padding: 1.5rem 1rem;
-        border-radius: 5px;
+        border-radius: 12px;
         border: 1px solid var(--text-main);
         background-color: var(--bg-page);
         font-style: normal;
@@ -54,6 +54,8 @@ var options = { year: "numeric", month: "short", day: "numeric" };
         -webkit-box-orient: vertical;
         overflow: hidden;
         margin: 0;
+        font-weight: 400;
+        color: var(--text-secondary);
     }
 
     .post-date {
@@ -69,8 +71,9 @@ var options = { year: "numeric", month: "short", day: "numeric" };
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: flex-end;
         gap: 0.5rem;
-        margin-top: 0.5rem;
+        margin-top: 1rem;
     }
 
     .post-date p,

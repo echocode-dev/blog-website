@@ -1,8 +1,136 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const pageTitle = "";
+import SearchBox from "../components/SearchBox.astro";
+import FilterButton from "../components/FilterButton.astro";
+import BlogPostCard from "../components/BlogPostCard.astro";
+import { getCollection } from "astro:content";
+
+const pageTitle = " - Home";
 // TODO: add proper description.
 const description = "This is a description.";
+
+const allPosts = await getCollection("blog");
 ---
 
-<BaseLayout pageTitle={pageTitle} description={description} />
+<BaseLayout pageTitle={pageTitle} description={description}>
+    <main class="posts-container">
+        <header class="posts-container-header">
+            <div class="posts-header-gif"></div>
+            <div class="posts-action">
+                <h1>Echo Code News</h1>
+                <div class="search-box-container">
+                    <FilterButton />
+                    <SearchBox />
+                </div>
+            </div>
+        </header>
+
+        <div class="recents-title">
+            <h2>RECENTS</h2>
+        </div>
+
+        <div class="posts-list">
+            {allPosts.map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)}
+        </div>
+    </main>
+</BaseLayout>
+
+<style>
+    .posts-container {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        margin: 1rem 0.5rem;
+        border: 1px solid var(--text-main);
+        border-radius: 12px;
+        background-color: var(--bg-content);
+    }
+
+    .search-box-container {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .posts-container-header {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .posts-header-gif {
+        display: none;
+    }
+
+    .posts-action {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .posts-action h1 {
+    }
+
+    .posts-action :global(.search-btn),
+    .posts-action :global(.search-container) :global(input) {
+        background-color: var(--bg-page);
+        color: var(--text-main) !important;
+        border-color: var(--text-main) !important;
+    }
+
+    .recents-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        margin: 2rem 1rem;
+    }
+
+    .recents-title::before {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background-color: var(--text-main);
+    }
+
+    .recents-title h2 {
+        margin: 0;
+    }
+
+    .recents-title::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background-color: var(--text-main);
+    }
+
+    .posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    @media screen and (min-width: 894px) {
+        .posts-container {
+            flex: 1;
+            margin: 1rem 2rem;
+        }
+
+        .posts-container-header {
+            justify-content: flex-end;
+        }
+
+        .posts-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        }
+
+        .posts-action {
+            min-width: 600px;
+            margin-right: 2rem;
+        }
+
+        .recents-title {
+            margin: 2rem 4rem;
+        }
+    }
+</style>
