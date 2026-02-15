@@ -34,6 +34,7 @@ const relatedPosts = allPosts
                 <h1>{frontmatter.title}</h1>
                 <p class="post-info">Posted by {frontmatter.author} on {frontmatter.pubDate.toLocaleDateString()}.</p>
                 <p class="post-summary">{frontmatter.summary}</p>
+                <img src={frontmatter.image.url} width="500" alt={frontmatter.image.alt} />
             </section>
 
             <div class="post-content-boxes">

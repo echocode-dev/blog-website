@@ -15,22 +15,31 @@ const allPosts = await getCollection("blog");
 <BaseLayout pageTitle={pageTitle} description={description}>
     <main class="posts-container">
         <header class="posts-container-header">
-            <div class="posts-header-gif"></div>
             <div class="posts-action">
-                <h1>Echo Code News</h1>
-                <div class="search-box-container">
+                <div class="filter-container">
                     <FilterButton />
+                </div>
+
+                <h1>Echo Code News</h1>
+
+                <div class="search-box-container">
                     <SearchBox />
                 </div>
             </div>
         </header>
 
-        <div class="recents-title">
-            <h2>RECENTS</h2>
+        <div class="ad">
+            <p>AD PLACEHOLDER</p>
         </div>
 
-        <div class="posts-list">
-            {allPosts.map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)}
+        <div class="recent-posts-container">
+            <div class="recents-title">
+                <h2>RECENTS</h2>
+            </div>
+
+            <div class="posts-list">
+                {allPosts.map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)}
+            </div>
         </div>
     </main>
 </BaseLayout>
@@ -39,41 +48,92 @@ const allPosts = await getCollection("blog");
     .posts-container {
         display: flex;
         flex-direction: column;
-        padding: 1rem;
         margin: 1rem 0.5rem;
         border: 1px solid var(--text-main);
         border-radius: 12px;
         background-color: var(--bg-content);
-    }
-
-    .search-box-container {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
+        gap: 2rem;
     }
 
     .posts-container-header {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        height: 325px;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 10px 10px 0;
+
+        position: relative;
+        z-index: 1;
     }
 
-    .posts-header-gif {
-        display: none;
+    .posts-container-header::before {
+        content: "";
+        position: absolute;
+
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+
+        background-image: linear-gradient(to top, black 50%, transparent), url("../assets/code.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
     }
 
     .posts-action {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
     .posts-action h1 {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        text-align: center;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .filter-container {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .search-box-container {
+        display: flex;
+        flex-direction: column;
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .ad {
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 1rem;
+        background-color: var(--bg-page);
+        height: 125px;
+        margin: 0 1rem;
     }
 
     .posts-action :global(.search-btn),
-    .posts-action :global(.search-container) :global(input) {
+    .posts-action :global(.search-container) :global(input),
+    .posts-action :global(.filter-btn) {
         background-color: var(--bg-page);
         color: var(--text-main) !important;
         border-color: var(--text-main) !important;
+    }
+
+    .recent-posts-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin: 0 1rem;
     }
 
     .recents-title {
@@ -82,7 +142,6 @@ const allPosts = await getCollection("blog");
         justify-content: center;
         align-items: center;
         gap: 3rem;
-        margin: 2rem 1rem;
     }
 
     .recents-title::before {
@@ -112,25 +171,60 @@ const allPosts = await getCollection("blog");
     @media screen and (min-width: 894px) {
         .posts-container {
             flex: 1;
-            margin: 1rem 2rem;
+            margin: 1rem 2.5rem;
         }
 
         .posts-container-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             justify-content: flex-end;
+            margin: 15px 15px 0;
+        }
+
+        .posts-container-header::before {
+            background-image: linear-gradient(to left, black, transparent), url("../assets/code.jpg");
+        }
+
+        .posts-action {
+            grid-template-columns: auto 1fr;
+            grid-template-rows: auto auto;
+            gap: 0.5rem 1rem;
+            align-items: end;
+            margin-right: 2rem;
+            min-width: 500px;
+            width: auto;
+            margin-bottom: initial;
+        }
+
+        .filter-container {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .posts-action h1 {
+            grid-column: 2;
+            grid-row: 1;
+            text-align: left;
+        }
+
+        .search-box-container {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .ad {
+            height: 150px;
+        }
+
+        .recents-title {
+            margin: 0 4rem;
         }
 
         .posts-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-        }
-
-        .posts-action {
-            min-width: 600px;
-            margin-right: 2rem;
-        }
-
-        .recents-title {
-            margin: 2rem 4rem;
+            margin: 0 4rem;
         }
     }
 </style>

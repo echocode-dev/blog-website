@@ -3,8 +3,14 @@ import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
 ---
 
-<div>
+<div class="logo-container">
     <a href="/">
         <Image src={logo} alt="Echo Code's logo" height={40} />
     </a>
 </div>
+
+<style>
+    .logo-container {
+        padding-left: 2rem;
+    }
+</style>
