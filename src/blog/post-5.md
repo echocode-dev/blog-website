@@ -4,7 +4,7 @@ pubDate: 2026-02-11
 summary: 'Documento de prueba masivo con más de 10 secciones principales y múltiples niveles de anidación para verificar la precisión del scroll, la rotación de chevrons y la persistencia de estados activos.'
 author: 'EchoCode'
 image:
-    url: 'https://docs.astro.build/assets/rays.webp'
+    url: '../../assets/code.jpg'
     alt: 'Visual Stress Test'
 tags: ["lorem", "performance", "debug", "long-read"]
 ---
