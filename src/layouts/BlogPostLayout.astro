@@ -2,8 +2,12 @@
 import { getCollection } from "astro:content";
 import TOC from "../components/TOC.astro";
 import BaseLayout from "./BaseLayout.astro";
+import { Calendar, CircleUserRound } from "@lucide/astro";
+import { Image } from "astro:assets";
 
 const { frontmatter, headings } = Astro.props;
+
+var options = { year: "numeric", month: "short", day: "numeric" };
 
 const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
@@ -19,7 +23,7 @@ const relatedPosts = allPosts
 ---
 
 <BaseLayout pageTitle={` - ${frontmatter.title}`} description={frontmatter.summary}>
-    <main class="post-container">
+    <main class="post-container" data-pagefind-body>
         {
             headings && headings.length > 0 && (
                 <nav class="article-toc">
@@ -32,9 +36,24 @@ const relatedPosts = allPosts
         <div class="post-content-container">
             <section>
                 <h1>{frontmatter.title}</h1>
-                <p class="post-info">Posted by {frontmatter.author} on {frontmatter.pubDate.toLocaleDateString()}.</p>
+                <div class="post-info">
+                    <address class="post-author">
+                        <CircleUserRound class="author-icon" />
+                        <p>{frontmatter.author}</p>
+                    </address>
+                    <time datetime={frontmatter.pubDate} class="post-pubdate">
+                        <Calendar class="calendar-icon" />
+                        <p data-pagefind-meta="pubDate">{frontmatter.pubDate.toLocaleDateString("en-US", options)}</p>
+                    </time>
+                </div>
                 <p class="post-summary">{frontmatter.summary}</p>
-                <img src={frontmatter.image.url} width="500" alt={frontmatter.image.alt} />
+                <Image
+                    src={frontmatter.cover}
+                    layout="constrained"
+                    alt={frontmatter.coverAlt}
+                    inferSize={true}
+                    class="cover-image"
+                />
             </section>
 
             <div class="post-content-boxes">
@@ -114,11 +133,48 @@ const relatedPosts = allPosts
     }
 
     .post-info {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
         color: var(--text-subtle);
+        height: 1rem;
+    }
+
+    .post-info :global(p) {
+        font-size: 1rem;
+        font-weight: 600;
+        font-style: normal;
+        margin: 0;
+    }
+
+    .post-info .calendar-icon,
+    .post-info .author-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .post-author {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .post-pubdate {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: center;
     }
 
     .post-summary {
         font-size: 1.2rem;
+    }
+
+    .cover-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
     }
 
     .post-content-container article {
@@ -137,16 +193,22 @@ const relatedPosts = allPosts
     }
 
     .mobile-toc {
-        display: block;
+        display: flex;
+        padding: 2rem 1rem;
+        gap: 1rem;
+        flex-direction: column;
         height: fit-content;
 
         width: 100%;
         box-sizing: border-box;
 
-        padding: 0.5rem 1rem;
         border: 1px solid var(--text-main);
         border-radius: 12px;
         background-color: var(--bg-page);
+    }
+
+    .mobile-toc h3 {
+        margin: 0;
     }
 
     .mobile-ad {
@@ -197,16 +259,22 @@ const relatedPosts = allPosts
         }
 
         .article-toc {
-            display: block;
+            display: flex;
+            padding: 2rem 1rem;
+            gap: 1rem;
+            flex-direction: column;
             height: fit-content;
             position: sticky;
             top: 1rem;
             min-width: 20%;
             max-width: 20%;
-            padding: 0.5rem 1rem;
             border: 1px solid var(--text-main);
             border-radius: 12px;
             background-color: var(--bg-content);
+        }
+
+        .article-toc h3 {
+            margin: 0;
         }
 
         .sidebar {

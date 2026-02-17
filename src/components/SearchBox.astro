@@ -2,10 +2,10 @@
 import SearchButton from "./SearchButton.astro";
 ---
 
-<div class="search-container">
-    <input type="text" placeholder="Search" />
+<form action="/search" name="q" class="search-container">
+    <input type="text" placeholder="Search" name="q" />
     <SearchButton />
-</div>
+</form>
 
 <style>
     .search-container {
