@@ -6,8 +6,10 @@ import pagefind from "astro-pagefind";
 
 import expressiveCode from "astro-expressive-code";
 
+import sitemap from "@astrojs/sitemap";
+
 export default defineConfig({
-  site: "https://www.echocode.dev",
+  site: "https://echocode.dev",
   integrations: [
     pagefind(),
     expressiveCode({
@@ -18,6 +20,7 @@ export default defineConfig({
         },
       },
     }),
+    sitemap(),
   ],
   markdown: {
     rehypePlugins: [
