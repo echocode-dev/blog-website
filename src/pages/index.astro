@@ -6,8 +6,7 @@ import BlogPostCard from "../components/BlogPostCard.astro";
 import { getCollection } from "astro:content";
 
 const pageTitle = " - Home";
-// TODO: add proper description.
-const description = "This is a description.";
+const description = "Checkout everything that Echo Code has to offer!";
 
 const allPosts = await getCollection("blog");
 ---
@@ -38,7 +37,11 @@ const allPosts = await getCollection("blog");
             </div>
 
             <div class="posts-list">
-                {allPosts.map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)}
+                {
+                    allPosts
+                        .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+                        .map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)
+                }
             </div>
         </div>
     </main>
