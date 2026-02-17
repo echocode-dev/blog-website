@@ -112,6 +112,20 @@ const relatedPosts = allPosts
     </main>
 </BaseLayout>
 
+<style is:global>
+    .anchor-link {
+        text-decoration: none;
+        font-style: normal;
+        opacity: 0;
+        transition: all 0.2s;
+        margin-left: 0.5rem;
+    }
+
+    .anchor:hover > .anchor-link {
+        opacity: 0.8;
+    }
+</style>
+
 <style>
     .post-container {
         display: flex;

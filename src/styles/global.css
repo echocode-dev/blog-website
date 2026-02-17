@@ -26,6 +26,10 @@
     --border-color: #f0ebd8;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     display: flex;
     flex-direction: column;
