@@ -54,16 +54,6 @@ a {
     font-style: italic;
 }
 
-pre.astro-code {
-    max-width: 100%;
-    border-radius: 12px;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-family: "Fira Mono", monospace;
-    overflow-x: auto;
-    box-sizing: border-box;
-}
-
 article section {
     margin-left: 0;
     padding-left: 0;

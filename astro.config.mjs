@@ -4,9 +4,21 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import pagefind from "astro-pagefind";
 
+import expressiveCode from "astro-expressive-code";
+
 export default defineConfig({
   site: "https://www.echocode.dev",
-  integrations: [pagefind()],
+  integrations: [
+    pagefind(),
+    expressiveCode({
+      styleOverrides: {
+        borderRadius: "10px",
+        frames: {
+          frameBoxShadowCssValue: "0",
+        },
+      },
+    }),
+  ],
   markdown: {
     rehypePlugins: [
       rehypeHeadingIds,
