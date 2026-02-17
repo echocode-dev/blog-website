@@ -55,11 +55,10 @@ import { Sun, Moon } from "@lucide/astro";
 <script is:inline>
     const handleToggleClick = () => {
         const element = document.documentElement;
-        const isDark = element.getAttribute("data-theme") === "dark";
+        const isDark = element.attributes.getNamedItem("data-theme")?.value == "dark";
         const nextTheme = isDark ? "light" : "dark";
 
-        element.setAttribute("data-theme", nextTheme);
-        localStorage.setItem("theme", nextTheme);
+        document.dispatchEvent(new CustomEvent("set-theme", { detail: nextTheme }));
     };
 
     document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick);

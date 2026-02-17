@@ -1,5 +1,6 @@
 ---
 import "@fontsource-variable/inter";
+import Themes from "astro-themes";
 import Header from "../components/Header.astro";
 import "../styles/global.css";
 
@@ -19,28 +20,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <meta property="og:description" content={description} />
         {image && <meta property="og:image" content={new URL(image, Astro.url)} />}
 
+        <Themes defaultTheme="dark" />
+
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Echo Code" />
         <link rel="manifest" href="/site.webmanifest" />
-
-        <script is:inline>
-            const getTheme = () => {
-                const stored = localStorage.getItem("theme");
-                if (stored) return stored;
-                return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            };
-
-            const theme = getTheme();
-            if (theme === "light") {
-                document.documentElement.setAttribute("data-theme", "light");
-            } else {
-                document.documentElement.setAttribute("data-theme", "dark");
-            }
-            window.localStorage.setItem("theme", theme);
-        </script>
     </head>
     <body>
         <Header />
