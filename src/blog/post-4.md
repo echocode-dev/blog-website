@@ -3,9 +3,8 @@ title: 'Configurando el Modo Oscuro'
 pubDate: 2026-02-09
 summary: 'Cómo implementar un Theme Toggle eficiente usando CSS y JS.'
 author: 'EchoCode'
-image:
-    url: 'https://docs.astro.build/assets/full-logo-light.png'
-    alt: 'Theme toggle'
+cover: 'https://docs.astro.build/assets/full-logo-light.png'
+coverAlt: 'Theme toggle'
 tags: ["css", "theme", "performance"]
 ---
 

@@ -3,9 +3,8 @@ title: 'Magna Aliquam: Lorem Ipsum Dolor Sit Amet'
 pubDate: 2026-02-06
 summary: 'Suspendisse potenti. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.'
 author: 'EchoCode'
-image:
-    url: 'https://docs.astro.build/assets/rays.webp'
-    alt: 'Lorem Ipsum Dolor'
+cover: 'https://docs.astro.build/assets/rays.webp'
+coverAlt: 'Lorem Ipsum Dolor'
 tags: ["lorem", "test", "design"]
 ---
 
