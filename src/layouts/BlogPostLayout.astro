@@ -315,11 +315,6 @@ const relatedPosts = allPosts
         }
     };
 
-    document.addEventListener("astro:page-load", injectRelatedPosts);
-    injectRelatedPosts();
-
-    addIntersectionObserver();
-
     function addIntersectionObserver() {
         const observerOptions = {
             rootMargin: "-10% 0px -70% 0px",
@@ -438,4 +433,9 @@ const relatedPosts = allPosts
             }
         }
     }
+
+    document.addEventListener("astro:page-load", () => {
+        injectRelatedPosts();
+        addIntersectionObserver();
+    });
 </script>

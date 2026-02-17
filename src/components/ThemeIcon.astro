@@ -53,13 +53,17 @@ import { Sun, Moon } from "@lucide/astro";
 </style>
 
 <script is:inline>
-    const handleToggleClick = () => {
-        const element = document.documentElement;
-        const isDark = element.attributes.getNamedItem("data-theme")?.value == "dark";
-        const nextTheme = isDark ? "light" : "dark";
+    document.addEventListener("astro:page-load", () => {
+        const themeButton = document.getElementById("themeToggle");
 
-        document.dispatchEvent(new CustomEvent("set-theme", { detail: nextTheme }));
-    };
+        const handleToggleClick = () => {
+            const element = document.documentElement;
+            const isDark = element.attributes.getNamedItem("data-theme")?.value == "dark";
+            const nextTheme = isDark ? "light" : "dark";
 
-    document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick);
+            document.dispatchEvent(new CustomEvent("set-theme", { detail: nextTheme }));
+        };
+
+        themeButton?.addEventListener("click", handleToggleClick);
+    });
 </script>

@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "@fontsource-variable/inter";
 import Themes from "astro-themes";
 import Header from "../components/Header.astro";
@@ -20,7 +21,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <meta property="og:description" content={description} />
         {image && <meta property="og:image" content={new URL(image, Astro.url)} />}
 
+        <ClientRouter />
         <Themes defaultTheme="dark" />
+
+        <script is:inline>
+            document.addEventListener("astro:before-swap", (event) => {
+                const currentTheme = document.documentElement.getAttribute("data-theme");
+
+                if (currentTheme) {
+                    event.newDocument.documentElement.setAttribute("data-theme", currentTheme);
+                }
+            });
+        </script>
 
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -30,7 +42,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <link rel="manifest" href="/site.webmanifest" />
     </head>
     <body>
-        <Header />
+        <Header transition:persist />
         <slot />
     </body>
 </html>
