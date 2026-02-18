@@ -43,6 +43,10 @@ body {
         color 0.3s ease;
 }
 
+main {
+    flex: 1;
+}
+
 li {
     margin: 0.3rem 0rem;
     line-height: 1.4;

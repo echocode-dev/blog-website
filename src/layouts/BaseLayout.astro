@@ -4,6 +4,7 @@ import "@fontsource-variable/inter";
 import Themes from "astro-themes";
 import Header from "../components/Header.astro";
 import "../styles/global.css";
+import Footer from "../components/Footer.astro";
 
 const { pageTitle, description, image } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -46,5 +47,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <body>
         <Header transition:persist />
         <slot />
+        <Footer transition:persist />
     </body>
 </html>

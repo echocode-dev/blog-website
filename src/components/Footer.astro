@@ -1,0 +1,27 @@
+---
+import LogoButton from "./LogoButton.astro";
+---
+
+<footer class="footer">
+    <div class="logo-button-container">
+        <LogoButton height={50} />
+    </div>
+    <h4>© 2026 Echo Code. All rights reserved.</h4>
+</footer>
+
+<style>
+    .footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid var(--border-color);
+        background-color: var(--bg-navbar);
+        color: var(--text-navbar);
+    }
+
+    .logo-button-container {
+        margin-top: 2rem;
+        opacity: 0.4;
+    }
+</style>

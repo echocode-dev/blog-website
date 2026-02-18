@@ -1,16 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
+
+const { height } = Astro.props;
 ---
 
 <div class="logo-container">
     <a href="/">
-        <Image src={logo} alt="Echo Code's logo" height={40} />
+        <Image src={logo} alt="Echo Code's logo" height={height} />
     </a>
 </div>
-
-<style>
-    .logo-container {
-        padding-left: 2rem;
-    }
-</style>
