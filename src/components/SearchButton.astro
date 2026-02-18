@@ -5,7 +5,7 @@ const { id } = Astro.props;
 ---
 
 <button id={id} class="search-btn" aria-label="Search">
-    <Search />
+    <Search class="search-icon" />
 </button>
 
 <style>
@@ -18,5 +18,19 @@ const { id } = Astro.props;
         padding: 0;
         display: flex;
         padding: 0.5rem;
+        transition:
+            border-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .search-icon {
+        transition:
+            border-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .search-btn:hover {
+        border-color: color-mix(in srgb, var(--border-color), transparent 50%);
+        color: color-mix(in srgb, var(--text-navbar), transparent 50%);
     }
 </style>

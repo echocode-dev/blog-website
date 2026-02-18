@@ -7,6 +7,17 @@ const { height } = Astro.props;
 
 <div class="logo-container">
     <a href="/">
-        <Image src={logo} alt="Echo Code's logo" height={height} />
+        <Image class="logo-image" src={logo} alt="Echo Code's logo" height={height} />
     </a>
 </div>
+
+<style>
+    .logo-image {
+        transition: opacity 0.3s ease;
+    }
+
+    .logo-image:hover {
+        transition: opacity 0.3s ease;
+        opacity: 0.5;
+    }
+</style>

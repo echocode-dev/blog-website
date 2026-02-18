@@ -108,12 +108,18 @@ const description = "Search the Echo Code blog.";
         flex-direction: column;
         padding: 1.5rem 1rem;
         border-radius: 10px;
-        border: 1px solid var(--text-main);
+        border: 1px solid var(--text-subtle);
         background-color: var(--bg-page);
         font-style: normal;
         text-decoration: none;
         justify-content: space-between;
         height: 200px;
+        transition: border-color 0.3s ease;
+    }
+
+    .post-card:hover {
+        border-color: var(--text-main);
+        transition: border-color 0.3s ease;
     }
 
     .post-info {
@@ -255,14 +261,6 @@ const description = "Search the Echo Code blog.";
         background-color: var(--bg-page);
         height: 125px;
         margin: 0 1rem;
-    }
-
-    .posts-action :global(.search-btn),
-    .posts-action :global(.search-container) :global(input),
-    .posts-action :global(.filter-btn) {
-        background-color: var(--bg-page);
-        color: var(--text-main) !important;
-        border-color: var(--text-main) !important;
     }
 
     .recent-posts-container {
