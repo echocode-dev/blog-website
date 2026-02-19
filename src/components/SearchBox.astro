@@ -2,10 +2,12 @@
 import SearchButton from "./SearchButton.astro";
 ---
 
-<form action="/search" name="q" class="search-container">
-    <input type="text" placeholder="Search" name="q" />
-    <SearchButton />
-</form>
+<search-box class="search-container-wrapper">
+    <form action="/search" onkeyup="success()" name="q" class="search-container">
+        <input id="search-input" type="text" placeholder="Search" name="q" />
+        <SearchButton id="search-btn" />
+    </form>
+</search-box>
 
 <style>
     .search-container {
@@ -29,3 +31,25 @@ import SearchButton from "./SearchButton.astro";
         box-sizing: border-box;
     }
 </style>
+
+<script>
+    class SearchBox extends HTMLElement {
+        constructor() {
+            super();
+            const input = this.querySelector("input");
+            const button = this.querySelector("button");
+
+            if (input == null || button == null) {
+                return;
+            }
+
+            const toggleButton = () => {
+                button.disabled = input.value.trim() === "";
+            };
+
+            input.addEventListener("input", toggleButton);
+        }
+    }
+
+    customElements.define("search-box", SearchBox);
+</script>

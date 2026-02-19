@@ -37,6 +37,11 @@ const description = "Search the Echo Code blog.";
         const params = new URLSearchParams(window.location.search);
         const query = params.get("q");
 
+        if (!query) {
+            window.location.replace("/");
+            return;
+        }
+
         const resultsContainer = document.querySelector("#search-results");
 
         if (query && resultsContainer) {
@@ -54,7 +59,7 @@ const description = "Search the Echo Code blog.";
                     const search = await pagefind.search(query);
 
                     if (search.results.length === 0) {
-                        resultsContainer.innerHTML = `<p>No posts found for "${query}".</p>`;
+                        resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
                         return;
                     }
 
@@ -89,7 +94,7 @@ const description = "Search the Echo Code blog.";
                     }
                 } catch (error) {
                     console.error("Pagefind failed to load. Have you run the indexer?", error);
-                    resultsContainer.innerHTML = `<p>Search is currently unavailable.</p>`;
+                    resultsContainer.innerHTML = `<h4>Search is currently unavailable.</h4>`;
                 }
             }
 

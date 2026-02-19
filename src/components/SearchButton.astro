@@ -1,10 +1,8 @@
 ---
 import { Search } from "@lucide/astro";
-
-const { id } = Astro.props;
 ---
 
-<button id={id} class="search-btn" aria-label="Search">
+<button class="search-btn" aria-label="Search" disabled>
     <Search class="search-icon" />
 </button>
 
@@ -20,7 +18,8 @@ const { id } = Astro.props;
         padding: 0.5rem;
         transition:
             border-color 0.3s ease,
-            color 0.3s ease;
+            color 0.3s ease,
+            opacity 0.3s ease;
     }
 
     .search-icon {
@@ -29,8 +28,15 @@ const { id } = Astro.props;
             color 0.3s ease;
     }
 
-    .search-btn:hover {
+    .search-btn:hover:not(:disabled) {
         border-color: color-mix(in srgb, var(--border-color), transparent 50%);
         color: color-mix(in srgb, var(--text-navbar), transparent 50%);
+    }
+
+    .search-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
     }
 </style>
