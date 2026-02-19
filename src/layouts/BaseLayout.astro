@@ -20,8 +20,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <link rel="sitemap" href="/sitemap-index.xml" />
 
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`Echo Code${pageTitle}`} />
-        <meta property="og:description" content={description} />
+        <meta
+            property="og:title"
+            content={`Echo Code${pageTitle.length > 60 ? pageTitle.slice(0, 57).trim() + "..." : pageTitle}`}
+        />
+        <meta
+            property="og:description"
+            content={description.length > 160 ? description.slice(0, 157).trim() + "..." : pageTitle}
+        />
         {image && <meta property="og:image" content={new URL(image, Astro.url)} />}
 
         <ClientRouter />
