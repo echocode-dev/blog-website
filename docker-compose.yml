@@ -1,0 +1,10 @@
+services:
+  echocode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: echocode-website
+    container_name: echocode-container
+    ports:
+      - "80:8080"
+    restart: unless-stopped
