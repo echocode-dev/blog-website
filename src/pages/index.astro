@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SearchBox from "../components/SearchBox.astro";
 import FilterButton from "../components/FilterButton.astro";
 import BlogPostCard from "../components/BlogPostCard.astro";
+import pageHeaderBackground from "../assets/code.jpg";
 import { getCollection } from "astro:content";
 
 const pageTitle = " - Home";
@@ -11,9 +12,9 @@ const description = "Checkout everything that Echo Code has to offer!";
 const allPosts = await getCollection("blog");
 ---
 
-<BaseLayout pageTitle={pageTitle} description={description}>
+<BaseLayout pageTitle={pageTitle} description={description} image={pageHeaderBackground}>
     <main class="posts-container">
-        <header class="posts-container-header">
+        <header class="posts-container-header" style={`--bg-image: url(${pageHeaderBackground.src})`}>
             <div class="posts-action">
                 <div class="filter-container" hidden>
                     <FilterButton />
@@ -80,7 +81,7 @@ const allPosts = await getCollection("blog");
         z-index: -1;
         border-radius: inherit;
 
-        background-image: linear-gradient(to top, black 50%, transparent), url("../assets/code.jpg");
+        background-image: linear-gradient(to top, black 50%, transparent), var(--bg-image);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;

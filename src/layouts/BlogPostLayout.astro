@@ -22,7 +22,7 @@ const relatedPosts = allPosts
     .slice(0, 5);
 ---
 
-<BaseLayout pageTitle={` - ${frontmatter.title}`} description={frontmatter.summary}>
+<BaseLayout pageTitle={` - ${frontmatter.title}`} description={frontmatter.summary} image={frontmatter.cover}>
     <main class="post-container" data-pagefind-body>
         {
             headings && headings.length > 0 && (
