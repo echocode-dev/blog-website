@@ -33,42 +33,43 @@ const description = "Search the Echo Code blog.";
 </BaseLayout>
 
 <script is:inline>
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q");
+    document.addEventListener("astro:page-load", () => {
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get("q");
 
-    const resultsContainer = document.querySelector("#search-results");
+        const resultsContainer = document.querySelector("#search-results");
 
-    if (query && resultsContainer) {
-        const searchInputs = document.querySelectorAll('input[name="q"]');
+        if (query && resultsContainer) {
+            const searchInputs = document.querySelectorAll('input[name="q"]');
 
-        searchInputs.forEach((input) => {
-            input.value = query;
-        });
+            searchInputs.forEach((input) => {
+                input.value = query;
+            });
 
-        async function runSearch() {
-            try {
-                const pagefind = await import("/pagefind/pagefind.js");
-                await pagefind.init();
+            async function runSearch() {
+                try {
+                    const pagefind = await import("/pagefind/pagefind.js");
+                    await pagefind.init();
 
-                const search = await pagefind.search(query);
+                    const search = await pagefind.search(query);
 
-                if (search.results.length === 0) {
-                    resultsContainer.innerHTML = `<p>No posts found for "${query}".</p>`;
-                    return;
-                }
+                    if (search.results.length === 0) {
+                        resultsContainer.innerHTML = `<p>No posts found for "${query}".</p>`;
+                        return;
+                    }
 
-                resultsContainer.innerHTML = "";
+                    resultsContainer.innerHTML = "";
 
-                for (const result of search.results) {
-                    const data = await result.data();
+                    for (const result of search.results) {
+                        const data = await result.data();
 
-                    const title = data.meta.title;
-                    const summary = data.excerpt;
-                    const url = data.url;
+                        const title = data.meta.title;
+                        const summary = data.excerpt;
+                        const url = data.url;
 
-                    const date = data.meta.pubDate || "Unknown Date";
+                        const date = data.meta.pubDate || "Unknown Date";
 
-                    resultsContainer.innerHTML += `
+                        resultsContainer.innerHTML += `
                         <a class="post-card" href="${url}">
                             <div class="post-info">
                                 <h3 class="post-title">${title}</h3>
@@ -85,15 +86,16 @@ const description = "Search the Echo Code blog.";
                             </div>
                         </a>
                     `;
+                    }
+                } catch (error) {
+                    console.error("Pagefind failed to load. Have you run the indexer?", error);
+                    resultsContainer.innerHTML = `<p>Search is currently unavailable.</p>`;
                 }
-            } catch (error) {
-                console.error("Pagefind failed to load. Have you run the indexer?", error);
-                resultsContainer.innerHTML = `<p>Search is currently unavailable.</p>`;
             }
-        }
 
-        runSearch();
-    }
+            runSearch();
+        }
+    });
 </script>
 
 <style is:global>
