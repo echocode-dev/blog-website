@@ -5,51 +5,51 @@ import FilterButton from "../components/FilterButton.astro";
 import BlogPostCard from "../components/BlogPostCard.astro";
 import pageHeaderBackground from "../assets/code.jpg";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const pageTitle = " - Home";
-const description = "Checkout everything that Echo Code has to offer!";
+const pageTitle = "Home";
 
 const allPosts = await getCollection("blog");
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
 ---
 
-<BaseLayout pageTitle={pageTitle} description={description} image={pageHeaderBackground}>
-    <main class="posts-container">
-        <header class="posts-container-header" style={`--bg-image: url(${pageHeaderBackground.src})`}>
-            <div class="posts-action">
-                <div class="filter-container" hidden>
+<BaseLayout pageTitle={pageTitle} description={SITE_DESCRIPTION} image={pageHeaderBackground}>
+    <main class="container">
+        <header class="hero" style={`--bg-image: url(${bgImage.src})`}>
+            <div class="hero-content">
+                <div class="filter-wrapper" hidden>
                     <FilterButton />
                 </div>
 
-                <h1>Echo Code News</h1>
+                <h1>{SITE_TITLE} News</h1>
 
-                <div class="search-box-container">
+                <div class="search-wrapper">
                     <SearchBox />
                 </div>
             </div>
         </header>
 
-        <div class="ad">
+        <div class="ad-placeholder">
             <p>AD PLACEHOLDER</p>
         </div>
 
-        <div class="recent-posts-container" id="recents">
-            <div class="recents-title">
+        <section id="recents" class="recents">
+            <div class="recents-header">
                 <h2>RECENTS</h2>
             </div>
 
-            <div class="posts-list">
-                {
-                    allPosts
-                        .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-                        .map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)
-                }
+            <div class="posts-grid">
+                {sortedPosts.map((post) => <BlogPostCard frontmatter={post.data} url={`/posts/${post.id}/`} />)}
             </div>
-        </div>
+        </section>
     </main>
 </BaseLayout>
 
 <style>
-    .posts-container {
+    .container {
         display: flex;
         flex-direction: column;
         margin: 1rem 0.5rem;
@@ -59,35 +59,31 @@ const allPosts = await getCollection("blog");
         gap: 2rem;
     }
 
-    .posts-container-header {
+    .hero {
         display: flex;
-        flex-direction: column;
         justify-content: flex-end;
         align-items: flex-end;
         height: 325px;
         padding: 1rem;
         border-radius: 10px;
         margin: 10px 10px 0;
-
         position: relative;
         z-index: 1;
     }
 
-    .posts-container-header::before {
+    .hero::before {
         content: "";
         position: absolute;
-
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-
         background-image: linear-gradient(to top, black 50%, transparent), var(--bg-image);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
     }
 
-    .posts-action {
+    .hero-content {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 1rem;
@@ -96,7 +92,7 @@ const allPosts = await getCollection("blog");
         margin-bottom: 10px;
     }
 
-    .posts-action h1 {
+    .hero-content h1 {
         color: var(--text-navbar);
         grid-column: 1 / -1;
         grid-row: 1;
@@ -105,19 +101,18 @@ const allPosts = await getCollection("blog");
         font-size: 1.5rem;
     }
 
-    .filter-container {
+    .filter-wrapper {
         grid-column: 1;
         grid-row: 2;
     }
-
-    .search-box-container {
-        display: flex;
-        flex-direction: column;
+    .search-wrapper {
         grid-column: 2;
         grid-row: 2;
+        display: flex;
+        flex-direction: column;
     }
 
-    .ad {
+    .ad-placeholder {
         border: 1px solid var(--text-main);
         border-radius: 10px;
         padding: 1rem;
@@ -126,103 +121,80 @@ const allPosts = await getCollection("blog");
         margin: 0 1rem;
     }
 
-    .recent-posts-container {
+    .recents {
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        margin: 0 1rem;
+        margin: 0 1rem 2rem;
     }
 
-    .recents-title {
+    .recents-header {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
         align-items: center;
         gap: 3rem;
+        text-align: center;
     }
 
-    .recents-title::before {
+    .recents-header::before,
+    .recents-header::after {
         content: "";
-        flex-grow: 1;
+        flex: 1;
         height: 1px;
         background-color: var(--text-main);
     }
 
-    .recents-title h2 {
+    .recents-header h2 {
         margin: 0;
     }
 
-    .recents-title::after {
-        content: "";
-        flex-grow: 1;
-        height: 1px;
-        background-color: var(--text-main);
-    }
-
-    .posts-list {
+    .posts-grid {
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        margin-bottom: 2rem;
     }
 
     @media screen and (min-width: 894px) {
-        .posts-container {
+        .container {
             flex: 1;
             margin: 1rem 2.5rem;
         }
 
-        .posts-container-header {
-            display: flex;
-            flex-direction: row;
+        .hero {
             align-items: center;
-            justify-content: flex-end;
             margin: 15px 15px 0;
         }
 
-        .posts-container-header::before {
+        .hero::before {
             background-image: linear-gradient(to left, black, transparent), var(--bg-image);
         }
 
-        .posts-action {
+        .hero-content {
             grid-template-columns: auto 1fr;
             grid-template-rows: auto auto;
             gap: 0.5rem 1rem;
             align-items: end;
             margin-right: 2rem;
-            min-width: 500px;
             width: auto;
-            margin-bottom: initial;
+            min-width: 500px;
         }
 
-        .filter-container {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        .posts-action h1 {
+        .hero-content h1 {
             grid-column: 2;
             grid-row: 1;
             text-align: left;
         }
 
-        .search-box-container {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .ad {
+        .ad-placeholder {
             height: 150px;
         }
-
-        .recents-title {
+        .recents-header {
             margin: 0 4rem;
         }
 
-        .posts-list {
+        .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            margin: 0 4rem 2rem;
+            margin: 0 4rem;
         }
     }
 </style>
