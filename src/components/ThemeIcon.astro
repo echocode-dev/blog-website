@@ -23,11 +23,6 @@ import { Sun, Moon } from "@lucide/astro";
         transition: opacity 0.3s ease;
     }
 
-    .theme-btn:hover {
-        transition: opacity 0.3s ease;
-        opacity: 0.5;
-    }
-
     .theme-light-icon,
     .theme-dark-icon {
         grid-area: 1 / 1;
@@ -49,6 +44,13 @@ import { Sun, Moon } from "@lucide/astro";
         opacity: 1;
         transform: rotate(0deg);
         pointer-events: auto;
+    }
+
+    @media (hover: hover) {
+        .theme-btn:hover {
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
     }
 </style>
 

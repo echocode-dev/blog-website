@@ -16,8 +16,10 @@ const { height } = Astro.props;
         transition: opacity 0.3s ease;
     }
 
-    .logo-image:hover {
-        transition: opacity 0.3s ease;
-        opacity: 0.5;
+    @media (hover: hover) {
+        .logo-image:hover {
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
     }
 </style>

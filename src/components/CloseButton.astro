@@ -17,8 +17,10 @@ const { id } = Astro.props;
         display: flex;
     }
 
-    .close-btn:hover {
-        transition: opacity 0.3s ease;
-        opacity: 0.5;
+    @media (hover: hover) {
+        .close-btn:hover {
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
     }
 </style>

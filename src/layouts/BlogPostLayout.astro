@@ -130,8 +130,11 @@ const relatedPosts = getRelatedPosts(allPosts, Astro.params.slug as string, fron
         transition: opacity 0.2s;
         margin-left: 0.5rem;
     }
-    .anchor:hover > .anchor-link {
-        opacity: 0.8;
+
+    @media (hover: hover) {
+        .anchor:hover > .anchor-link {
+            opacity: 0.8;
+        }
     }
 </style>
 

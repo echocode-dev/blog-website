@@ -28,15 +28,17 @@ import { Search } from "@lucide/astro";
             color 0.3s ease;
     }
 
-    .search-btn:hover:not(:disabled) {
-        border-color: color-mix(in srgb, var(--border-color), transparent 50%);
-        color: color-mix(in srgb, var(--text-navbar), transparent 50%);
-    }
-
     .search-btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         pointer-events: none;
         transition: opacity 0.3s ease;
+    }
+
+    @media (hover: hover) {
+        .search-btn:hover:not(:disabled) {
+            border-color: color-mix(in srgb, var(--border-color), transparent 50%);
+            color: color-mix(in srgb, var(--text-navbar), transparent 50%);
+        }
     }
 </style>

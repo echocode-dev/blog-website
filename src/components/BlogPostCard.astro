@@ -40,10 +40,6 @@ const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", d
         transition: border-color 0.3s ease;
     }
 
-    .card:hover {
-        border-color: var(--text-main);
-    }
-
     .card-info {
         display: flex;
         flex-direction: column;
@@ -87,5 +83,11 @@ const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", d
     .icon-sm {
         width: 20px;
         height: 20px;
+    }
+
+    @media (hover: hover) {
+        .card:hover {
+            border-color: var(--text-main);
+        }
     }
 </style>

@@ -119,8 +119,10 @@ import ThemeIcon from "./ThemeIcon.astro";
             transition: transform 0.3s ease;
         }
 
-        .nav-links a:hover::after {
-            transform: scaleX(1);
+        @media (hover: hover) {
+            .nav-links a:hover::after {
+                transform: scaleX(1);
+            }
         }
 
         .search-box-container {

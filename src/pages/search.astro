@@ -191,8 +191,10 @@ const description = "Search the Echo Code blog.";
         transition: border-color 0.3s ease;
     }
 
-    .card:hover {
-        border-color: var(--text-main);
+    @media (hover: hover) {
+        .card:hover {
+            border-color: var(--text-main);
+        }
     }
 
     .card-info {
