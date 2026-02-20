@@ -4,49 +4,43 @@ import TOC from "../components/TOC.astro";
 import BaseLayout from "./BaseLayout.astro";
 import { Calendar, CircleUserRound } from "@lucide/astro";
 import { Image } from "astro:assets";
+import { getRelatedPosts } from "../utils/postHelpers";
 
 const { frontmatter, headings } = Astro.props;
 
-var options = { year: "numeric", month: "short", day: "numeric" };
+const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
 
 const allPosts = await getCollection("blog");
-const relatedPosts = allPosts
-    .filter((post) => post.id !== Astro.params.slug)
-    .map((post) => {
-        const commonTags = post.data.tags.filter((tag) => frontmatter.tags.includes(tag)).length;
-
-        return { ...post, commonTags };
-    })
-    .filter((post) => post.commonTags > 0)
-    .sort((a, b) => b.commonTags - a.commonTags)
-    .slice(0, 5);
+const relatedPosts = getRelatedPosts(allPosts, Astro.params.slug as string, frontmatter.tags);
 ---
 
-<BaseLayout pageTitle={` - ${frontmatter.title}`} description={frontmatter.summary} image={frontmatter.cover}>
-    <main class="post-container" data-pagefind-body>
+<BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary} image={frontmatter.cover}>
+    <main class="post-layout" data-pagefind-body>
         {
             headings && headings.length > 0 && (
-                <nav class="article-toc">
+                <nav class="toc-desktop">
                     <h3>Table of Content</h3>
                     <TOC headings={headings} />
                 </nav>
             )
         }
 
-        <div class="post-content-container">
-            <section>
+        <div class="content-wrapper">
+            <header>
                 <h1>{frontmatter.title}</h1>
-                <div class="post-info">
-                    <address class="post-author">
-                        <CircleUserRound class="author-icon" />
-                        <p>{frontmatter.author}</p>
+                <div class="meta-info">
+                    <address class="author">
+                        <CircleUserRound class="icon" />
+                        <span>{frontmatter.author}</span>
                     </address>
-                    <time datetime={frontmatter.pubDate} class="post-pubdate">
-                        <Calendar class="calendar-icon" />
-                        <p data-pagefind-meta="pubDate">{frontmatter.pubDate.toLocaleDateString("en-US", options)}</p>
+                    <time datetime={frontmatter.pubDate.toISOString()} class="date">
+                        <Calendar class="icon" />
+                        <span data-pagefind-meta="pubDate"
+                            >{frontmatter.pubDate.toLocaleDateString("en-US", options)}</span
+                        >
                     </time>
                 </div>
-                <p class="post-summary">{frontmatter.summary}</p>
+                <p class="summary">{frontmatter.summary}</p>
                 <Image
                     src={frontmatter.cover}
                     layout="constrained"
@@ -54,19 +48,18 @@ const relatedPosts = allPosts
                     inferSize={true}
                     class="cover-image"
                 />
-            </section>
+            </header>
 
-            <div class="post-content-boxes">
+            <div class="mobile-only-blocks">
                 {
                     headings && headings.length > 0 && (
-                        <nav class="mobile-toc">
+                        <nav class="toc-mobile">
                             <h3>Table of Content</h3>
                             <TOC headings={headings} />
                         </nav>
                     )
                 }
-
-                <div class="mobile-ad">
+                <div class="ad-block">
                     <p>AD PLACEHOLDER</p>
                 </div>
             </div>
@@ -77,12 +70,12 @@ const relatedPosts = allPosts
         </div>
 
         <aside class="sidebar">
-            <div class="related-posts">
+            <div class="related-widget">
                 <h3>Related posts</h3>
-                <div class="related-post-list">
+                <div class="related-list">
                     {
                         relatedPosts.map((post) => (
-                            <div class="related-post-item">
+                            <div class="related-item">
                                 <a href={`/posts/${post.id}/`}>{post.data.title}</a>
                             </div>
                         ))
@@ -90,7 +83,7 @@ const relatedPosts = allPosts
                 </div>
             </div>
 
-            <div class="ad">
+            <div class="ad-block">
                 <p>AD PLACEHOLDER</p>
             </div>
         </aside>
@@ -98,10 +91,10 @@ const relatedPosts = allPosts
         <div id="mobile-related-content-source" style="display: none;">
             <div class="mobile-related-wrapper">
                 <h3>Recent posts</h3>
-                <div class="related-post-list">
+                <div class="related-list">
                     {
                         relatedPosts.map((post) => (
-                            <div class="related-post-item">
+                            <div class="related-item">
                                 <a href={`/posts/${post.id}/`}>{post.data.title}</a>
                             </div>
                         ))
@@ -112,22 +105,38 @@ const relatedPosts = allPosts
     </main>
 </BaseLayout>
 
+<script>
+    import { initTOC } from "../utils/tocObserver";
+
+    const injectRelatedPosts = () => {
+        const source = document.getElementById("mobile-related-content-source");
+        const target = document.getElementById("mobile-related-posts-target");
+
+        if (source && target) {
+            target.innerHTML = source.innerHTML;
+        }
+    };
+
+    document.addEventListener("astro:page-load", () => {
+        injectRelatedPosts();
+        initTOC();
+    });
+</script>
+
 <style is:global>
     .anchor-link {
         text-decoration: none;
-        font-style: normal;
         opacity: 0;
-        transition: all 0.2s;
+        transition: opacity 0.2s;
         margin-left: 0.5rem;
     }
-
     .anchor:hover > .anchor-link {
         opacity: 0.8;
     }
 </style>
 
 <style>
-    .post-container {
+    .post-layout {
         display: flex;
         flex-direction: column;
         padding: 1rem 0.5rem;
@@ -135,54 +144,50 @@ const relatedPosts = allPosts
         justify-content: center;
     }
 
-    .post-content-container {
+    .content-wrapper {
         display: flex;
         flex-direction: column;
-        padding: 1rem 1rem;
+        padding: 1rem;
         border: 1px solid var(--text-main);
         border-radius: 12px;
         background-color: var(--bg-content);
-        justify-content: center;
         font-size: 1.1rem;
         height: fit-content;
     }
 
-    .post-info {
+    .content-wrapper header,
+    .content-wrapper article {
+        padding: 0 1rem;
+    }
+
+    .meta-info {
         display: flex;
-        flex-direction: row;
         gap: 1.5rem;
         color: var(--text-subtle);
-        height: 1rem;
+        margin-bottom: 1rem;
     }
 
-    .post-info :global(p) {
+    .meta-info p,
+    .meta-info span {
+        margin: 0;
         font-size: 1rem;
         font-weight: 600;
-        font-style: normal;
-        margin: 0;
     }
 
-    .post-info .calendar-icon,
-    .post-info .author-icon {
+    .author,
+    .date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-style: normal;
+    }
+
+    .icon {
         width: 24px;
         height: 24px;
     }
 
-    .post-author {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .post-pubdate {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .post-summary {
+    .summary {
         font-size: 1.2rem;
     }
 
@@ -190,94 +195,61 @@ const relatedPosts = allPosts
         max-width: 100%;
         height: auto;
         border-radius: 10px;
+        margin-bottom: 1.5rem;
     }
 
-    .post-content-container article {
-        padding: 0 1rem;
-    }
-
-    .post-content-container section {
-        padding: 0 1rem;
-    }
-
-    .related-post-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .mobile-toc {
-        display: flex;
-        padding: 2rem 1rem;
-        gap: 1rem;
-        flex-direction: column;
-        height: fit-content;
-
-        width: 100%;
-        box-sizing: border-box;
-
-        border: 1px solid var(--text-main);
-        border-radius: 12px;
-        background-color: var(--bg-page);
-    }
-
-    .mobile-toc h3 {
-        margin: 0;
-    }
-
-    .mobile-ad {
-        width: 100%;
-        height: fit-content;
-        padding: 0.5rem 1rem;
-        border: 1px solid var(--text-main);
-        border-radius: 12px;
-        background-color: var(--bg-page);
-    }
-
-    .post-content-boxes {
+    .mobile-only-blocks {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         margin: 1.5rem 0;
     }
 
-    .article-toc {
-        display: none;
+    .toc-mobile,
+    .ad-block {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--text-main);
+        border-radius: 12px;
+        background-color: var(--bg-page);
     }
 
+    .toc-desktop,
     .sidebar {
         display: none;
     }
 
+    .related-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
     @media screen and (min-width: 1200px) {
-        .post-content-boxes {
+        .mobile-only-blocks {
             display: none;
         }
 
-        .post-container {
+        .post-layout {
             flex-direction: row;
             padding: 1rem 2.5rem;
         }
 
-        .post-content-container {
+        .content-wrapper {
             max-width: 60%;
             padding: 1rem 2.5rem;
         }
 
-        .post-content-container article {
+        .content-wrapper header,
+        .content-wrapper article {
             padding: initial;
         }
 
-        .post-content-container section {
-            padding: initial;
-        }
-
-        .article-toc {
+        .toc-desktop {
             display: flex;
-            padding: 2rem 1rem;
-            gap: 1rem;
             flex-direction: column;
+            gap: 1rem;
+            padding: 2rem 1rem;
             height: fit-content;
             position: sticky;
             top: 1rem;
@@ -288,169 +260,27 @@ const relatedPosts = allPosts
             background-color: var(--bg-content);
         }
 
-        .article-toc h3 {
-            margin: 0;
-        }
-
         .sidebar {
             display: flex;
+            flex-direction: column;
             min-width: 20%;
             max-width: 20%;
-            flex-direction: column;
             flex: 1;
             gap: 2rem;
         }
 
-        .related-posts {
-            height: fit-content;
-            padding: 0.5rem 1rem;
+        .related-widget,
+        .ad-block {
+            padding: 2rem 1rem;
             border: 1px solid var(--text-main);
             border-radius: 12px;
             background-color: var(--bg-content);
         }
 
-        .ad {
-            width: 100%;
-            height: fit-content;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--text-main);
-            border-radius: 12px;
-            background-color: var(--bg-content);
+        .toc-desktop h3,
+        .related-widget h3 {
+            margin: 0;
+            margin-bottom: 1rem;
         }
     }
 </style>
-
-<script>
-    const injectRelatedPosts = () => {
-        const source = document.getElementById("mobile-related-content-source");
-        const target = document.getElementById("mobile-related-posts-target");
-
-        if (source && target) {
-            target.innerHTML = source.innerHTML;
-        }
-    };
-
-    function addIntersectionObserver() {
-        const observerOptions = {
-            rootMargin: "-10% 0px -70% 0px",
-            threshold: [0, 0.25, 0.5, 0.75, 1],
-        };
-
-        let currentActive: Element | null = null;
-        const visibleSections = new Set<Element>();
-        let isUserClicking = false;
-        let clickTimeout: number | null = null;
-
-        const observer = new IntersectionObserver((entries) => {
-            // Skip observer updates if user just clicked
-            if (isUserClicking) return;
-
-            // Update the set of visible sections
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    visibleSections.add(entry.target);
-                } else {
-                    visibleSections.delete(entry.target);
-                }
-            });
-
-            if (visibleSections.size > 0) {
-                // Get all visible sections sorted by position
-                const sortedSections = Array.from(visibleSections).sort((a, b) => {
-                    return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
-                });
-
-                // Find the topmost section that should be active
-                // Prefer the deepest nested section among those near the top
-                let sectionToActivate = sortedSections[0];
-
-                for (const section of sortedSections) {
-                    const rect = section.getBoundingClientRect();
-                    // If this section is very close to the top (within the trigger zone)
-                    if (rect.top <= window.innerHeight * 0.2) {
-                        // Check if it's deeper than current selection
-                        if (sectionToActivate.contains(section)) {
-                            sectionToActivate = section;
-                        }
-                    } else {
-                        break; // Sections are sorted, so we can stop
-                    }
-                }
-
-                const heading = sectionToActivate.querySelector(
-                    ":scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6",
-                );
-                if (!heading) return;
-                const id = heading.getAttribute("id");
-                if (!id) return;
-                const tocLi = document.querySelector(`nav.article-toc a[href="#${id}"]`)?.closest("li.toc-li");
-
-                // Only update if it's different from current
-                if (tocLi && tocLi !== currentActive) {
-                    // Remove active from all (including subheadings)
-                    document.querySelectorAll("nav.article-toc li.toc-li").forEach((li) => {
-                        li.classList.remove("active");
-                    });
-                    // Add active to current
-                    tocLi.classList.add("active");
-                    currentActive = tocLi;
-                }
-            }
-        }, observerOptions);
-
-        // Observe ALL sections (including nested ones created by rehype-sectionize)
-        document.querySelectorAll("article section").forEach((section) => {
-            observer.observe(section);
-        });
-
-        // Add click handlers to TOC links
-        document.querySelectorAll("nav.article-toc a").forEach((link) => {
-            link.addEventListener("click", (e) => {
-                const href = (e.currentTarget as HTMLAnchorElement).getAttribute("href");
-                if (!href || !href.startsWith("#")) return;
-
-                const targetId = href.substring(1);
-                const tocLi = document.querySelector(`nav.article-toc a[href="#${targetId}"]`)?.closest("li.toc-li");
-
-                if (tocLi) {
-                    // Immediately update active state
-                    document.querySelectorAll("nav.article-toc li.toc-li").forEach((li) => {
-                        li.classList.remove("active");
-                    });
-                    tocLi.classList.add("active");
-                    currentActive = tocLi;
-
-                    // Disable observer updates temporarily
-                    isUserClicking = true;
-                    if (clickTimeout) clearTimeout(clickTimeout);
-                    clickTimeout = window.setTimeout(() => {
-                        isUserClicking = false;
-                    }, 1000); // Re-enable after 1 second
-                }
-            });
-        });
-
-        // Activate first heading on page load if at the top
-        const firstSection = document.querySelector("article section");
-        if (firstSection) {
-            const heading = firstSection.querySelector(
-                ":scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6",
-            );
-            if (heading) {
-                const id = heading.getAttribute("id");
-                if (id) {
-                    const tocLi = document.querySelector(`nav.article-toc a[href="#${id}"]`)?.closest("li.toc-li");
-                    if (tocLi) {
-                        tocLi.classList.add("active");
-                        currentActive = tocLi;
-                    }
-                }
-            }
-        }
-    }
-
-    document.addEventListener("astro:page-load", () => {
-        injectRelatedPosts();
-        addIntersectionObserver();
-    });
-</script>
