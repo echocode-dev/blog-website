@@ -1,36 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SearchBox from "../components/SearchBox.astro";
-import FilterButton from "../components/FilterButton.astro";
+import Hero from "../components/Hero.astro";
 import BlogPostCard from "../components/BlogPostCard.astro";
 import pageHeaderBackground from "../assets/code.jpg";
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_DESCRIPTION } from "../consts";
 
 const pageTitle = "Home";
 
 const allPosts = await getCollection("blog");
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
-
-const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
 ---
 
 <BaseLayout pageTitle={pageTitle} description={SITE_DESCRIPTION} image={pageHeaderBackground}>
     <main class="container">
-        <header class="hero" style={`--bg-image: url(${bgImage.src})`}>
-            <div class="hero-content">
-                <div class="filter-wrapper" hidden>
-                    <FilterButton />
-                </div>
-
-                <h1>{SITE_TITLE} News</h1>
-
-                <div class="search-wrapper">
-                    <SearchBox />
-                </div>
-            </div>
-        </header>
+        <Hero />
 
         <div class="ad-placeholder">
             <p>AD PLACEHOLDER</p>
@@ -57,59 +41,6 @@ const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
         border-radius: 12px;
         background-color: var(--bg-content);
         gap: 2rem;
-    }
-
-    .hero {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        height: 325px;
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 10px 10px 0;
-        position: relative;
-        z-index: 1;
-    }
-
-    .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        border-radius: inherit;
-        background-image: linear-gradient(to top, black 50%, transparent), var(--bg-image);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-    }
-
-    .hero-content {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 1rem;
-        width: 100%;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .hero-content h1 {
-        color: var(--text-navbar);
-        grid-column: 1 / -1;
-        grid-row: 1;
-        text-align: center;
-        margin: 0;
-        font-size: 1.5rem;
-    }
-
-    .filter-wrapper {
-        grid-column: 1;
-        grid-row: 2;
-    }
-    .search-wrapper {
-        grid-column: 2;
-        grid-row: 2;
-        display: flex;
-        flex-direction: column;
     }
 
     .ad-placeholder {
@@ -159,34 +90,10 @@ const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
             margin: 1rem 2.5rem;
         }
 
-        .hero {
-            align-items: center;
-            margin: 15px 15px 0;
-        }
-
-        .hero::before {
-            background-image: linear-gradient(to left, black, transparent), var(--bg-image);
-        }
-
-        .hero-content {
-            grid-template-columns: auto 1fr;
-            grid-template-rows: auto auto;
-            gap: 0.5rem 1rem;
-            align-items: end;
-            margin-right: 2rem;
-            width: auto;
-            min-width: 500px;
-        }
-
-        .hero-content h1 {
-            grid-column: 2;
-            grid-row: 1;
-            text-align: left;
-        }
-
         .ad-placeholder {
             height: 150px;
         }
+
         .recents-header {
             margin: 0 4rem;
         }
