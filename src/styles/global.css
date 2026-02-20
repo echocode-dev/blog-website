@@ -71,6 +71,12 @@ article section > section {
     margin-left: 1.2rem;
 }
 
+article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
 *,
 *::before,
 *::after {

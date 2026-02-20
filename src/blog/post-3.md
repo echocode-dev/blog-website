@@ -12,3 +12,9 @@ tags: ["test", "javascript", "astro"]
 Asegurar la calidad del código es vital para proyectos escalables.
 
 * Coincidencia de tags: **test**.
+
+### Imagen bonita
+
+Hay que asegurarse de que las imágenes se puedan ver bien.
+
+![Akropolis banner](https://i.postimg.cc/tCstD5Zy/Akropolis-banner-V2.png)
