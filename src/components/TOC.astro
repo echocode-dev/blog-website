@@ -1,18 +1,25 @@
 ---
 import TOCHeading from "./TOCHeading.astro";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+    headings: MarkdownHeading[];
+}
+
+export interface TOCItem extends MarkdownHeading {
+    subheadings: TOCItem[];
+}
 
 const { headings } = Astro.props;
 
-const toc = buildHierarchy(headings);
-
-function buildHierarchy(headings: any) {
-    const toc: any[] = [];
-    const parentHeadings = new Map();
+function buildHierarchy(headings: MarkdownHeading[]) {
+    const toc: TOCItem[] = [];
+    const parentHeadings = new Map<number, TOCItem>();
 
     if (!headings) return toc;
 
-    headings.forEach((h: any) => {
-        const heading = { ...h, subheadings: [] };
+    headings.forEach((h) => {
+        const heading: TOCItem = { ...h, subheadings: [] };
         parentHeadings.set(heading.depth, heading);
         if (heading.depth === 2) {
             toc.push(heading);
@@ -25,6 +32,8 @@ function buildHierarchy(headings: any) {
     });
     return toc;
 }
+
+const toc = buildHierarchy(headings);
 ---
 
 {

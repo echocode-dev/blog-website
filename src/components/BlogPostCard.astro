@@ -1,52 +1,56 @@
 ---
 import { ArrowRight, Calendar } from "@lucide/astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    frontmatter: CollectionEntry<"blog">["data"];
+    url: string;
+}
 
 const { frontmatter, url } = Astro.props;
-var options = { year: "numeric", month: "short", day: "numeric" };
+const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
 ---
 
-<a class="post-card" href={url}>
-    <div class="post-info">
-        <h3 class="post-title">{frontmatter.title}</h3>
-        <time datetime={frontmatter.pubDate} class="post-pubdate" data-pagefind-meta="date">
-            <Calendar class="calendar-icon" />
-            <p>{frontmatter.pubDate.toLocaleDateString("en-US", options)}</p>
+<a class="card" href={url}>
+    <div class="card-info">
+        <h3 class="card-title">{frontmatter.title}</h3>
+        <time datetime={frontmatter.pubDate.toISOString()} class="card-date" data-pagefind-meta="date">
+            <Calendar class="icon-sm" />
+            <span>{frontmatter.pubDate.toLocaleDateString("en-US", options)}</span>
         </time>
-        <p class="post-summary">{frontmatter.summary}</p>
+        <p class="card-summary">{frontmatter.summary}</p>
     </div>
 
-    <div class="post-go">
-        <p>Read more</p>
-        <ArrowRight />
+    <div class="card-footer">
+        <span>Read more</span>
+        <ArrowRight class="icon-sm" />
     </div>
 </a>
 
 <style>
-    .post-card {
+    .card {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         padding: 1.5rem 1rem;
         border-radius: 10px;
         border: 1px solid var(--text-subtle);
         background-color: var(--bg-page);
-        font-style: normal;
         text-decoration: none;
-        justify-content: space-between;
         transition: border-color 0.3s ease;
     }
 
-    .post-card:hover {
+    .card:hover {
         border-color: var(--text-main);
-        transition: border-color 0.3s ease;
     }
 
-    .post-info {
+    .card-info {
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
 
-    .post-title {
+    .card-title {
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -54,7 +58,7 @@ var options = { year: "numeric", month: "short", day: "numeric" };
         margin: 0;
     }
 
-    .post-summary {
+    .card-summary {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -64,34 +68,23 @@ var options = { year: "numeric", month: "short", day: "numeric" };
         color: var(--text-secondary);
     }
 
-    .post-pubdate {
+    .card-date {
         display: flex;
-        flex-direction: row;
         gap: 0.4rem;
         align-items: center;
         color: var(--text-subtle);
-        height: 0.9rem;
+        font-size: 0.9rem;
     }
 
-    .post-go {
+    .card-footer {
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: flex-end;
         gap: 0.5rem;
         margin-top: 1rem;
     }
 
-    .post-pubdate p,
-    .post-go p {
-        margin: 0;
-    }
-
-    .post-pubdate p {
-        font-size: 0.9rem;
-    }
-
-    .post-pubdate .calendar-icon {
+    .icon-sm {
         width: 20px;
         height: 20px;
     }
