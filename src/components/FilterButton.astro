@@ -5,18 +5,38 @@ const { id } = Astro.props;
 ---
 
 <button id={id} class="filter-btn" aria-label="Filter">
+    <label class="filter-label">Filters</label>
     <Funnel />
 </button>
 
 <style>
     .filter-btn {
-        color: var(--text-secondary);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-navbar);
         background: none;
-        border: 1px solid var(--text-subtle);
+        border: 1px solid var(--border-color);
         border-radius: 32px;
         cursor: pointer;
-        padding: 0;
-        display: flex;
-        padding: 0.5rem;
+        height: 44px;
+        padding: 0.5rem 1rem;
+        transition:
+            border-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .filter-label {
+        font-weight: 600;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    @media (hover: hover) {
+        .filter-btn:hover {
+            border-color: color-mix(in srgb, var(--border-color), transparent 50%);
+            color: color-mix(in srgb, var(--text-navbar), transparent 50%);
+        }
     }
 </style>
