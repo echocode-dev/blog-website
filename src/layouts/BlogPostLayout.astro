@@ -12,9 +12,29 @@ const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", d
 
 const allPosts = await getCollection("blog");
 const relatedPosts = getRelatedPosts(allPosts, Astro.params.slug as string, frontmatter.tags);
+
+const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": Astro.url.toString(),
+    },
+    headline: frontmatter.title,
+    description: frontmatter.summary,
+    image: new URL(frontmatter.cover.src, Astro.url).toString(),
+    author: {
+        "@type": "Person",
+        name: frontmatter.author,
+    },
+    datePublished: frontmatter.pubDate.toISOString(),
+    dateModified: frontmatter.updatedDate ? frontmatter.updatedDate.toISOString() : frontmatter.pubDate.toISOString(),
+};
 ---
 
 <BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary} image={frontmatter.cover}>
+    <script type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
+
     <main class="post-layout" data-pagefind-body>
         {
             headings && headings.length > 0 && (
@@ -33,12 +53,23 @@ const relatedPosts = getRelatedPosts(allPosts, Astro.params.slug as string, fron
                         <CircleUserRound class="icon" />
                         <span>{frontmatter.author}</span>
                     </address>
-                    <time datetime={frontmatter.pubDate.toISOString()} class="date">
-                        <Calendar class="icon" />
-                        <span data-pagefind-meta="pubDate"
-                            >{frontmatter.pubDate.toLocaleDateString("en-US", options)}</span
-                        >
-                    </time>
+                    {
+                        frontmatter.updatedDate ? (
+                            <time datetime={frontmatter.updatedDate.toISOString()} class="date">
+                                <Calendar class="icon" />
+                                <span data-pagefind-meta="updatedDate">
+                                    Updated: {frontmatter.updatedDate.toLocaleDateString("en-US", options)}
+                                </span>
+                            </time>
+                        ) : (
+                            <time datetime={frontmatter.pubDate.toISOString()} class="date">
+                                <Calendar class="icon" />
+                                <span data-pagefind-meta="pubDate">
+                                    {frontmatter.pubDate.toLocaleDateString("en-US", options)}
+                                </span>
+                            </time>
+                        )
+                    }
                 </div>
                 <p class="summary">{frontmatter.summary}</p>
                 <Image
