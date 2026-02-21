@@ -10,13 +10,12 @@ import { SITE_TITLE } from "../consts";
 interface Props {
     pageTitle?: string;
     description: string;
-    image?: string | any; // 'any' to support imported images
+    image?: string | any;
 }
 
 const { pageTitle = "", description, image } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Helper for image URL
 const ogImage = image ? new URL(image.src || image, Astro.url) : null;
 ---
 
@@ -32,7 +31,7 @@ const ogImage = image ? new URL(image.src || image, Astro.url) : null;
         <meta property="og:type" content="website" />
         <meta
             property="og:title"
-            content={`${SITE_TITLE}${pageTitle.length > 60 ? pageTitle.slice(0, 57).trim() + "..." : pageTitle}`}
+            content={`${SITE_TITLE} | ${pageTitle.length > 60 ? pageTitle.slice(0, 57).trim() + "..." : pageTitle}`}
         />
         <meta
             property="og:description"
