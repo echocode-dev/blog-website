@@ -17,6 +17,22 @@ const { pageTitle = "", description, image } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const ogImage = image ? new URL(image.src || image, Astro.url) : null;
+
+const siteOrigin = Astro.url.origin;
+
+const searchJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_TITLE,
+    url: siteOrigin,
+    logo: new URL("/favicon.svg", siteOrigin).toString(),
+    sameAs: ["https://github.com/echocode-dev"],
+    potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteOrigin}/search/?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+    },
+};
 ---
 
 <html lang="en">
@@ -50,6 +66,8 @@ const ogImage = image ? new URL(image.src || image, Astro.url) : null;
                 }
             });
         </script>
+
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(searchJsonLd)} />
 
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
