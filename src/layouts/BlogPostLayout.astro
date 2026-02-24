@@ -39,7 +39,7 @@ const blogJsonLd = {
         {
             headings && headings.length > 0 && (
                 <nav class="toc-desktop">
-                    <h3>Table of Content</h3>
+                    <h2 class="widget-title">Table of Content</h2>
                     <TOC headings={headings} />
                 </nav>
             )
@@ -91,7 +91,7 @@ const blogJsonLd = {
                 {
                     headings && headings.length > 0 && (
                         <nav class="toc-mobile">
-                            <h3>Table of Content</h3>
+                            <h2 class="widget-title">Table of Content</h2>
                             <TOC headings={headings} />
                         </nav>
                     )
@@ -108,7 +108,7 @@ const blogJsonLd = {
 
         <aside class="sidebar">
             <div class="related-widget">
-                <h3>Related posts</h3>
+                <h2 class="widget-title">Related posts</h2>
                 <div class="related-list">
                     {
                         relatedPosts.map((post) => (
@@ -127,7 +127,7 @@ const blogJsonLd = {
 
         <div id="mobile-related-content-source" style="display: none;">
             <div class="mobile-related-wrapper">
-                <h3>Recent posts</h3>
+                <h2 class="widget-title">Related posts</h2>
                 <div class="related-list">
                     {
                         relatedPosts.map((post) => (
@@ -231,6 +231,10 @@ const blogJsonLd = {
         font-size: 1.2rem;
     }
 
+    .widget-title {
+        margin: 0;
+    }
+
     .cover-image {
         max-width: 100%;
         height: auto;
@@ -247,8 +251,11 @@ const blogJsonLd = {
 
     .toc-mobile,
     .ad-block {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
         width: 100%;
-        padding: 0.5rem 1rem;
+        padding: 1.5rem 1rem;
         border: 1px solid var(--text-main);
         border-radius: 12px;
         background-color: var(--bg-page);
@@ -257,6 +264,13 @@ const blogJsonLd = {
     .toc-desktop,
     .sidebar {
         display: none;
+    }
+
+    .mobile-related-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem 0.5rem;
     }
 
     .related-list {
@@ -311,6 +325,9 @@ const blogJsonLd = {
 
         .related-widget,
         .ad-block {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
             padding: 2rem 1rem;
             border: 1px solid var(--text-main);
             border-radius: 12px;
