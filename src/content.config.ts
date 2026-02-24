@@ -6,7 +6,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 // Define a `loader` and `schema` for each collection
 const blog = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.md", base: "./src/blog" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/blog" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -14,7 +14,7 @@ const blog = defineCollection({
       updatedDate: z.date().optional(),
       summary: z.string(),
       author: z.string(),
-      cover: image(),
+      cover: z.union([image(), z.string().url()]),
       coverAlt: z.string(),
       tags: z.array(z.string()),
     }),

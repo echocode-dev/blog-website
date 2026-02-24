@@ -3,8 +3,8 @@ import { getCollection } from "astro:content";
 import TOC from "../components/TOC.astro";
 import BaseLayout from "./BaseLayout.astro";
 import { Calendar, CircleUserRound } from "@lucide/astro";
-import { Image } from "astro:assets";
 import { getRelatedPosts } from "../utils/postHelpers";
+import ResponsiveImage from "../components/ResponsiveImage.astro";
 
 const { frontmatter, headings } = Astro.props;
 
@@ -78,13 +78,7 @@ const blogJsonLd = {
                     }
                 </div>
                 <p class="summary">{frontmatter.summary}</p>
-                <Image
-                    src={frontmatter.cover}
-                    layout="constrained"
-                    alt={frontmatter.coverAlt}
-                    inferSize={true}
-                    class="cover-image"
-                />
+                <ResponsiveImage src={frontmatter.cover} alt={frontmatter.coverAlt} class="cover-image" />
             </header>
 
             <div class="mobile-only-blocks">
@@ -290,7 +284,8 @@ const blogJsonLd = {
         }
 
         .content-wrapper {
-            max-width: 60%;
+            min-width: 55%;
+            max-width: 55%;
             padding: 1rem 2.5rem;
         }
 

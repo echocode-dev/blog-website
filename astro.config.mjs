@@ -8,8 +8,16 @@ import expressiveCode from "astro-expressive-code";
 
 import sitemap from "@astrojs/sitemap";
 
+import mdx from "@astrojs/mdx";
+
 export default defineConfig({
   site: "https://echocode.dev",
+  image: {
+    layout: "constrained",
+    responsiveStyles: true,
+    // All the domains we get pics from should go here, so they get optimized by Astro
+    domains: ["docs.astro.build"],
+  },
   integrations: [
     pagefind(),
     expressiveCode({
@@ -21,6 +29,7 @@ export default defineConfig({
       },
     }),
     sitemap(),
+    mdx(),
   ],
   markdown: {
     rehypePlugins: [
