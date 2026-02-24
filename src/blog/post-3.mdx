@@ -8,6 +8,7 @@ coverAlt: 'Testing icon'
 tags: ["test", "javascript", "astro"]
 ---
 import ResponsiveImage from "../components/ResponsiveImage.astro";
+import code from "../assets/code.jpg";
 
 ## ¿Por qué testear? (H2)
 Asegurar la calidad del código es vital para proyectos escalables.
@@ -18,4 +19,8 @@ Asegurar la calidad del código es vital para proyectos escalables.
 
 Hay que asegurarse de que las imágenes se puedan ver bien.
 
+#### Remota
 <ResponsiveImage src="https://i.postimg.cc/tCstD5Zy/Akropolis-banner-V2.png" alt="Akropolis banner" />
+
+#### Local
+<ResponsiveImage src={code} alt="Code image" />
