@@ -1,0 +1,218 @@
+---
+
+---
+
+<div id="filters-container" class="filters-container">
+    <template id="filter-group-template">
+        <fieldset class="filter-group">
+            <legend class="filter-name"></legend>
+            <div class="filter-options"></div>
+        </fieldset>
+    </template>
+
+    <template id="filter-checkbox-template">
+        <label class="filter-label">
+            <input type="checkbox" class="filter-checkbox" />
+            <span class="option-name"></span>
+            <span class="option-count"></span>
+        </label>
+    </template>
+</div>
+
+<style>
+    .filters-container {
+        display: flex;
+        flex-direction: column;
+        visibility: hidden;
+        opacity: 0;
+        border-radius: 10px;
+        background-color: var(--bg-page);
+        padding: 1.5rem 1rem;
+        border: 1px solid black;
+        box-shadow: 0px 0px 5px black;
+        left: 0;
+        right: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: absolute;
+        gap: 1rem;
+        transition:
+            opacity 0.3s ease,
+            visibility 0s linear 0.3s;
+    }
+
+    .filters-container.active {
+        visibility: visible;
+        opacity: 1;
+        transition:
+            opacity 0.3s ease,
+            visibility 0s linear 0s;
+    }
+
+    .filter-group {
+        border: none;
+        padding: 0;
+    }
+
+    .filter-name {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        margin: 0 0 1rem 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .filter-name::before,
+    .filter-name::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background-color: var(--text-main);
+    }
+
+    .filter-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .option-count {
+        color: var(--text-subtle);
+    }
+
+    .filter-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+
+        cursor: pointer;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid var(--text-subtle);
+        border-radius: 50%;
+        margin: 0;
+
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .filter-checkbox:checked {
+        background-color: var(--bg-navbar);
+        border-color: var(--text-main);
+    }
+
+    .filter-checkbox::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+        background-size: 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .filter-checkbox:checked::after {
+        opacity: 1;
+    }
+
+    .filter-checkbox ~ .option-name {
+        transition: font-weight 0.3s ease;
+    }
+
+    .filter-checkbox:checked ~ .option-name {
+        font-weight: 600;
+        transition: font-weight 0.3s ease;
+    }
+
+    @media (hover: hover) {
+        .filter-checkbox:hover {
+            border-color: var(--text-main);
+        }
+    }
+</style>
+
+<script is:inline>
+    document.addEventListener("astro:page-load", () => {
+        const filtersContainer = document.getElementById("filters-container");
+
+        const toggleButton = document.getElementById("filters-btn");
+
+        document.addEventListener("click", (event) => {
+            if (!filtersContainer) return;
+
+            const isMenuOpen = filtersContainer.classList.contains("active");
+
+            const clickedOutsideContainer = !filtersContainer.contains(event.target);
+            const clickedOutsideButton = toggleButton ? !toggleButton.contains(event.target) : true;
+
+            if (isMenuOpen && clickedOutsideContainer && clickedOutsideButton) {
+                filtersContainer.classList.remove("active");
+            }
+        });
+
+        async function showFilters() {
+            const filtersContainer = document.getElementById("filters-container");
+            const groupTemplate = document.getElementById("filter-group-template");
+            const checkboxTemplate = document.getElementById("filter-checkbox-template");
+
+            if (!filtersContainer || !groupTemplate || !checkboxTemplate) return;
+
+            // @ts-ignore
+            const pagefind = await import("/pagefind/pagefind.js");
+            const filters = await pagefind.filters();
+
+            for (const type in filters) {
+                const groupClone = groupTemplate.content.cloneNode(true);
+
+                groupClone.querySelector(".filter-name").textContent = type;
+
+                const optionsContainer = groupClone.querySelector(".filter-options");
+
+                const options = filters[type];
+
+                for (const option in options) {
+                    const checkboxClone = checkboxTemplate.content.cloneNode(true);
+
+                    const input = checkboxClone.querySelector("input");
+                    input.value = option;
+                    input.dataset.category = type;
+
+                    const currentParams = new URLSearchParams(window.location.search);
+                    const activeValuesInUrl = currentParams.get(`filter_${type}`)?.split(",") || [];
+
+                    if (activeValuesInUrl.includes(option)) {
+                        input.checked = true;
+                    }
+
+                    checkboxClone.querySelector(".option-name").textContent = option;
+                    checkboxClone.querySelector(".option-count").textContent = `(${options[option]})`;
+
+                    optionsContainer.appendChild(checkboxClone);
+                }
+
+                filtersContainer.appendChild(groupClone);
+            }
+        }
+
+        showFilters();
+    });
+</script>

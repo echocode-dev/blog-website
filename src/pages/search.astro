@@ -65,9 +65,20 @@ const description = "Search the Echo Code blog.";
 <script is:inline>
     document.addEventListener("astro:page-load", () => {
         const params = new URLSearchParams(window.location.search);
-        const query = params.get("q");
+        const query = params.get("q") || "";
 
-        if (!query) {
+        const activeFilters = {};
+
+        for (const [key, value] of params.entries()) {
+            if (key.startsWith("filter_")) {
+                const category = key.replace("filter_", "");
+                activeFilters[category] = value.split(",");
+            }
+        }
+
+        const hasFilters = Object.keys(activeFilters).length > 0;
+
+        if (!query && !hasFilters) {
             window.location.replace("/");
             return;
         }
@@ -75,9 +86,11 @@ const description = "Search the Echo Code blog.";
         const resultsContainer = document.querySelector("#search-results");
         if (!resultsContainer) return;
 
-        document.querySelectorAll('input[name="q"]').forEach((input) => {
-            input.value = query;
-        });
+        if (query) {
+            document.querySelectorAll('input[name="q"]').forEach((input) => {
+                input.value = query;
+            });
+        }
 
         async function runSearch() {
             try {
@@ -85,10 +98,16 @@ const description = "Search the Echo Code blog.";
                 const pagefind = await import("/pagefind/pagefind.js");
                 await pagefind.init();
 
-                const search = await pagefind.search(query);
+                const searchQuery = query.trim() === "" ? null : query;
+
+                const search = await pagefind.search(searchQuery, { filters: activeFilters });
 
                 if (search.results.length === 0) {
-                    resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
+                    if (query) {
+                        resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
+                    } else {
+                        resultsContainer.innerHTML = `<h4>No posts match the selected filters.</h4>`;
+                    }
                     return;
                 }
 
@@ -176,6 +195,8 @@ const description = "Search the Echo Code blog.";
         display: flex;
         flex-direction: column;
         gap: 2rem;
+        align-items: center;
+        color: var(--text-subtle);
     }
 
     .card {

@@ -33,7 +33,7 @@ const blogJsonLd = {
 ---
 
 <BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary} image={frontmatter.cover}>
-    <script type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
 
     <main class="post-layout" data-pagefind-body>
         {
@@ -51,20 +51,26 @@ const blogJsonLd = {
                 <div class="meta-info">
                     <address class="author">
                         <CircleUserRound class="icon" />
-                        <span>{frontmatter.author}</span>
+                        <span data-pagefind-filter="author">{frontmatter.author}</span>
                     </address>
                     {
                         frontmatter.updatedDate ? (
                             <time datetime={frontmatter.updatedDate.toISOString()} class="date">
                                 <Calendar class="icon" />
-                                <span data-pagefind-meta="updatedDate">
+                                <span
+                                    data-pagefind-filter={`updated_date:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-meta={`updatedDate:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
+                                >
                                     Updated: {frontmatter.updatedDate.toLocaleDateString("en-US", options)}
                                 </span>
                             </time>
                         ) : (
                             <time datetime={frontmatter.pubDate.toISOString()} class="date">
                                 <Calendar class="icon" />
-                                <span data-pagefind-meta="pubDate">
+                                <span
+                                    data-pagefind-filter={`pub_date:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-meta={`pubDate:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
+                                >
                                     {frontmatter.pubDate.toLocaleDateString("en-US", options)}
                                 </span>
                             </time>

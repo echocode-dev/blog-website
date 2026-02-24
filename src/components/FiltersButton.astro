@@ -1,16 +1,14 @@
 ---
 import { Funnel } from "@lucide/astro";
-
-const { id } = Astro.props;
 ---
 
-<button id={id} class="filter-btn" aria-label="Filter">
-    <label class="filter-label">Filters</label>
+<button id="filters-btn" class="filters-btn" aria-label="Filters">
+    <label class="filters-label">Filters</label>
     <Funnel />
 </button>
 
 <style>
-    .filter-btn {
+    .filters-btn {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -27,16 +25,27 @@ const { id } = Astro.props;
             color 0.3s ease;
     }
 
-    .filter-label {
+    .filters-label {
         font-weight: 600;
         font-size: 14px;
         pointer-events: none;
     }
 
     @media (hover: hover) {
-        .filter-btn:hover {
+        .filters-btn:hover {
             border-color: color-mix(in srgb, var(--border-color), transparent 50%);
             color: color-mix(in srgb, var(--text-navbar), transparent 50%);
         }
     }
 </style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const filtersBtn = document.getElementById("filters-btn");
+        const filtersContainer = document.getElementById("filters-container");
+
+        filtersBtn?.addEventListener("click", () => {
+            filtersContainer?.classList.toggle("active");
+        });
+    });
+</script>

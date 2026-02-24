@@ -36,18 +36,59 @@ import SearchButton from "./SearchButton.astro";
     class SearchBox extends HTMLElement {
         constructor() {
             super();
+            const form = this.querySelector("form");
             const input = this.querySelector("input");
             const button = this.querySelector("button");
 
-            if (input == null || button == null) {
+            if (!input || !button || !form) {
                 return;
             }
 
-            const toggleButton = () => {
-                button.disabled = input.value.trim() === "";
+            const checkState = () => {
+                const hasText = input.value.trim() !== "";
+                const hasFilters = document.querySelectorAll(".filter-checkbox:checked").length > 0;
+
+                button.disabled = !(hasText || hasFilters);
             };
 
-            input.addEventListener("input", toggleButton);
+            input.addEventListener("input", checkState);
+
+            document.addEventListener("change", (e) => {
+                if (e.target instanceof HTMLElement && e.target.classList.contains("filter-checkbox")) {
+                    checkState();
+                }
+            });
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const params = new URLSearchParams();
+
+                if (input.value.trim() !== "") {
+                    params.set("q", input.value.trim());
+                }
+
+                const filters: Record<string, string[]> = {};
+
+                const checkedBoxes = document.querySelectorAll<HTMLInputElement>(".filter-checkbox:checked");
+
+                checkedBoxes.forEach((box) => {
+                    const category = box.dataset.category;
+
+                    if (category) {
+                        if (!filters[category]) {
+                            filters[category] = [];
+                        }
+                        filters[category].push(box.value);
+                    }
+                });
+
+                for (const [category, values] of Object.entries(filters)) {
+                    params.set(`filter_${category}`, values.join(","));
+                }
+
+                window.location.assign(`/search?${params.toString()}`);
+            });
         }
     }
 

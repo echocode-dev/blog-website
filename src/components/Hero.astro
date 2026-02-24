@@ -1,6 +1,7 @@
 ---
 import { getImage } from "astro:assets";
-import FilterButton from "./FilterButton.astro";
+import FiltersButton from "./FiltersButton.astro";
+import FiltersMenu from "./FiltersMenu.astro";
 import SearchBox from "./SearchBox.astro";
 import pageHeaderBackground from "../assets/code.jpg";
 import { SITE_TITLE } from "../consts";
@@ -16,8 +17,12 @@ const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
             <SearchBox />
         </div>
 
-        <div class="filter-wrapper">
-            <FilterButton />
+        <div class="filters-btn-wrapper">
+            <FiltersButton />
+        </div>
+
+        <div class="filters-menu-wrapper">
+            <FiltersMenu />
         </div>
     </div>
 </section>
@@ -54,6 +59,7 @@ const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
         width: 100%;
         align-items: center;
         margin-bottom: 10px;
+        position: relative;
     }
 
     .hero-title {
@@ -97,9 +103,13 @@ const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
             grid-row: 2;
         }
 
-        .filter-wrapper {
+        .filters-btn-wrapper {
             grid-column: 1;
             grid-row: 2;
+        }
+
+        .filters-menu-wrapper {
+            grid-row: 3;
         }
     }
 </style>
