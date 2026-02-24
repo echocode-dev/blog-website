@@ -58,7 +58,7 @@ const blogJsonLd = {
                             <time datetime={frontmatter.updatedDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`updated_date:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-filter={`Updated date:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
                                     data-pagefind-meta={`updatedDate:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
                                 >
                                     Updated: {frontmatter.updatedDate.toLocaleDateString("en-US", options)}
@@ -68,7 +68,7 @@ const blogJsonLd = {
                             <time datetime={frontmatter.pubDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`pub_date:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-filter={`Publication date:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
                                     data-pagefind-meta={`pubDate:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
                                 >
                                     {frontmatter.pubDate.toLocaleDateString("en-US", options)}
