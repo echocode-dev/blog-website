@@ -1,5 +1,5 @@
 ---
-title: 'Testing en Astro: Guía Práctica'
+title: 'Probando una bonita imagen'
 pubDate: 2026-02-08
 summary: 'Aprende a realizar pruebas automatizadas en tus colecciones de contenido.'
 author: 'EchoCode'
@@ -7,6 +7,7 @@ cover: 'https://docs.astro.build/assets/full-logo-light.png'
 coverAlt: 'Testing icon'
 tags: ["test", "javascript", "astro"]
 ---
+import { Image } from 'astro:assets';
 
 ## ¿Por qué testear? (H2)
 Asegurar la calidad del código es vital para proyectos escalables.
@@ -17,4 +18,5 @@ Asegurar la calidad del código es vital para proyectos escalables.
 
 Hay que asegurarse de que las imágenes se puedan ver bien.
 
+<Image inferSize src="https://i.postimg.cc/tCstD5Zy/Akropolis-banner-V2.png" alt="Akropolis banner" />
 ![Akropolis banner](https://i.postimg.cc/tCstD5Zy/Akropolis-banner-V2.png)
