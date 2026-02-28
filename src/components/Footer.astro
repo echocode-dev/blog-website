@@ -1,12 +1,16 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import LogoButton from "./LogoButton.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <footer class="footer">
     <div class="logo-button-container">
         <LogoButton height={50} />
     </div>
-    <h4>© 2026 Echo Code. All rights reserved.</h4>
+    <h4>{t("footer.copyright")}</h4>
 </footer>
 
 <style>

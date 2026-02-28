@@ -1,10 +1,13 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { X } from "@lucide/astro";
 
 const { id } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<button id={id} class="close-btn" aria-label="Close menu">
+<button id={id} class="close-btn" aria-label={t("btn.label.close")}>
     <X color="var(--text-navbar)" />
 </button>
 

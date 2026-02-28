@@ -1,6 +1,10 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import CloseButton from "./CloseButton.astro";
 import SearchBox from "./SearchBox.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <aside id="side-menu" class="side-menu">
@@ -12,9 +16,9 @@ import SearchBox from "./SearchBox.astro";
         <SearchBox />
 
         <nav class="nav-links">
-            <div class="nav-link"><a href="#">Featured</a></div>
-            <div class="nav-link"><a href="#">Recents</a></div>
-            <div class="nav-link"><a href="/blog/">Blog</a></div>
+            <div class="nav-link"><a href="/">{t("nav.featured")}</a></div>
+            <div class="nav-link"><a href="/#recents">{t("nav.recents")}</a></div>
+            <div class="nav-link"><a href="/">{t("nav.blog")}</a></div>
         </nav>
 
         <div id="mobile-related-posts-target" class="mobile-related-posts-area"></div>

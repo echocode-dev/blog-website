@@ -1,17 +1,19 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { getImage } from "astro:assets";
 import FiltersButton from "./FiltersButton.astro";
 import FiltersMenu from "./FiltersMenu.astro";
 import SearchBox from "./SearchBox.astro";
 import pageHeaderBackground from "../assets/code.jpg";
-import { SITE_TITLE } from "../consts";
 
 const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <section class="hero" style={`--bg-image: url(${bgImage.src})`}>
     <div class="hero-content">
-        <h1 class="hero-title">{SITE_TITLE} News</h1>
+        <h1 class="hero-title">{t("hero.title")}</h1>
 
         <div class="search-wrapper">
             <SearchBox />

@@ -1,9 +1,13 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Funnel } from "@lucide/astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<button id="filters-btn" class="filters-btn" aria-label="Filters">
-    <label class="filters-label">Filters</label>
+<button id="filters-btn" class="filters-btn" aria-label={t("btn.label.filters")}>
+    <label class="filters-label">{t("btn.label.filters")}</label>
     <Funnel />
 </button>
 

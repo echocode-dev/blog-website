@@ -1,8 +1,12 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Search } from "@lucide/astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<button class="search-btn" aria-label="Search" disabled>
+<button class="search-btn" aria-label={t("btn.label.search")} disabled>
     <Search class="search-icon" />
 </button>
 

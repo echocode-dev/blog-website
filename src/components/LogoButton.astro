@@ -1,13 +1,16 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
 
 const { height } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="logo-container">
     <a href="/">
-        <Image class="logo-image" src={logo} alt="Echo Code's logo" height={height} />
+        <Image class="logo-image" src={logo} alt={t("logo.alt")} height={height} />
     </a>
 </div>
 

@@ -1,9 +1,13 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import MobileMenuButton from "./MobileMenuButton.astro";
 import LogoButton from "./LogoButton.astro";
 import MobileSideMenu from "./MobileSideMenu.astro";
 import SearchBox from "./SearchBox.astro";
 import ThemeIcon from "./ThemeIcon.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <header class="header">
@@ -16,9 +20,9 @@ import ThemeIcon from "./ThemeIcon.astro";
     </div>
 
     <nav class="nav-links">
-        <div class="nav-link"><a href="/">Featured</a></div>
-        <div class="nav-link"><a href="/#recents">Recents</a></div>
-        <div class="nav-link"><a href="/">Blog</a></div>
+        <div class="nav-link"><a href="/">{t("nav.featured")}</a></div>
+        <div class="nav-link"><a href="/#recents">{t("nav.recents")}</a></div>
+        <div class="nav-link"><a href="/">{t("nav.blog")}</a></div>
     </nav>
 
     <div class="spacer"></div>
