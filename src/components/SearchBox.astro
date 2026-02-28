@@ -1,9 +1,14 @@
 ---
 import SearchButton from "./SearchButton.astro";
+import { getLangFromUrl } from "../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const lang = getLangFromUrl(Astro.url);
+const searchUrl = getRelativeLocaleUrl(lang, "search");
 ---
 
 <search-box class="search-container-wrapper">
-    <form action="/search" onkeyup="success()" name="q" class="search-container">
+    <form action={searchUrl} data-search-url={searchUrl} name="q" class="search-container">
         <input id="search-input" type="text" placeholder="Search" name="q" />
         <SearchButton id="search-btn" />
     </form>
@@ -86,7 +91,8 @@ import SearchButton from "./SearchButton.astro";
                     params.set(`filter_${category}`, values.join(","));
                 }
 
-                window.location.assign(`/search?${params.toString()}`);
+                const searchUrl = form.getAttribute("data-search-url");
+                window.location.assign(`${searchUrl}?${params.toString()}`);
             });
         }
     }

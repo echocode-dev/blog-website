@@ -1,19 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import pageHeaderBackground from "../assets/code.jpg";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import pageHeaderBackground from "../../assets/code.jpg";
 
-const pageTitle = " - Search Results";
-const description = "Search the Echo Code blog.";
+export async function getStaticPaths() {
+    return [{ params: { lang: "en" } }, { params: { lang: "es" } }];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const homeUrl = getRelativeLocaleUrl(lang, "");
 ---
 
-<BaseLayout pageTitle={pageTitle} description={description} image={pageHeaderBackground}>
+<BaseLayout pageTitle={t("page.search.title")} description={t("page.search.desc")} image={pageHeaderBackground}>
     <main class="container">
         <Hero />
 
         <section class="recents">
             <div class="recents-header">
-                <h2>RESULTS</h2>
+                <h2>{t("page.search.results")}</h2>
             </div>
 
             <div id="search-results"></div>
@@ -64,6 +71,9 @@ const description = "Search the Echo Code blog.";
 
 <script is:inline>
     document.addEventListener("astro:page-load", () => {
+        const mainContainer = document.getElementById("search-main");
+        const homeUrl = mainContainer ? mainContainer.getAttribute("data-home-url") : "/";
+
         const params = new URLSearchParams(window.location.search);
         const query = params.get("q") || "";
 
@@ -79,7 +89,7 @@ const description = "Search the Echo Code blog.";
         const hasFilters = Object.keys(activeFilters).length > 0;
 
         if (!query && !hasFilters) {
-            window.location.replace("/");
+            window.location.replace(homeUrl);
             return;
         }
 

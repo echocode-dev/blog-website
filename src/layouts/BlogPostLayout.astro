@@ -1,4 +1,6 @@
 ---
+import { getLangFromUrl } from "../i18n/utils";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { getCollection } from "astro:content";
 import TOC from "../components/TOC.astro";
 import BaseLayout from "./BaseLayout.astro";
@@ -6,12 +8,13 @@ import { Calendar, CircleUserRound } from "@lucide/astro";
 import { getRelatedPosts } from "../utils/postHelpers";
 import ResponsiveImage from "../components/ResponsiveImage.astro";
 
-const { frontmatter, headings } = Astro.props;
+const { id, frontmatter, headings } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
 
 const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
 
-const allPosts = await getCollection("blog");
-const relatedPosts = getRelatedPosts(allPosts, Astro.params.slug as string, frontmatter.tags);
+const allPosts = await getCollection("blog", ({ id }) => id.startsWith(`${lang}/`));
+const relatedPosts = getRelatedPosts(allPosts, id, frontmatter.tags);
 
 const blogJsonLd = {
     "@context": "https://schema.org",
@@ -45,7 +48,7 @@ const blogJsonLd = {
             )
         }
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" data-pagefind-body>
             <header>
                 <h1>{frontmatter.title}</h1>
                 <div class="meta-info">
@@ -58,20 +61,20 @@ const blogJsonLd = {
                             <time datetime={frontmatter.updatedDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`Updated date:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
-                                    data-pagefind-meta={`updatedDate:${frontmatter.updatedDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-filter={`Updated date:${frontmatter.updatedDate.toLocaleDateString(lang, options)}`}
+                                    data-pagefind-meta={`updatedDate:${frontmatter.updatedDate.toLocaleDateString(lang, options)}`}
                                 >
-                                    Updated: {frontmatter.updatedDate.toLocaleDateString("en-US", options)}
+                                    Updated: {frontmatter.updatedDate.toLocaleDateString(lang, options)}
                                 </span>
                             </time>
                         ) : (
                             <time datetime={frontmatter.pubDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`Publication date:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
-                                    data-pagefind-meta={`pubDate:${frontmatter.pubDate.toLocaleDateString("en-US", options)}`}
+                                    data-pagefind-filter={`Publication date:${frontmatter.pubDate.toLocaleDateString(lang, options)}`}
+                                    data-pagefind-meta={`pubDate:${frontmatter.pubDate.toLocaleDateString(lang, options)}`}
                                 >
-                                    {frontmatter.pubDate.toLocaleDateString("en-US", options)}
+                                    {frontmatter.pubDate.toLocaleDateString(lang, options)}
                                 </span>
                             </time>
                         )
@@ -105,11 +108,18 @@ const blogJsonLd = {
                 <h2 class="widget-title">Related posts</h2>
                 <div class="related-list">
                     {
-                        relatedPosts.map((post) => (
-                            <div class="related-item">
-                                <a href={`/posts/${post.id}/`}>{post.data.title}</a>
-                            </div>
-                        ))
+                        relatedPosts.length > 0 ? (
+                            relatedPosts.map((post) => {
+                                const slug = post.id.split("/").slice(1).join("/");
+                                return (
+                                    <div class="related-item">
+                                        <a href={getRelativeLocaleUrl(lang, `posts/${slug}`)}>{post.data.title}</a>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <p>Nothing to show.</p>
+                        )
                     }
                 </div>
             </div>
@@ -124,11 +134,18 @@ const blogJsonLd = {
                 <h2 class="widget-title">Related posts</h2>
                 <div class="related-list">
                     {
-                        relatedPosts.map((post) => (
-                            <div class="related-item">
-                                <a href={`/posts/${post.id}/`}>{post.data.title}</a>
-                            </div>
-                        ))
+                        relatedPosts.length > 0 ? (
+                            relatedPosts.map((post) => {
+                                const slug = post.id.split("/").slice(1).join("/");
+                                return (
+                                    <div class="related-item">
+                                        <a href={getRelativeLocaleUrl(lang, `posts/${slug}`)}>{post.data.title}</a>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <p>Nothing to show.</p>
+                        )
                     }
                 </div>
             </div>
@@ -206,6 +223,12 @@ const blogJsonLd = {
         margin: 0;
         font-size: 1rem;
         font-weight: 600;
+    }
+
+    .related-list p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
     }
 
     .author,

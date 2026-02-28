@@ -19,7 +19,7 @@ const t = useTranslations(lang);
         <h3 class="card-title">{frontmatter.title}</h3>
         <time datetime={frontmatter.pubDate.toISOString()} class="card-date" data-pagefind-meta="date">
             <Calendar class="icon-sm" />
-            <span>{frontmatter.pubDate.toLocaleDateString("en-US", options)}</span>
+            <span>{frontmatter.pubDate.toLocaleDateString(lang, options)}</span>
         </time>
         <p class="card-summary">{frontmatter.summary}</p>
     </div>

@@ -12,6 +12,13 @@ import mdx from "@astrojs/mdx";
 
 export default defineConfig({
   site: "https://echocode.dev",
+  i18n: {
+    locales: ["es", "en"],
+    defaultLocale: "en",
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
   image: {
     layout: "constrained",
     responsiveStyles: true,
