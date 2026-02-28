@@ -1,0 +1,27 @@
+---
+title: Mastering TypeScript Generics
+pubDate: 2026-02-28
+summary: A deep dive into creating reusable, type-safe components in TypeScript.
+author: Alex Rivers
+cover: "https://images.unsplash.com/photo-1516116216624-53e697fedbea"
+coverAlt: A laptop screen showing complex code.
+tags: ["typescript", "programming", "webdev"]
+---
+
+# Why Generics Matter
+
+Generics allow us to create components that work over a variety of types rather than a single one. This provides **type safety** without sacrificing flexibility.
+
+### Key Concepts
+* **Type Variables**: Using `<T>` to capture types.
+* **Constraints**: Restricting types using the `extends` keyword.
+
+> "Generics are to types what variables are to values."
+
+### Example Code
+Here is how you might define a simple identity function:
+
+```typescript
+function identity<T>(arg: T): T {
+  return arg;
+}
