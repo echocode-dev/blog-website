@@ -10,7 +10,7 @@ const t = useTranslations(lang);
     <div class="logo-button-container">
         <LogoButton height={50} />
     </div>
-    <h4>{t("footer.copyright")}</h4>
+    <h4 class="footer-copyright">{t("footer.copyright")}</h4>
 </footer>
 
 <style>
@@ -27,5 +27,9 @@ const t = useTranslations(lang);
     .logo-button-container {
         margin-top: 2rem;
         opacity: 0.4;
+    }
+
+    .footer-copyright {
+        text-align: center;
     }
 </style>
