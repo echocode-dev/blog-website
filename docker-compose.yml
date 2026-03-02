@@ -7,4 +7,18 @@ services:
     container_name: echocode-container
     ports:
       - "80:8080"
+      - "443:8443"
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt:ro
+    restart: unless-stopped
+
+  certbot:
+    build:
+      context: .
+      dockerfile: Dockerfile.certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./porkbun.ini:/credentials.ini
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     restart: unless-stopped
