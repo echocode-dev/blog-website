@@ -42,8 +42,7 @@ const searchUrl = getAbsoluteLocaleUrl(lang, "search");
 
 <script>
     class SearchBox extends HTMLElement {
-        constructor() {
-            super();
+        connectedCallback() {
             const form = this.querySelector("form");
             const input = this.querySelector("input");
             const button = this.querySelector("button");

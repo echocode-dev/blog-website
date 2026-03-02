@@ -11,7 +11,6 @@ export async function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const homeUrl = getAbsoluteLocaleUrl(lang, "");
 ---
 
 <BaseLayout pageTitle={t("page.search.title")} description={t("page.search.desc")} image={pageHeaderBackground}>
@@ -70,39 +69,36 @@ const homeUrl = getAbsoluteLocaleUrl(lang, "");
 </template>
 
 <script is:inline>
-    const mainContainer = document.getElementById("search-main");
-    const homeUrl = mainContainer ? mainContainer.getAttribute("data-home-url") : "/";
-
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q") || "";
-
-    const activeFilters = {};
-
-    for (const [key, value] of params.entries()) {
-        if (key.startsWith("filter_")) {
-            const category = key.replace("filter_", "");
-            activeFilters[category] = value.split(",");
-        }
-    }
-
-    const hasFilters = Object.keys(activeFilters).length > 0;
-
-    if (!query && !hasFilters) {
-        window.location.replace(homeUrl);
-        return;
-    }
-
-    const resultsContainer = document.querySelector("#search-results");
-    if (!resultsContainer) return;
-
-    if (query) {
-        document.querySelectorAll('input[name="q"]').forEach((input) => {
-            input.value = query;
-        });
-    }
-
     async function runSearch() {
         try {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get("q") || "";
+
+            const activeFilters = {};
+
+            for (const [key, value] of params.entries()) {
+                if (key.startsWith("filter_")) {
+                    const category = key.replace("filter_", "");
+                    activeFilters[category] = value.split(",");
+                }
+            }
+
+            const hasFilters = Object.keys(activeFilters).length > 0;
+
+            if (!query && !hasFilters) {
+                window.location.replace("/");
+                return;
+            }
+
+            const resultsContainer = document.querySelector("#search-results");
+            if (!resultsContainer) return;
+
+            if (query) {
+                document.querySelectorAll('input[name="q"]').forEach((input) => {
+                    input.value = query;
+                });
+            }
+
             // @ts-ignore
             const pagefind = await import("/pagefind/pagefind.js");
             await pagefind.init();
@@ -113,10 +109,16 @@ const homeUrl = getAbsoluteLocaleUrl(lang, "");
 
             if (search.results.length === 0) {
                 if (query) {
+                    if (Object.keys(activeFilters).length > 0) {
+                        resultsContainer.innerHTML = `<h4>No posts found for "${query}" with filters applied.</h4>`;
+                        return;
+                    }
+
                     resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
                 } else {
                     resultsContainer.innerHTML = `<h4>No posts match the selected filters.</h4>`;
                 }
+
                 return;
             }
 
