@@ -20,6 +20,7 @@ export const ui = {
     "btn.label.menu": "Open menu",
     "btn.label.search": "Search",
     "btn.label.theme": "Toggle theme",
+    "btn.label.langs": "Languages",
     "logo.alt": `${siteTitle}'s logo`,
 
     "page.home.title": "Home",
@@ -48,6 +49,7 @@ export const ui = {
     "btn.label.menu": "Abrir menú",
     "btn.label.search": "Buscar",
     "btn.label.theme": "Alternar tema",
+    "btn.label.langs": "Idiomas",
     "logo.alt": `Logo de ${siteTitle}`,
 
     "page.home.title": "Inicio",

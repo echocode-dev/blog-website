@@ -1,4 +1,13 @@
-<meta http-equiv="refresh" content="0;url=/en/" />
+---
+import { defaultLang } from "../i18n/ui";
+---
+
+<script is:inline define:vars={{ defaultLang }}>
+    const storedLang = localStorage.getItem("lang") || defaultLang;
+
+    window.location.replace(`/${storedLang}/`);
+</script>
+
 <body></body>
 
 <style>

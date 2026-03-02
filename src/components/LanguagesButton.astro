@@ -1,0 +1,163 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { languages } from "../i18n/ui";
+import { Languages, ChevronDown } from "@lucide/astro";
+import { getAbsoluteLocaleUrl } from "astro:i18n";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const prettyLang = languages[lang];
+const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
+---
+
+<div class="langs-dropdown js-langs-dropdown">
+    <button class="langs-btn js-langs-btn" aria-label={t("btn.label.langs")}>
+        <Languages />
+        <label class="langs-label">{prettyLang}</label>
+        <ChevronDown class="langs-chevron js-langs-chevron" />
+    </button>
+
+    <div class="langs-dropdown-content js-langs-dropdown-content">
+        {
+            Object.entries(languages).map(([lang, label]) => (
+                <a class="langs-dropdown-item" data-lang={lang} href={getAbsoluteLocaleUrl(lang, currentPath)}>
+                    {label}
+                </a>
+            ))
+        }
+    </div>
+</div>
+
+<style>
+    .langs-dropdown {
+        display: inline-block;
+        position: relative;
+        width: 140px;
+    }
+
+    .langs-btn {
+        background: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid black;
+        box-shadow: 0px 0px 5px black;
+        color: var(--text-navbar);
+        border-radius: 32px;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        width: 100%;
+    }
+
+    .langs-label {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .langs-chevron {
+        transition: transform 0.3s ease;
+        transform: rotate(0deg);
+    }
+
+    .langs-chevron.active {
+        transition: transform 0.3s ease;
+        transform: rotate(-180deg);
+    }
+
+    .langs-dropdown-content {
+        z-index: 100;
+        visibility: hidden;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg-navbar);
+        width: 100%;
+        margin-top: 0.5rem;
+        border-radius: 10px;
+        border: 1px solid black;
+        box-shadow: 0px 0px 5px black;
+        opacity: 0;
+        transition:
+            opacity 0.3s ease,
+            visibility 0s linear 0.3s;
+    }
+
+    .langs-dropdown-content.active {
+        visibility: visible;
+        opacity: 1;
+        transition:
+            opacity 0.3s ease,
+            visibility 0s linear 0s;
+    }
+
+    .langs-dropdown-item {
+        text-decoration: none;
+        font-style: normal;
+        transition: opacity 0.3s ease;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+    }
+
+    @media (hover: hover) {
+        .langs-btn:hover {
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .langs-dropdown-item:hover {
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("click", (event) => {
+        const langOption = event.target.closest("[data-lang]");
+
+        if (langOption) {
+            localStorage.setItem("lang", langOption.dataset.lang);
+        }
+
+        const clickedBtn = event.target.closest(".js-langs-btn");
+
+        if (clickedBtn) {
+            const currentContainer = clickedBtn.closest(".js-langs-dropdown");
+            const currentDropdown = currentContainer.querySelector(".js-langs-dropdown-content");
+            const currentChevron = currentContainer.querySelector(".js-langs-chevron");
+
+            document.querySelectorAll(".js-langs-dropdown-content.active").forEach((menu) => {
+                if (menu !== currentDropdown) {
+                    menu.classList.remove("active");
+                }
+            });
+
+            document.querySelectorAll(".js-langs-chevron.active").forEach((icon) => {
+                if (icon !== currentChevron) {
+                    icon.classList.remove("active");
+                }
+            });
+
+            currentDropdown?.classList.toggle("active");
+            currentChevron?.classList.toggle("active");
+
+            return;
+        }
+
+        const clickedInsideAnyDropdown = event.target.closest(".js-langs-dropdown");
+
+        if (!clickedInsideAnyDropdown) {
+            document.querySelectorAll(".js-langs-dropdown-content.active").forEach((menu) => {
+                menu.classList.remove("active");
+            });
+
+            document.querySelectorAll(".js-langs-chevron.active").forEach((icon) => {
+                icon.classList.remove("active");
+            });
+        }
+    });
+</script>

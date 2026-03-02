@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getAbsoluteLocaleUrl } from "astro:i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import BlogPostCard from "../../components/BlogPostCard.astro";
@@ -36,7 +36,7 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
                     sortedPosts.map((post) => {
                         const slug = post.id.split("/").slice(1).join("/");
                         return (
-                            <BlogPostCard frontmatter={post.data} url={getRelativeLocaleUrl(lang, `posts/${slug}`)} />
+                            <BlogPostCard frontmatter={post.data} url={getAbsoluteLocaleUrl(lang, `posts/${slug}`)} />
                         );
                     })
                 }
