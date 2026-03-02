@@ -1,5 +1,15 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const filterTranslations = {
+    category: t("label.filter.category"),
+    author: t("label.filter.author"),
+    pubDate: t("label.filter.pubDate"),
+    updatedDate: t("label.filter.updatedDate"),
+};
 ---
 
 <div id="filters-container" class="filters-container">
@@ -150,7 +160,7 @@
     }
 </style>
 
-<script is:inline>
+<script is:inline define:vars={{ filterTranslations }}>
     const filtersContainer = document.getElementById("filters-container");
 
     const toggleButton = document.getElementById("filters-btn");
@@ -182,7 +192,9 @@
         for (const type in filters) {
             const groupClone = groupTemplate.content.cloneNode(true);
 
-            groupClone.querySelector(".filter-name").textContent = type;
+            const localizedName = filterTranslations[type] || type;
+
+            groupClone.querySelector(".filter-name").textContent = localizedName;
 
             const optionsContainer = groupClone.querySelector(".filter-options");
 

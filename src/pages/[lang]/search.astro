@@ -14,7 +14,14 @@ const t = useTranslations(lang);
 ---
 
 <BaseLayout pageTitle={t("page.search.title")} description={t("page.search.desc")} image={pageHeaderBackground}>
-    <main class="container">
+    <main
+        id="search-main"
+        class="container"
+        data-msg-query-filters={t("page.search.empty.queryFilters")}
+        data-msg-query={t("page.search.empty.query")}
+        data-msg-filters={t("page.search.empty.filters")}
+        data-msg-error={t("page.search.error")}
+    >
         <Hero />
 
         <section class="recents">
@@ -67,94 +74,6 @@ const t = useTranslations(lang);
         </div>
     </a>
 </template>
-
-<script is:inline>
-    async function runSearch() {
-        try {
-            const params = new URLSearchParams(window.location.search);
-            const query = params.get("q") || "";
-
-            const activeFilters = {};
-
-            for (const [key, value] of params.entries()) {
-                if (key.startsWith("filter_")) {
-                    const category = key.replace("filter_", "");
-                    activeFilters[category] = value.split(",");
-                }
-            }
-
-            const hasFilters = Object.keys(activeFilters).length > 0;
-
-            if (!query && !hasFilters) {
-                window.location.replace("/");
-                return;
-            }
-
-            const resultsContainer = document.querySelector("#search-results");
-            if (!resultsContainer) return;
-
-            if (query) {
-                document.querySelectorAll('input[name="q"]').forEach((input) => {
-                    input.value = query;
-                });
-            }
-
-            // @ts-ignore
-            const pagefind = await import("/pagefind/pagefind.js");
-            await pagefind.init();
-
-            const searchQuery = query.trim() === "" ? null : query;
-
-            const search = await pagefind.search(searchQuery, { filters: activeFilters });
-
-            if (search.results.length === 0) {
-                if (query) {
-                    if (Object.keys(activeFilters).length > 0) {
-                        resultsContainer.innerHTML = `<h4>No posts found for "${query}" with filters applied.</h4>`;
-                        return;
-                    }
-
-                    resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
-                } else {
-                    resultsContainer.innerHTML = `<h4>No posts match the selected filters.</h4>`;
-                }
-
-                return;
-            }
-
-            const resultsData = await Promise.all(search.results.map((r) => r.data()));
-
-            const fragment = document.createDocumentFragment();
-            const template = document.getElementById("search-card-template");
-
-            if (!template) {
-                console.error("Search template not found");
-                return;
-            }
-
-            for (const data of resultsData) {
-                const clone = template.content.cloneNode(true);
-
-                clone.querySelector(".card").href = data.url;
-                clone.querySelector(".card-title").textContent = data.meta.title;
-
-                clone.querySelector(".card-summary").innerHTML = data.excerpt;
-
-                clone.querySelector(".date-text").textContent = data.meta.pubDate || "Unknown Date";
-
-                fragment.appendChild(clone);
-            }
-
-            resultsContainer.innerHTML = "";
-            resultsContainer.appendChild(fragment);
-        } catch (error) {
-            console.error("Pagefind failed:", error);
-            resultsContainer.innerHTML = `<h4>Search is currently unavailable.</h4>`;
-        }
-    }
-
-    runSearch();
-</script>
 
 <style>
     :global(.card-summary mark) {
@@ -300,3 +219,98 @@ const t = useTranslations(lang);
         }
     }
 </style>
+
+<script is:inline>
+    const mainContainer = document.getElementById("search-main");
+
+    const msgQueryFilters = mainContainer ? mainContainer.getAttribute("data-msg-query-filters") : "";
+    const msgQuery = mainContainer ? mainContainer.getAttribute("data-msg-query") : "";
+    const msgFilters = mainContainer ? mainContainer.getAttribute("data-msg-filters") : "";
+    const msgError = mainContainer ? mainContainer.getAttribute("data-msg-error") : "";
+
+    async function runSearch() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get("q") || "";
+
+            const activeFilters = {};
+
+            for (const [key, value] of params.entries()) {
+                if (key.startsWith("filter_")) {
+                    const category = key.replace("filter_", "");
+                    activeFilters[category] = value.split(",");
+                }
+            }
+
+            const hasFilters = Object.keys(activeFilters).length > 0;
+
+            if (!query && !hasFilters) {
+                window.location.replace("/");
+                return;
+            }
+
+            const resultsContainer = document.querySelector("#search-results");
+            if (!resultsContainer) return;
+
+            if (query) {
+                document.querySelectorAll('input[name="q"]').forEach((input) => {
+                    input.value = query;
+                });
+            }
+
+            // @ts-ignore
+            const pagefind = await import("/pagefind/pagefind.js");
+            await pagefind.init();
+
+            const searchQuery = query.trim() === "" ? null : query;
+
+            const search = await pagefind.search(searchQuery, { filters: activeFilters });
+
+            if (search.results.length === 0) {
+                if (query) {
+                    if (Object.keys(activeFilters).length > 0) {
+                        resultsContainer.innerHTML = `<h4>${msgQueryFilters.replace("{query}", query)}</h4>`;
+                        return;
+                    }
+
+                    resultsContainer.innerHTML = `<h4>${msgQuery.replace("{query}", query)}</h4>`;
+                } else {
+                    resultsContainer.innerHTML = `<h4>${msgFilters}</h4>`;
+                }
+
+                return;
+            }
+
+            const resultsData = await Promise.all(search.results.map((r) => r.data()));
+
+            const fragment = document.createDocumentFragment();
+            const template = document.getElementById("search-card-template");
+
+            if (!template) {
+                console.error("Search template not found");
+                return;
+            }
+
+            for (const data of resultsData) {
+                const clone = template.content.cloneNode(true);
+
+                clone.querySelector(".card").href = data.url;
+                clone.querySelector(".card-title").textContent = data.meta.title;
+
+                clone.querySelector(".card-summary").innerHTML = data.excerpt;
+
+                clone.querySelector(".date-text").textContent = data.meta.pubDate || "Unknown Date";
+
+                fragment.appendChild(clone);
+            }
+
+            resultsContainer.innerHTML = "";
+            resultsContainer.appendChild(fragment);
+        } catch (error) {
+            console.error("Pagefind failed:", error);
+            resultsContainer.innerHTML = `<h4>${msgError}</h4>`;
+        }
+    }
+
+    runSearch();
+</script>

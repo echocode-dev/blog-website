@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl } from "../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { getAbsoluteLocaleUrl } from "astro:i18n";
 import { getCollection } from "astro:content";
 import TOC from "../components/TOC.astro";
@@ -10,6 +10,7 @@ import ResponsiveImage from "../components/ResponsiveImage.astro";
 
 const { id, frontmatter, headings } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
 
@@ -42,7 +43,7 @@ const blogJsonLd = {
         {
             headings && headings.length > 0 && (
                 <nav class="toc-desktop">
-                    <h2 class="widget-title">Table of Content</h2>
+                    <h2 class="widget-title">{t("widget.toc.title")}</h2>
                     <TOC headings={headings} />
                 </nav>
             )
@@ -51,7 +52,7 @@ const blogJsonLd = {
         <div class="content-wrapper" data-pagefind-body>
             <header>
                 <div class="category">
-                    <span data-pagefind-filter="Category">{frontmatter.category}</span>
+                    <span data-pagefind-filter="category">{frontmatter.category}</span>
                 </div>
 
                 <h1>{frontmatter.title}</h1>
@@ -59,24 +60,24 @@ const blogJsonLd = {
                 <div class="meta-info">
                     <address class="author">
                         <CircleUserRound class="icon" />
-                        <span data-pagefind-filter="Author">{frontmatter.author}</span>
+                        <span data-pagefind-filter="author">{frontmatter.author}</span>
                     </address>
                     {
                         frontmatter.updatedDate ? (
                             <time datetime={frontmatter.updatedDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`Updated date:${frontmatter.updatedDate.toLocaleDateString(lang, options)}`}
+                                    data-pagefind-filter={`updatedDate:${frontmatter.updatedDate.toLocaleDateString(lang, options)}`}
                                     data-pagefind-meta={`updatedDate:${frontmatter.updatedDate.toLocaleDateString(lang, options)}`}
                                 >
-                                    Updated: {frontmatter.updatedDate.toLocaleDateString(lang, options)}
+                                    {t("label.updated")}: {frontmatter.updatedDate.toLocaleDateString(lang, options)}
                                 </span>
                             </time>
                         ) : (
                             <time datetime={frontmatter.pubDate.toISOString()} class="date">
                                 <Calendar class="icon" />
                                 <span
-                                    data-pagefind-filter={`Publication date:${frontmatter.pubDate.toLocaleDateString(lang, options)}`}
+                                    data-pagefind-filter={`pubDate:${frontmatter.pubDate.toLocaleDateString(lang, options)}`}
                                     data-pagefind-meta={`pubDate:${frontmatter.pubDate.toLocaleDateString(lang, options)}`}
                                 >
                                     {frontmatter.pubDate.toLocaleDateString(lang, options)}
@@ -93,7 +94,7 @@ const blogJsonLd = {
                 {
                     headings && headings.length > 0 && (
                         <nav class="toc-mobile">
-                            <h2 class="widget-title">Table of Content</h2>
+                            <h2 class="widget-title">{t("widget.toc.title")}</h2>
                             <TOC headings={headings} />
                         </nav>
                     )
@@ -110,7 +111,7 @@ const blogJsonLd = {
 
         <aside class="sidebar">
             <div class="related-widget">
-                <h2 class="widget-title">Related posts</h2>
+                <h2 class="widget-title">{t("widget.related.title")}</h2>
                 <div class="related-list">
                     {
                         relatedPosts.length > 0 ? (
@@ -123,7 +124,7 @@ const blogJsonLd = {
                                 );
                             })
                         ) : (
-                            <p>Nothing to show.</p>
+                            <p>{t("widget.related.none")}</p>
                         )
                     }
                 </div>
@@ -136,7 +137,7 @@ const blogJsonLd = {
 
         <div id="mobile-related-content-source" style="display: none;">
             <div class="mobile-related-wrapper">
-                <h2 class="widget-title">Related posts</h2>
+                <h2 class="widget-title">{t("widget.related.title")}</h2>
                 <div class="related-list">
                     {
                         relatedPosts.length > 0 ? (
@@ -149,7 +150,7 @@ const blogJsonLd = {
                                 );
                             })
                         ) : (
-                            <p>Nothing to show.</p>
+                            <p>{t("widget.related.none")}</p>
                         )
                     }
                 </div>
