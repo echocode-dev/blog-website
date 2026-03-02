@@ -11,7 +11,7 @@ import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 
 export default defineConfig({
-  site: "http://localhost:4321",
+  site: "https://echocode.dev",
   i18n: {
     locales: ["es", "en"],
     defaultLocale: "en",
