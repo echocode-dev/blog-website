@@ -50,11 +50,16 @@ const blogJsonLd = {
 
         <div class="content-wrapper" data-pagefind-body>
             <header>
+                <div class="category">
+                    <span data-pagefind-filter="Category">{frontmatter.category}</span>
+                </div>
+
                 <h1>{frontmatter.title}</h1>
+
                 <div class="meta-info">
                     <address class="author">
                         <CircleUserRound class="icon" />
-                        <span data-pagefind-filter="author">{frontmatter.author}</span>
+                        <span data-pagefind-filter="Author">{frontmatter.author}</span>
                     </address>
                     {
                         frontmatter.updatedDate ? (
@@ -202,6 +207,17 @@ const blogJsonLd = {
         background-color: var(--bg-content);
         font-size: 1.1rem;
         height: fit-content;
+    }
+
+    .category {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        font-weight: 700;
+        background-color: var(--bg-page);
+        border-radius: 10px;
+        width: fit-content;
+        padding: 0.5rem;
     }
 
     .content-wrapper header,
