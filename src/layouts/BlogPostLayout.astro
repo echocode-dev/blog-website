@@ -41,7 +41,7 @@ const blogJsonLd = {
 
     <main class="post-layout" data-pagefind-body>
         {
-            headings && headings.length > 0 && (
+            headings && headings.length > 1 && (
                 <nav class="toc-desktop">
                     <h2 class="widget-title">{t("widget.toc.title")}</h2>
                     <TOC headings={headings} />
@@ -92,7 +92,7 @@ const blogJsonLd = {
 
             <div class="mobile-only-blocks">
                 {
-                    headings && headings.length > 0 && (
+                    headings && headings.length > 1 && (
                         <nav class="toc-mobile">
                             <h2 class="widget-title">{t("widget.toc.title")}</h2>
                             <TOC headings={headings} />
