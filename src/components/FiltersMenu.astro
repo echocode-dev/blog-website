@@ -151,68 +151,66 @@
 </style>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
+    const filtersContainer = document.getElementById("filters-container");
+
+    const toggleButton = document.getElementById("filters-btn");
+
+    document.addEventListener("click", (event) => {
+        if (!filtersContainer) return;
+
+        const isMenuOpen = filtersContainer.classList.contains("active");
+
+        const clickedOutsideContainer = !filtersContainer.contains(event.target);
+        const clickedOutsideButton = toggleButton ? !toggleButton.contains(event.target) : true;
+
+        if (isMenuOpen && clickedOutsideContainer && clickedOutsideButton) {
+            filtersContainer.classList.remove("active");
+        }
+    });
+
+    async function showFilters() {
         const filtersContainer = document.getElementById("filters-container");
+        const groupTemplate = document.getElementById("filter-group-template");
+        const checkboxTemplate = document.getElementById("filter-checkbox-template");
 
-        const toggleButton = document.getElementById("filters-btn");
+        if (!filtersContainer || !groupTemplate || !checkboxTemplate) return;
 
-        document.addEventListener("click", (event) => {
-            if (!filtersContainer) return;
+        // @ts-ignore
+        const pagefind = await import("/pagefind/pagefind.js");
+        const filters = await pagefind.filters();
 
-            const isMenuOpen = filtersContainer.classList.contains("active");
+        for (const type in filters) {
+            const groupClone = groupTemplate.content.cloneNode(true);
 
-            const clickedOutsideContainer = !filtersContainer.contains(event.target);
-            const clickedOutsideButton = toggleButton ? !toggleButton.contains(event.target) : true;
+            groupClone.querySelector(".filter-name").textContent = type;
 
-            if (isMenuOpen && clickedOutsideContainer && clickedOutsideButton) {
-                filtersContainer.classList.remove("active");
-            }
-        });
+            const optionsContainer = groupClone.querySelector(".filter-options");
 
-        async function showFilters() {
-            const filtersContainer = document.getElementById("filters-container");
-            const groupTemplate = document.getElementById("filter-group-template");
-            const checkboxTemplate = document.getElementById("filter-checkbox-template");
+            const options = filters[type];
 
-            if (!filtersContainer || !groupTemplate || !checkboxTemplate) return;
+            for (const option in options) {
+                const checkboxClone = checkboxTemplate.content.cloneNode(true);
 
-            // @ts-ignore
-            const pagefind = await import("/pagefind/pagefind.js");
-            const filters = await pagefind.filters();
+                const input = checkboxClone.querySelector("input");
+                input.value = option;
+                input.dataset.category = type;
 
-            for (const type in filters) {
-                const groupClone = groupTemplate.content.cloneNode(true);
+                const currentParams = new URLSearchParams(window.location.search);
+                const activeValuesInUrl = currentParams.get(`filter_${type}`)?.split(",") || [];
 
-                groupClone.querySelector(".filter-name").textContent = type;
-
-                const optionsContainer = groupClone.querySelector(".filter-options");
-
-                const options = filters[type];
-
-                for (const option in options) {
-                    const checkboxClone = checkboxTemplate.content.cloneNode(true);
-
-                    const input = checkboxClone.querySelector("input");
-                    input.value = option;
-                    input.dataset.category = type;
-
-                    const currentParams = new URLSearchParams(window.location.search);
-                    const activeValuesInUrl = currentParams.get(`filter_${type}`)?.split(",") || [];
-
-                    if (activeValuesInUrl.includes(option)) {
-                        input.checked = true;
-                    }
-
-                    checkboxClone.querySelector(".option-name").textContent = option;
-                    checkboxClone.querySelector(".option-count").textContent = `(${options[option]})`;
-
-                    optionsContainer.appendChild(checkboxClone);
+                if (activeValuesInUrl.includes(option)) {
+                    input.checked = true;
                 }
 
-                filtersContainer.appendChild(groupClone);
-            }
-        }
+                checkboxClone.querySelector(".option-name").textContent = option;
+                checkboxClone.querySelector(".option-count").textContent = `(${options[option]})`;
 
-        showFilters();
-    });
+                optionsContainer.appendChild(checkboxClone);
+            }
+
+            filtersContainer.appendChild(groupClone);
+        }
+    }
+
+    showFilters();
 </script>

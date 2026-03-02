@@ -22,17 +22,15 @@ const t = useTranslations(lang);
 </style>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
-        const openBtn = document.getElementById("open-menu");
-        const closeBtn = document.getElementById("close-menu");
-        const sideMenu = document.getElementById("side-menu");
+    const openBtn = document.getElementById("open-menu");
+    const closeBtn = document.getElementById("close-menu");
+    const sideMenu = document.getElementById("side-menu");
 
-        openBtn?.addEventListener("click", () => {
-            sideMenu?.classList.add("active");
-        });
+    openBtn?.addEventListener("click", () => {
+        sideMenu?.classList.add("active");
+    });
 
-        closeBtn?.addEventListener("click", () => {
-            sideMenu?.classList.remove("active");
-        });
+    closeBtn?.addEventListener("click", () => {
+        sideMenu?.classList.remove("active");
     });
 </script>

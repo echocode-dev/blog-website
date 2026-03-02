@@ -59,17 +59,15 @@ const t = useTranslations(lang);
 </style>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-        const themeButton = document.getElementById("themeToggle");
+    const themeButton = document.getElementById("themeToggle");
 
-        const handleToggleClick = () => {
-            const element = document.documentElement;
-            const isDark = element.attributes.getNamedItem("data-theme")?.value == "dark";
-            const nextTheme = isDark ? "light" : "dark";
+    const handleToggleClick = () => {
+        const element = document.documentElement;
+        const isDark = element.attributes.getNamedItem("data-theme")?.value == "dark";
+        const nextTheme = isDark ? "light" : "dark";
 
-            document.dispatchEvent(new CustomEvent("set-theme", { detail: nextTheme }));
-        };
+        document.dispatchEvent(new CustomEvent("set-theme", { detail: nextTheme }));
+    };
 
-        themeButton?.addEventListener("click", handleToggleClick);
-    });
+    themeButton?.addEventListener("click", handleToggleClick);
 </script>

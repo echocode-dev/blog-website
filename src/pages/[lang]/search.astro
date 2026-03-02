@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getAbsoluteLocaleUrl } from "astro:i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import pageHeaderBackground from "../../assets/code.jpg";
@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const homeUrl = getRelativeLocaleUrl(lang, "");
+const homeUrl = getAbsoluteLocaleUrl(lang, "");
 ---
 
 <BaseLayout pageTitle={t("page.search.title")} description={t("page.search.desc")} image={pageHeaderBackground}>
@@ -70,90 +70,88 @@ const homeUrl = getRelativeLocaleUrl(lang, "");
 </template>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-        const mainContainer = document.getElementById("search-main");
-        const homeUrl = mainContainer ? mainContainer.getAttribute("data-home-url") : "/";
+    const mainContainer = document.getElementById("search-main");
+    const homeUrl = mainContainer ? mainContainer.getAttribute("data-home-url") : "/";
 
-        const params = new URLSearchParams(window.location.search);
-        const query = params.get("q") || "";
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q") || "";
 
-        const activeFilters = {};
+    const activeFilters = {};
 
-        for (const [key, value] of params.entries()) {
-            if (key.startsWith("filter_")) {
-                const category = key.replace("filter_", "");
-                activeFilters[category] = value.split(",");
+    for (const [key, value] of params.entries()) {
+        if (key.startsWith("filter_")) {
+            const category = key.replace("filter_", "");
+            activeFilters[category] = value.split(",");
+        }
+    }
+
+    const hasFilters = Object.keys(activeFilters).length > 0;
+
+    if (!query && !hasFilters) {
+        window.location.replace(homeUrl);
+        return;
+    }
+
+    const resultsContainer = document.querySelector("#search-results");
+    if (!resultsContainer) return;
+
+    if (query) {
+        document.querySelectorAll('input[name="q"]').forEach((input) => {
+            input.value = query;
+        });
+    }
+
+    async function runSearch() {
+        try {
+            // @ts-ignore
+            const pagefind = await import("/pagefind/pagefind.js");
+            await pagefind.init();
+
+            const searchQuery = query.trim() === "" ? null : query;
+
+            const search = await pagefind.search(searchQuery, { filters: activeFilters });
+
+            if (search.results.length === 0) {
+                if (query) {
+                    resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
+                } else {
+                    resultsContainer.innerHTML = `<h4>No posts match the selected filters.</h4>`;
+                }
+                return;
             }
-        }
 
-        const hasFilters = Object.keys(activeFilters).length > 0;
+            const resultsData = await Promise.all(search.results.map((r) => r.data()));
 
-        if (!query && !hasFilters) {
-            window.location.replace(homeUrl);
-            return;
-        }
+            const fragment = document.createDocumentFragment();
+            const template = document.getElementById("search-card-template");
 
-        const resultsContainer = document.querySelector("#search-results");
-        if (!resultsContainer) return;
-
-        if (query) {
-            document.querySelectorAll('input[name="q"]').forEach((input) => {
-                input.value = query;
-            });
-        }
-
-        async function runSearch() {
-            try {
-                // @ts-ignore
-                const pagefind = await import("/pagefind/pagefind.js");
-                await pagefind.init();
-
-                const searchQuery = query.trim() === "" ? null : query;
-
-                const search = await pagefind.search(searchQuery, { filters: activeFilters });
-
-                if (search.results.length === 0) {
-                    if (query) {
-                        resultsContainer.innerHTML = `<h4>No posts found for "${query}".</h4>`;
-                    } else {
-                        resultsContainer.innerHTML = `<h4>No posts match the selected filters.</h4>`;
-                    }
-                    return;
-                }
-
-                const resultsData = await Promise.all(search.results.map((r) => r.data()));
-
-                const fragment = document.createDocumentFragment();
-                const template = document.getElementById("search-card-template");
-
-                if (!template) {
-                    console.error("Search template not found");
-                    return;
-                }
-
-                for (const data of resultsData) {
-                    const clone = template.content.cloneNode(true);
-
-                    clone.querySelector(".card").href = data.url;
-                    clone.querySelector(".card-title").textContent = data.meta.title;
-
-                    clone.querySelector(".card-summary").innerHTML = data.excerpt;
-
-                    clone.querySelector(".date-text").textContent = data.meta.pubDate || "Unknown Date";
-
-                    fragment.appendChild(clone);
-                }
-
-                resultsContainer.innerHTML = "";
-                resultsContainer.appendChild(fragment);
-            } catch (error) {
-                console.error("Pagefind failed:", error);
-                resultsContainer.innerHTML = `<h4>Search is currently unavailable.</h4>`;
+            if (!template) {
+                console.error("Search template not found");
+                return;
             }
-        }
 
-        runSearch();
-    });
+            for (const data of resultsData) {
+                const clone = template.content.cloneNode(true);
+
+                clone.querySelector(".card").href = data.url;
+                clone.querySelector(".card-title").textContent = data.meta.title;
+
+                clone.querySelector(".card-summary").innerHTML = data.excerpt;
+
+                clone.querySelector(".date-text").textContent = data.meta.pubDate || "Unknown Date";
+
+                fragment.appendChild(clone);
+            }
+
+            resultsContainer.innerHTML = "";
+            resultsContainer.appendChild(fragment);
+        } catch (error) {
+            console.error("Pagefind failed:", error);
+            resultsContainer.innerHTML = `<h4>Search is currently unavailable.</h4>`;
+        }
+    }
+
+    runSearch();
 </script>
 
 <style>

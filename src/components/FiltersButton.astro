@@ -44,12 +44,10 @@ const t = useTranslations(lang);
 </style>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
-        const filtersBtn = document.getElementById("filters-btn");
-        const filtersContainer = document.getElementById("filters-container");
+    const filtersBtn = document.getElementById("filters-btn");
+    const filtersContainer = document.getElementById("filters-container");
 
-        filtersBtn?.addEventListener("click", () => {
-            filtersContainer?.classList.toggle("active");
-        });
+    filtersBtn?.addEventListener("click", () => {
+        filtersContainer?.classList.toggle("active");
     });
 </script>
