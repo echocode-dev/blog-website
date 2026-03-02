@@ -117,18 +117,18 @@ const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
 
 <script>
     document.addEventListener("click", (event) => {
-        const langOption = event.target.closest("[data-lang]");
+        const langOption = (event.target as HTMLElement).closest("[data-lang]");
 
         if (langOption) {
-            localStorage.setItem("lang", langOption.dataset.lang);
+            localStorage.setItem("lang", (langOption as HTMLElement).dataset.lang as string);
         }
 
-        const clickedBtn = event.target.closest(".js-langs-btn");
+        const clickedBtn = (event.target as HTMLElement).closest(".js-langs-btn");
 
         if (clickedBtn) {
             const currentContainer = clickedBtn.closest(".js-langs-dropdown");
-            const currentDropdown = currentContainer.querySelector(".js-langs-dropdown-content");
-            const currentChevron = currentContainer.querySelector(".js-langs-chevron");
+            const currentDropdown = currentContainer?.querySelector(".js-langs-dropdown-content");
+            const currentChevron = currentContainer?.querySelector(".js-langs-chevron");
 
             document.querySelectorAll(".js-langs-dropdown-content.active").forEach((menu) => {
                 if (menu !== currentDropdown) {
@@ -148,7 +148,7 @@ const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
             return;
         }
 
-        const clickedInsideAnyDropdown = event.target.closest(".js-langs-dropdown");
+        const clickedInsideAnyDropdown = (event.target as HTMLElement).closest(".js-langs-dropdown");
 
         if (!clickedInsideAnyDropdown) {
             document.querySelectorAll(".js-langs-dropdown-content.active").forEach((menu) => {
