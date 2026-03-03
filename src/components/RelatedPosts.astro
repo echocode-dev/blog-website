@@ -15,7 +15,9 @@ const { relatedPosts } = Astro.props;
                 const slug = post.id.split("/").slice(1).join("/");
                 return (
                     <li class="related-item">
-                        <a href={getAbsoluteLocaleUrl(lang, `posts/${slug}`)}>{post.data.title}</a>
+                        <a href={getAbsoluteLocaleUrl(lang, `posts/${slug}`)} target="_blank" rel="noopener noreferrer">
+                            {post.data.title}
+                        </a>
                     </li>
                 );
             })
