@@ -5,17 +5,19 @@ import Themes from "astro-themes";
 import Header from "../components/Header.astro";
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
-import { siteTitle } from "../i18n/ui";
+import { languages, defaultLang, siteTitle } from "../i18n/ui";
 
 interface Props {
     pageTitle?: string;
     description: string;
     image?: string | any;
+    alternateLinks?: { lang: string; url: string }[];
 }
 
-const { pageTitle = "", description, image } = Astro.props;
+const { pageTitle = "", description, image, alternateLinks = [] } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const lang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname.replace(`/${lang}/`, "/");
 
 const ogImage = image ? new URL(image.src || image, Astro.url) : null;
 
@@ -45,6 +47,36 @@ const searchJsonLd = {
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalURL} />
         <link rel="sitemap" href="/sitemap-index.xml" />
+
+        {
+            alternateLinks.length > 0
+                ? alternateLinks.map(({ lang, url }) => <link rel="alternate" hreflang={lang} href={url} />)
+                : Object.keys(languages).map((l) => (
+                      <link
+                          rel="alternate"
+                          hreflang={l}
+                          href={new URL(`/${l}${currentPath === "/" ? "" : currentPath}`, Astro.site)}
+                      />
+                  ))
+        }
+
+        {
+            alternateLinks.length > 0 ? (
+                alternateLinks.find((link) => link.lang === defaultLang) && (
+                    <link
+                        rel="alternate"
+                        hreflang="x-default"
+                        href={alternateLinks.find((link) => link.lang === defaultLang)?.url}
+                    />
+                )
+            ) : (
+                <link
+                    rel="alternate"
+                    hreflang="x-default"
+                    href={new URL(`/en${currentPath === "/" ? "" : currentPath}`, Astro.site)}
+                />
+            )
+        }
 
         <meta property="og:url" content={Astro.url.toString()} />
         <meta property="og:type" content="website" />
@@ -79,8 +111,8 @@ const searchJsonLd = {
         <link rel="manifest" href="/site.webmanifest" />
     </head>
     <body>
-        <Header transition:persist />
+        <Header />
         <slot />
-        <Footer transition:persist />
+        <Footer />
     </body>
 </html>

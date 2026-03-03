@@ -18,6 +18,7 @@ const blog = defineCollection({
       cover: z.union([image(), z.string().url()]),
       coverAlt: z.string(),
       tags: z.array(z.string()),
+      translationKey: z.string(),
     }),
 });
 // Register `blog` collection

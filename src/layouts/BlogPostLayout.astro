@@ -12,6 +12,16 @@ const { id, frontmatter, headings } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
+const allTranslations = await getCollection("blog", (post) => post.data.translationKey === frontmatter.translationKey);
+
+const alternateLinks = allTranslations.map((post) => {
+    const postLang = post.id.split("/")[0];
+    const postSlug = post.id.split("/").slice(1).join("/");
+    const url = new URL(getAbsoluteLocaleUrl(postLang, `posts/${postSlug}`), Astro.site).toString();
+
+    return { lang: postLang, url };
+});
+
 const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
 
 const allPosts = await getCollection("blog", ({ id }) => id.startsWith(`${lang}/`));
@@ -36,7 +46,12 @@ const blogJsonLd = {
 };
 ---
 
-<BaseLayout pageTitle={frontmatter.title} description={frontmatter.summary} image={frontmatter.cover}>
+<BaseLayout
+    pageTitle={frontmatter.title}
+    description={frontmatter.summary}
+    image={frontmatter.cover}
+    alternateLinks={alternateLinks}
+>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
 
     <main class="post-layout" data-pagefind-body>

@@ -36,15 +36,7 @@ export default defineConfig({
         },
       },
     }),
-    sitemap({
-      i18n: {
-        defaultLocale: "en",
-        locales: {
-          en: "en",
-          es: "es",
-        },
-      },
-    }),
+    sitemap(),
     mdx(),
   ],
   markdown: {
