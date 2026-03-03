@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BlogPostLayout from "../../../layouts/BlogPostLayout.astro";
+import ExternalLink from "../../../components/ExternalLink.astro";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
@@ -19,5 +20,5 @@ const { Content, headings } = await render(post);
 ---
 
 <BlogPostLayout id={post.id} frontmatter={post.data} headings={headings}>
-    <Content />
+    <Content components={{ a: ExternalLink }} />
 </BlogPostLayout>
