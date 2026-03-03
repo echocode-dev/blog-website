@@ -1,5 +1,11 @@
 ---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { defaultLang } from "../i18n/ui";
+import BaseHead from "../components/BaseHead.astro";
+import pageHeaderBackground from "../assets/code.jpg";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <script is:inline define:vars={{ defaultLang }}>
@@ -7,8 +13,9 @@ import { defaultLang } from "../i18n/ui";
 
     window.location.replace(`/${storedLang}/`);
 </script>
+
 <head>
-    <meta name="robots" content="noindex,nofollow" />
+    <BaseHead pageTitle={t("page.home.title")} description={t("page.home.desc")} image={pageHeaderBackground} />
 </head>
 <body></body>
 
