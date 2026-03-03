@@ -7,6 +7,7 @@ import BaseLayout from "./BaseLayout.astro";
 import { Calendar, CircleUserRound } from "@lucide/astro";
 import { getRelatedPosts } from "../utils/postHelpers";
 import ResponsiveImage from "../components/ResponsiveImage.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
 
 const { id, frontmatter, headings } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -127,22 +128,7 @@ const blogJsonLd = {
         <aside class="sidebar">
             <div class="related-widget">
                 <h2 class="widget-title">{t("widget.related.title")}</h2>
-                <div class="related-list">
-                    {
-                        relatedPosts.length > 0 ? (
-                            relatedPosts.map((post) => {
-                                const slug = post.id.split("/").slice(1).join("/");
-                                return (
-                                    <div class="related-item">
-                                        <a href={getAbsoluteLocaleUrl(lang, `posts/${slug}`)}>{post.data.title}</a>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p>{t("widget.related.none")}</p>
-                        )
-                    }
-                </div>
+                <RelatedPosts relatedPosts={relatedPosts} />
             </div>
 
             <div class="ad-block">
@@ -153,22 +139,7 @@ const blogJsonLd = {
         <div id="mobile-related-content-source" style="display: none;">
             <div class="mobile-related-wrapper">
                 <h2 class="widget-title">{t("widget.related.title")}</h2>
-                <div class="related-list">
-                    {
-                        relatedPosts.length > 0 ? (
-                            relatedPosts.map((post) => {
-                                const slug = post.id.split("/").slice(1).join("/");
-                                return (
-                                    <div class="related-item">
-                                        <a href={getAbsoluteLocaleUrl(lang, `posts/${slug}`)}>{post.data.title}</a>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p>{t("widget.related.none")}</p>
-                        )
-                    }
-                </div>
+                <RelatedPosts relatedPosts={relatedPosts} />
             </div>
         </div>
     </main>
@@ -255,18 +226,16 @@ const blogJsonLd = {
         font-weight: 600;
     }
 
-    .related-list p {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 500;
-    }
-
     .author,
     .date {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-style: normal;
+    }
+
+    .widget-title {
+        margin: 0;
     }
 
     .icon {
@@ -276,10 +245,6 @@ const blogJsonLd = {
 
     .summary {
         font-size: 1.2rem;
-    }
-
-    .widget-title {
-        margin: 0;
     }
 
     .cover-image {
@@ -318,12 +283,6 @@ const blogJsonLd = {
         flex-direction: column;
         gap: 1rem;
         padding: 1.5rem 0.5rem;
-    }
-
-    .related-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
     }
 
     @media screen and (min-width: 1200px) {
