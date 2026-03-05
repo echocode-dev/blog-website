@@ -10,6 +10,8 @@ import sitemap from "@astrojs/sitemap";
 
 import mdx from "@astrojs/mdx";
 
+import playformCompress from "@playform/compress";
+
 export default defineConfig({
   site: "https://echocode.dev",
   i18n: {
@@ -38,7 +40,8 @@ export default defineConfig({
     }),
     sitemap(),
     mdx(),
-  ],
+    playformCompress(),
+  ], // IMPORTANT: playformCompress should always be last!
   markdown: {
     rehypePlugins: [
       rehypeHeadingIds,
