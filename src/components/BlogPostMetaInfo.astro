@@ -1,0 +1,68 @@
+---
+import { Calendar, CircleUserRound } from "@lucide/astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const { author, updatedDate, pubDate } = Astro.props;
+const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="meta-info">
+    <address class="author">
+        <CircleUserRound class="icon" />
+        <span data-pagefind-filter="author">{author}</span>
+    </address>
+    {
+        updatedDate ? (
+            <time datetime={updatedDate.toISOString()} class="date">
+                <Calendar class="icon" />
+                <span
+                    data-pagefind-filter={`updatedDate:${updatedDate}`}
+                    data-pagefind-meta={`updatedDate:${updatedDate}`}
+                >
+                    {t("label.updated")}: {updatedDate.toLocaleDateString(lang, options)}
+                </span>
+            </time>
+        ) : (
+            <time datetime={pubDate.toISOString()} class="date">
+                <Calendar class="icon" />
+                <span
+                    data-pagefind-filter={`pubDate:${pubDate.toLocaleDateString(lang, options)}`}
+                    data-pagefind-meta={`pubDate:${pubDate.toLocaleDateString(lang, options)}`}
+                >
+                    {pubDate.toLocaleDateString(lang, options)}
+                </span>
+            </time>
+        )
+    }
+</div>
+
+<style>
+    .meta-info {
+        display: flex;
+        gap: 1.5rem;
+        color: var(--text-subtle);
+        margin-bottom: 1rem;
+    }
+
+    .meta-info p,
+    .meta-info span {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .author,
+    .date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-style: normal;
+    }
+
+    .icon {
+        width: 24px;
+        height: 24px;
+    }
+</style>

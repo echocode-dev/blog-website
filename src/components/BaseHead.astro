@@ -2,6 +2,7 @@
 import { getLangFromUrl } from "../i18n/utils";
 import Themes from "astro-themes";
 import { languages, defaultLang, siteTitle } from "../i18n/ui";
+import { getSearchJsonLd } from "../utils/helpers";
 
 interface Props {
     pageTitle?: string;
@@ -19,19 +20,7 @@ const ogImage = image ? new URL(image.src || image, Astro.url) : null;
 
 const siteOrigin = Astro.url.origin;
 
-const searchJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: siteTitle,
-    url: siteOrigin,
-    logo: new URL("/favicon.svg", siteOrigin).toString(),
-    sameAs: ["https://github.com/echocode-dev"],
-    potentialAction: {
-        "@type": "SearchAction",
-        target: `${siteOrigin}/search/?q={search_term_string}`,
-        "query-input": "required name=search_term_string",
-    },
-};
+const searchJsonLd = getSearchJsonLd(siteTitle, siteOrigin);
 ---
 
 <meta name="robots" content="noindex,nofollow" />
