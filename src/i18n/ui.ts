@@ -4,7 +4,7 @@ export const languages = {
 };
 
 export const defaultLang = "en";
-export const siteTitle = "Echo Code";
+export const siteName = "Echo Code";
 const year = new Date().getFullYear();
 
 export const ui = {
@@ -13,8 +13,8 @@ export const ui = {
     "nav.recents": "Recents",
     "nav.blog": "Blog",
 
-    "hero.title": `${siteTitle} News`,
-    "footer.copyright": `© ${year} ${siteTitle}. All rights reserved.`,
+    "hero.title": `${siteName} News`,
+    "footer.copyright": `© ${year} ${siteName}. All rights reserved.`,
     "card.footer.readmore": "Read more",
 
     "widget.toc.title": "Table of content",
@@ -34,7 +34,7 @@ export const ui = {
     "btn.label.theme": "Toggle theme",
     "btn.label.langs": "Languages",
 
-    "logo.alt": `${siteTitle}'s logo`,
+    "logo.alt": `${siteName}'s logo`,
 
     "page.home.title": "Home",
     "page.home.desc": "Learn and explore with us the vast development landscape through different eyes!",
@@ -59,8 +59,8 @@ export const ui = {
     "nav.recents": "Reciente",
     "nav.blog": "Blog",
 
-    "hero.title": `Noticias de ${siteTitle}`,
-    "footer.copyright": `© ${year} ${siteTitle}. Todos los derechos reservados.`,
+    "hero.title": `Noticias de ${siteName}`,
+    "footer.copyright": `© ${year} ${siteName}. Todos los derechos reservados.`,
     "card.footer.readmore": "Leer más",
 
     "widget.toc.title": "Tabla de contenido",
@@ -80,7 +80,7 @@ export const ui = {
     "btn.label.theme": "Alternar tema",
     "btn.label.langs": "Idiomas",
 
-    "logo.alt": `Logo de ${siteTitle}`,
+    "logo.alt": `Logo de ${siteName}`,
 
     "page.home.title": "Inicio",
     "page.home.desc":
