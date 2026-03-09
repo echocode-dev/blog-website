@@ -33,6 +33,7 @@ export const ui = {
     "btn.label.search": "Search",
     "btn.label.theme": "Toggle theme",
     "btn.label.langs": "Languages",
+    "btn.label.back-to-top": "Back to top",
 
     "logo.alt": `${siteName}'s logo`,
 
@@ -79,6 +80,7 @@ export const ui = {
     "btn.label.search": "Buscar",
     "btn.label.theme": "Alternar tema",
     "btn.label.langs": "Idiomas",
+    "btn.label.back-to-top": "Volver arriba",
 
     "logo.alt": `Logo de ${siteName}`,
 
