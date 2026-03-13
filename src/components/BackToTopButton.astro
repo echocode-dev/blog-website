@@ -1,0 +1,72 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { ArrowUp } from "@lucide/astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<button id="back-to-top-btn" class="back-to-top-btn" aria-label={t("btn.label.back-to-top")}>
+    <ArrowUp />
+</button>
+
+<style>
+    .back-to-top-btn {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--bg-navbar);
+        border: 1px solid black;
+        box-shadow: 0px 0px 5px black;
+        border-radius: 32px;
+        padding: 0.5rem;
+        position: fixed;
+        right: 2rem;
+        bottom: 2rem;
+        z-index: 90;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0);
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease,
+            pointer-events 0.3s;
+    }
+
+    .back-to-top-btn.active {
+        pointer-events: all;
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    @media (hover: hover) {
+        .back-to-top-btn:hover {
+            opacity: 0.5;
+        }
+    }
+</style>
+
+<script>
+    const backTopBtn = document.getElementById("back-to-top-btn");
+    const header = document.getElementById("header");
+
+    backTopBtn?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    backTopBtn?.classList.add("active");
+                } else {
+                    backTopBtn?.classList.remove("active");
+                }
+            });
+        },
+        {
+            threshold: 0,
+        },
+    );
+
+    if (header) observer.observe(header);
+</script>
