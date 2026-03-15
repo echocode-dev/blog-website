@@ -1,12 +1,8 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import { getRelativeLocaleUrl } from "astro:i18n";
 import CloseButton from "./CloseButton.astro";
 import SearchBox from "./SearchBox.astro";
 import LanguagesButton from "./LanguagesButton.astro";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+import NavLinks from "./NavLinks.astro";
 ---
 
 <aside id="side-menu" class="side-menu">
@@ -19,11 +15,7 @@ const t = useTranslations(lang);
 
         <SearchBox />
 
-        <nav class="nav-links">
-            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "")}>{t("nav.featured")}</a></div>
-            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "#recents")}>{t("nav.recents")}</a></div>
-            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "")}>{t("nav.blog")}</a></div>
-        </nav>
+        <NavLinks />
 
         <div id="mobile-related-posts-target" class="mobile-related-posts-area"></div>
     </div>
@@ -63,27 +55,6 @@ const t = useTranslations(lang);
         transform: translateX(0);
     }
 
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .nav-link {
-        display: flex;
-    }
-
-    .nav-links a {
-        color: var(--text-navbar);
-        text-decoration: none;
-        font-style: normal;
-        font-size: 1.2rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
-        display: block;
-        text-transform: uppercase;
-    }
-
     .mobile-related-posts-area {
         color: var(--text-navbar);
         margin-top: 3rem;
@@ -92,5 +63,11 @@ const t = useTranslations(lang);
         display: flex;
         flex-direction: column;
         gap: 1rem;
+    }
+
+    @media screen and (min-width: 1200px) {
+        .side-menu {
+            display: none;
+        }
     }
 </style>
