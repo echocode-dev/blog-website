@@ -1,18 +1,23 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { type CollectionEntry } from "astro:content";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
+interface Props {
+    relatedPosts: CollectionEntry<"blog">[];
+}
+
 const { relatedPosts } = Astro.props;
 ---
 
-<ul class="related-list">
-    {
-        relatedPosts.length > 0 ? (
-            relatedPosts.map((post) => {
-                const slug = post.id.split("/").slice(1).join("/");
+{
+    relatedPosts.length > 0 ? (
+        <ul class="related-list">
+            {relatedPosts.map((post) => {
+                const slug = post.id.replace(`${lang}/`, "").replace(/\.[^/.]+$/, "");
                 return (
                     <li class="related-item">
                         <a href={getRelativeLocaleUrl(lang, `posts/${slug}`)} target="_blank" rel="noopener noreferrer">
@@ -20,16 +25,17 @@ const { relatedPosts } = Astro.props;
                         </a>
                     </li>
                 );
-            })
-        ) : (
-            <p>{t("widget.related.none")}</p>
-        )
-    }
-</ul>
+            })}
+        </ul>
+    ) : (
+        <p>{t("widget.related.none")}</p>
+    )
+}
 
 <style>
     .related-list {
         margin: 0;
+        padding-left: 1.2rem;
     }
 
     .related-list p {
