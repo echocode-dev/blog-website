@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import { getAbsoluteLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -15,7 +15,7 @@ const { relatedPosts } = Astro.props;
                 const slug = post.id.split("/").slice(1).join("/");
                 return (
                     <li class="related-item">
-                        <a href={getAbsoluteLocaleUrl(lang, `posts/${slug}`)} target="_blank" rel="noopener noreferrer">
+                        <a href={getRelativeLocaleUrl(lang, `posts/${slug}`)} target="_blank" rel="noopener noreferrer">
                             {post.data.title}
                         </a>
                     </li>

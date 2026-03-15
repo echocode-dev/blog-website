@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl } from "../i18n/utils";
-import { getAbsoluteLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { getCollection } from "astro:content";
 import TOCWidget from "../components/TOCWidget.astro";
 import BaseLayout from "./BaseLayout.astro";
@@ -17,7 +17,7 @@ const allTranslations = await getCollection("blog", (post) => post.data.translat
 const alternateLinks = allTranslations.map((post) => {
     const postLang = post.id.split("/")[0];
     const postSlug = post.id.split("/").slice(1).join("/");
-    const url = new URL(getAbsoluteLocaleUrl(postLang, `posts/${postSlug}`), Astro.site).toString();
+    const url = new URL(getRelativeLocaleUrl(postLang, `posts/${postSlug}`), Astro.site).toString();
 
     return { lang: postLang, url };
 });

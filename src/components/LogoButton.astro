@@ -2,7 +2,7 @@
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
-import { getAbsoluteLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 const { height } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
@@ -10,7 +10,7 @@ const t = useTranslations(lang);
 ---
 
 <div class="logo-container">
-    <a href={getAbsoluteLocaleUrl(lang)}>
+    <a href={getRelativeLocaleUrl(lang)}>
         <Image class="logo-image" src={logo} alt={t("logo.alt")} height={height} />
     </a>
 </div>

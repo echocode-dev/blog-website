@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import { getAbsoluteLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import CloseButton from "./CloseButton.astro";
 import SearchBox from "./SearchBox.astro";
 import LanguagesButton from "./LanguagesButton.astro";
@@ -20,9 +20,9 @@ const t = useTranslations(lang);
         <SearchBox />
 
         <nav class="nav-links">
-            <div class="nav-link"><a href={getAbsoluteLocaleUrl(lang, "")}>{t("nav.featured")}</a></div>
-            <div class="nav-link"><a href={getAbsoluteLocaleUrl(lang, "#recents")}>{t("nav.recents")}</a></div>
-            <div class="nav-link"><a href={getAbsoluteLocaleUrl(lang, "")}>{t("nav.blog")}</a></div>
+            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "")}>{t("nav.featured")}</a></div>
+            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "#recents")}>{t("nav.recents")}</a></div>
+            <div class="nav-link"><a href={getRelativeLocaleUrl(lang, "")}>{t("nav.blog")}</a></div>
         </nav>
 
         <div id="mobile-related-posts-target" class="mobile-related-posts-area"></div>
