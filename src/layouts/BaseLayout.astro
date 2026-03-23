@@ -23,7 +23,7 @@ const lang = getLangFromUrl(Astro.url);
         <BaseHead pageTitle={pageTitle} description={description} image={image} alternateLinks={alternateLinks} />
     </head>
     <body>
-        <Header />
+        <Header alternateLinks={alternateLinks} />
         <slot />
         <BackToTop />
         <Footer />

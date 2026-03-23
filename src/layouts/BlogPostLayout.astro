@@ -17,7 +17,7 @@ const allTranslations = await getCollection("blog", (post) => post.data.translat
 const alternateLinks = allTranslations.map((post) => {
     const postLang = post.id.split("/")[0];
     const postSlug = post.id.split("/").slice(1).join("/");
-    const url = new URL(getRelativeLocaleUrl(postLang, `posts/${postSlug}`), Astro.site).toString();
+    const url = new URL(getRelativeLocaleUrl(postLang, `posts/${postSlug}`), Astro.url.origin).toString();
 
     return { lang: postLang, url };
 });

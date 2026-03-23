@@ -6,6 +6,12 @@ import SearchBox from "./SearchBox.astro";
 import LanguagesButton from "./LanguagesButton.astro";
 import ThemeIcon from "./ThemeIcon.astro";
 import NavLinks from "./NavLinks.astro";
+
+interface Props {
+    alternateLinks?: { lang: string; url: string }[];
+}
+
+const { alternateLinks = [] } = Astro.props;
 ---
 
 <header id="header" class="header">
@@ -29,7 +35,7 @@ import NavLinks from "./NavLinks.astro";
 
     <div class="buttons-container">
         <div class="langs-button-container">
-            <LanguagesButton />
+            <LanguagesButton alternateLinks={alternateLinks} />
         </div>
 
         <div class="theme-button-container">

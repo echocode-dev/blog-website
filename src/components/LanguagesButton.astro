@@ -4,6 +4,12 @@ import { languages } from "../i18n/ui";
 import { Languages, ChevronDown } from "@lucide/astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
+interface Props {
+    alternateLinks?: { lang: string; url: string }[];
+}
+
+const { alternateLinks = [] } = Astro.props;
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
@@ -20,11 +26,19 @@ const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
 
     <div class="langs-dropdown-content js-langs-dropdown-content">
         {
-            Object.entries(languages).map(([lang, label]) => (
-                <a class="langs-dropdown-item" data-lang={lang} href={getRelativeLocaleUrl(lang, currentPath)}>
-                    {label}
-                </a>
-            ))
+            Object.entries(languages).map(([lang, label]) => {
+                const link = alternateLinks.find((item) => item.lang === lang);
+
+                return (
+                    <a
+                        class="langs-dropdown-item"
+                        data-lang={lang}
+                        href={link ? link.url : getRelativeLocaleUrl(lang, currentPath)}
+                    >
+                        {label}
+                    </a>
+                );
+            })
         }
     </div>
 </div>
