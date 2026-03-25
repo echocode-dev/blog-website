@@ -21,6 +21,9 @@ export function getRelatedPosts(
 }
 
 export function getBlogJsonLd(frontmatter: CollectionEntry<"blog">["data"], url: string) {
+  const imageUrl =
+    typeof frontmatter.cover === "string" ? frontmatter.cover : new URL(frontmatter.cover.src, url).toString();
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -30,7 +33,7 @@ export function getBlogJsonLd(frontmatter: CollectionEntry<"blog">["data"], url:
     },
     headline: frontmatter.title,
     description: frontmatter.summary,
-    image: new URL(frontmatter.cover.src, url).toString(),
+    image: imageUrl,
     author: {
       "@type": "Person",
       name: frontmatter.author,
