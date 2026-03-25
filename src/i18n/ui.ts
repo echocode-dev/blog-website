@@ -19,6 +19,7 @@ const enTranslations = {
   "hero.title": `${siteName} News`,
   "footer.copyright": `© ${year} ${siteName}. All rights reserved.`,
   "card.footer.readmore": "Read more",
+  "card.info.unknownDate": "Unknown date",
 
   "widget.toc.title": "Table of content",
   "widget.related.title": "Related posts",
@@ -71,6 +72,7 @@ export const ui: Record<Locale, Record<TranslationKeys, string>> = {
     "hero.title": `Noticias de ${siteName}`,
     "footer.copyright": `© ${year} ${siteName}. Todos los derechos reservados.`,
     "card.footer.readmore": "Leer más",
+    "card.info.unknownDate": "Fecha desconocida",
 
     "widget.toc.title": "Tabla de contenido",
     "widget.related.title": "Posts relacionados",

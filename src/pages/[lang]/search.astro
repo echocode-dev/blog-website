@@ -8,6 +8,7 @@ export { getStaticPaths } from "../../i18n/utils";
 
 const lang = Astro.params.lang as import("../../i18n/ui").Locale;
 const t = useTranslations(lang);
+const unknownDateTranslation = t("card.info.unknownDate");
 ---
 
 <BaseLayout
@@ -222,7 +223,7 @@ const t = useTranslations(lang);
     }
 </style>
 
-<script is:inline>
+<script is:inline define:vars={{ unknownDateTranslation }}>
     const mainContainer = document.getElementById("search-main");
 
     const msgQueryFilters = mainContainer ? mainContainer.getAttribute("data-msg-query-filters") : "";
@@ -301,7 +302,8 @@ const t = useTranslations(lang);
 
                 clone.querySelector(".card-summary").innerHTML = data.excerpt;
 
-                clone.querySelector(".date-text").textContent = data.meta.pubDate || "Unknown Date";
+                clone.querySelector(".date-text").textContent =
+                    data.meta.pubDate || data.meta.updatedDate || unknownDateTranslation;
 
                 fragment.appendChild(clone);
             }
