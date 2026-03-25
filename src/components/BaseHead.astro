@@ -1,19 +1,18 @@
 ---
-import { getLangFromUrl } from "../i18n/utils";
 import Themes from "astro-themes";
-import { languages, defaultLang, siteName } from "../i18n/ui";
+import { languages, defaultLang, siteName, type Locale } from "../i18n/ui";
 import { getSearchJsonLd } from "../utils/helpers";
 
 interface Props {
+    lang: Locale;
     pageTitle?: string;
     description: string;
     image?: string | any;
     alternateLinks?: { lang: string; url: string }[];
 }
 
-const { pageTitle = "", description, image, alternateLinks = [] } = Astro.props;
+const { lang, pageTitle = "", description, image, alternateLinks = [] } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const lang = getLangFromUrl(Astro.url);
 const currentPath = Astro.url.pathname.replace(`/${lang}/`, "/");
 
 const ogImage = image ? new URL(image.src || image, Astro.url) : null;

@@ -1,5 +1,6 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 import { getImage } from "astro:assets";
 import FiltersButton from "./FiltersButton.astro";
 import FiltersMenu from "./FiltersMenu.astro";
@@ -7,7 +8,12 @@ import SearchBox from "./SearchBox.astro";
 import pageHeaderBackground from "../assets/code.jpg";
 
 const bgImage = await getImage({ src: pageHeaderBackground, format: "webp" });
-const lang = getLangFromUrl(Astro.url);
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
@@ -16,15 +22,15 @@ const t = useTranslations(lang);
         <h1 class="hero-title">{t("hero.title")}</h1>
 
         <div class="search-wrapper">
-            <SearchBox />
+            <SearchBox lang={lang} />
         </div>
 
         <div class="filters-btn-wrapper">
-            <FiltersButton />
+            <FiltersButton label={t("btn.label.filters")} />
         </div>
 
         <div class="filters-menu-wrapper">
-            <FiltersMenu />
+            <FiltersMenu lang={lang} />
         </div>
     </div>
 </section>

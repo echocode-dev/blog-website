@@ -1,16 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import type { MarkdownHeading } from "astro";
 import TOC from "./TOC.astro";
 
-const { headings } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+    headings: MarkdownHeading[];
+    tocTitle: string;
+}
+
+const { headings, tocTitle } = Astro.props;
 ---
 
 {
     headings && headings.length > 1 && (
         <nav class="toc-widget">
-            <h2 class="widget-title">{t("widget.toc.title")}</h2>
+            <h2 class="widget-title">{tocTitle}</h2>
             <TOC headings={headings} />
         </nav>
     )

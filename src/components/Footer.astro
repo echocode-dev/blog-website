@@ -1,14 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
 import LogoButton from "./LogoButton.astro";
+import type { Locale } from "../i18n/ui";
 
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
 <footer class="footer">
     <div class="logo-button-container">
-        <LogoButton height={50} />
+        <LogoButton height={50} lang={lang} />
     </div>
     <h4 class="footer-copyright">{t("footer.copyright")}</h4>
 </footer>

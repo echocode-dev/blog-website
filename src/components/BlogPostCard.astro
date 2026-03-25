@@ -1,16 +1,17 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
 import { ArrowRight, Calendar } from "@lucide/astro";
 import type { CollectionEntry } from "astro:content";
+import type { Locale } from "../i18n/ui";
 
 interface Props {
     frontmatter: CollectionEntry<"blog">["data"];
     url: string;
+    lang: Locale;
 }
 
-const { frontmatter, url } = Astro.props;
+const { frontmatter, url, lang } = Astro.props;
 const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
-const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 

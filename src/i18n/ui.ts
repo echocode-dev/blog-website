@@ -1,8 +1,8 @@
-export const LOCALES = [/**"en",**/ "es"] as const;
+export const LOCALES = ["en", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const languages: Record<Locale, string> = {
-  //en: "English",
+  en: "English",
   es: "Español",
 };
 
@@ -62,7 +62,7 @@ const enTranslations = {
 export type TranslationKeys = keyof typeof enTranslations;
 
 export const ui: Record<Locale, Record<TranslationKeys, string>> = {
-  //en: enTranslations,
+  en: enTranslations,
   es: {
     "nav.featured": "Destacado",
     "nav.recents": "Reciente",

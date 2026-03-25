@@ -1,12 +1,14 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Search } from "@lucide/astro";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
 ---
 
-<button class="search-btn" aria-label={t("btn.label.search")} disabled>
+<button class="search-btn" aria-label={label} disabled>
     <Search class="search-icon" />
 </button>
 

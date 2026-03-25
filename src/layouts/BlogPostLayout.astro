@@ -1,5 +1,4 @@
 ---
-import { getLangFromUrl } from "../i18n/utils";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getCollection } from "astro:content";
 import TOCWidget from "../components/TOCWidget.astro";
@@ -8,9 +7,20 @@ import { getRelatedPosts, getBlogJsonLd } from "../utils/helpers";
 import ResponsiveImage from "../components/ResponsiveImage.astro";
 import RelatedPostsWidget from "../components/RelatedPostsWidget.astro";
 import BlogPostMetaInfo from "../components/BlogPostMetaInfo.astro";
+import type { CollectionEntry } from "astro:content";
+import type { MarkdownHeading } from "astro";
+import type { Locale } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
 
-const { id, frontmatter, headings } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+    lang: Locale;
+    id: string;
+    frontmatter: CollectionEntry<"blog">["data"];
+    headings: MarkdownHeading[];
+}
+
+const { lang, id, frontmatter, headings } = Astro.props;
+const t = useTranslations(lang);
 
 const allTranslations = await getCollection("blog", (post) => post.data.translationKey === frontmatter.translationKey);
 
@@ -29,6 +39,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
 ---
 
 <BaseLayout
+    lang={lang}
     pageTitle={frontmatter.title}
     description={frontmatter.summary}
     image={frontmatter.cover}
@@ -38,7 +49,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
 
     <main class="post-layout" data-pagefind-body>
         <aside class="sidebar">
-            <TOCWidget headings={headings} />
+            <TOCWidget headings={headings} tocTitle={t("widget.toc.title")} />
         </aside>
 
         <div class="content-wrapper" data-pagefind-body>
@@ -50,6 +61,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
                 <h1>{frontmatter.title}</h1>
 
                 <BlogPostMetaInfo
+                    lang={lang}
                     author={frontmatter.author}
                     pubDate={frontmatter.pubDate}
                     updatedDate={frontmatter.updatedDate}
@@ -60,7 +72,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
             </header>
 
             <div class="mobile-only-blocks">
-                <TOCWidget headings={headings} />
+                <TOCWidget headings={headings} tocTitle={t("widget.toc.title")} />
                 <div class="ad-block">
                     <p>AD PLACEHOLDER</p>
                 </div>
@@ -72,7 +84,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
         </div>
 
         <aside class="sidebar">
-            <RelatedPostsWidget relatedPosts={relatedPosts} />
+            <RelatedPostsWidget lang={lang} relatedPosts={relatedPosts} />
 
             <div class="ad-block">
                 <p>AD PLACEHOLDER</p>
@@ -80,7 +92,7 @@ const blogJsonLd = getBlogJsonLd(frontmatter, Astro.url.toString());
         </aside>
 
         <div id="mobile-related-content-source" style="display: none;">
-            <RelatedPostsWidget relatedPosts={relatedPosts} />
+            <RelatedPostsWidget lang={lang} relatedPosts={relatedPosts} />
         </div>
     </main>
 </BaseLayout>

@@ -1,11 +1,17 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
-const { height } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+    height: number;
+    lang: Locale;
+}
+
+const { height, lang } = Astro.props;
+
 const t = useTranslations(lang);
 ---
 

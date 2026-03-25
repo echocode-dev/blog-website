@@ -1,16 +1,17 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 import { languages } from "../i18n/ui";
 import { Languages, ChevronDown } from "@lucide/astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props {
     alternateLinks?: { lang: string; url: string }[];
+    lang: Locale;
 }
 
-const { alternateLinks = [] } = Astro.props;
+const { alternateLinks = [], lang } = Astro.props;
 
-const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const prettyLang = languages[lang];

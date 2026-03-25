@@ -1,13 +1,15 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Menu } from "@lucide/astro";
 
-const { id } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+    id: string;
+    label: string;
+}
+
+const { id, label } = Astro.props;
 ---
 
-<button id={id} class="menu-btn" aria-label={t("btn.label.menu")}>
+<button id={id} class="menu-btn" aria-label={label}>
     <Menu color="var(--text-navbar)" />
 </button>
 

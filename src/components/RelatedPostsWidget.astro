@@ -1,15 +1,21 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 import RelatedPosts from "./RelatedPosts.astro";
+import { type CollectionEntry } from "astro:content";
 
-const { relatedPosts } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+    relatedPosts: CollectionEntry<"blog">[];
+    lang: Locale;
+}
+
+const { relatedPosts, lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
 <div class="related-widget">
     <h2 class="widget-title">{t("widget.related.title")}</h2>
-    <RelatedPosts relatedPosts={relatedPosts} />
+    <RelatedPosts relatedPosts={relatedPosts} lang={lang} />
 </div>
 
 <style>

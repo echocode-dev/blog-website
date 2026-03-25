@@ -1,16 +1,21 @@
 ---
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { useTranslations } from "../../i18n/utils";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import pageHeaderBackground from "../../assets/code.jpg";
 
 export { getStaticPaths } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = Astro.params.lang as import("../../i18n/ui").Locale;
 const t = useTranslations(lang);
 ---
 
-<BaseLayout pageTitle={t("page.search.title")} description={t("page.search.desc")} image={pageHeaderBackground}>
+<BaseLayout
+    lang={lang}
+    pageTitle={t("page.search.title")}
+    description={t("page.search.desc")}
+    image={pageHeaderBackground}
+>
     <main
         id="search-main"
         class="container"
@@ -19,7 +24,7 @@ const t = useTranslations(lang);
         data-msg-filters={t("page.search.empty.filters")}
         data-msg-error={t("page.search.error")}
     >
-        <Hero />
+        <Hero lang={lang} />
 
         <section class="recents">
             <div class="recents-header">

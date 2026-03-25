@@ -1,4 +1,6 @@
 ---
+import { useTranslations } from "../i18n/utils";
+import type { Locale } from "../i18n/ui";
 import MobileMenuButton from "./MobileMenuButton.astro";
 import LogoButton from "./LogoButton.astro";
 import MobileSideMenu from "./MobileSideMenu.astro";
@@ -9,42 +11,44 @@ import NavLinks from "./NavLinks.astro";
 
 interface Props {
     alternateLinks?: { lang: string; url: string }[];
+    lang: Locale;
 }
 
-const { alternateLinks = [] } = Astro.props;
+const { alternateLinks = [], lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <header id="header" class="header">
     <div class="mobile-menu-button-container">
-        <MobileMenuButton id="open-menu" />
+        <MobileMenuButton id="open-menu" label={t("btn.label.menu")} />
     </div>
 
     <div class="logo-button-container">
-        <LogoButton height={40} />
+        <LogoButton height={40} lang={lang} />
     </div>
 
     <div class="nav-links-container">
-        <NavLinks />
+        <NavLinks lang={lang} />
     </div>
 
     <div class="spacer"></div>
 
     <div class="search-box-container">
-        <SearchBox />
+        <SearchBox lang={lang} />
     </div>
 
     <div class="buttons-container">
         <div class="langs-button-container">
-            <LanguagesButton alternateLinks={alternateLinks} />
+            <LanguagesButton alternateLinks={alternateLinks} lang={lang} />
         </div>
 
         <div class="theme-button-container">
-            <ThemeIcon />
+            <ThemeIcon label={t("btn.label.theme")} />
         </div>
     </div>
 </header>
 
-<MobileSideMenu alternateLinks={alternateLinks} />
+<MobileSideMenu alternateLinks={alternateLinks} lang={lang} />
 
 <style>
     .header {
@@ -120,7 +124,7 @@ const { alternateLinks = [] } = Astro.props;
 
         /* HIDES LANGUAGES BUTTON */
         .langs-button-container {
-            display: none;
+            display: flex;
         }
     }
 </style>

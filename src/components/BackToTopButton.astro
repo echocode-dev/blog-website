@@ -1,12 +1,14 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { ArrowUp } from "@lucide/astro";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+    label: string;
+}
+
+const { label: ariaLabel } = Astro.props;
 ---
 
-<button id="back-to-top-btn" class="back-to-top-btn" aria-label={t("btn.label.back-to-top")}>
+<button id="back-to-top-btn" class="back-to-top-btn" aria-label={ariaLabel}>
     <ArrowUp />
 </button>
 

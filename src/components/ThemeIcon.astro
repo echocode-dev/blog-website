@@ -1,12 +1,14 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { Sun, Moon } from "@lucide/astro";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
 ---
 
-<button id="themeToggle" class="theme-btn" aria-label={t("btn.label.theme")}>
+<button id="themeToggle" class="theme-btn" aria-label={label}>
     <Sun class="theme-light-icon" color="var(--text-navbar)" />
     <Moon class="theme-dark-icon" color="var(--text-navbar)" />
 </button>

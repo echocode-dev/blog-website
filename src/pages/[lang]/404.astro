@@ -1,14 +1,14 @@
 ---
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { useTranslations } from "../../i18n/utils";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export { getStaticPaths } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = Astro.params.lang as import("../../i18n/ui").Locale;
 const t = useTranslations(lang);
 ---
 
-<BaseLayout pageTitle={t("page.404.title")} description={t("page.404.desc")}>
+<BaseLayout lang={lang} pageTitle={t("page.404.title")} description={t("page.404.desc")}>
     <main class="page-container">
         <h1>{t("page.404.heading")}</h1>
         <h3>{t("page.404.msg")}</h3>

@@ -2,23 +2,35 @@
 import { getCollection, render } from "astro:content";
 import BlogPostLayout from "../../../layouts/BlogPostLayout.astro";
 import ExternalLink from "../../../components/ExternalLink.astro";
+import { LOCALES, ui, type Locale } from "../../../i18n/ui";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
 
-    const paths = posts.map((post) => {
-        const [lang, ...slug] = post.id.split("/");
-        return { params: { lang, slug: slug.join("/") || undefined }, props: post };
+    const validPosts = posts.filter((post) => {
+        const langPrefix = post.id.split("/")[0] as any;
+        return LOCALES.includes(langPrefix);
     });
 
-    return paths;
+    return validPosts.map((post) => {
+        const [langString, ...slugParts] = post.id.split("/");
+        const lang = langString as Locale;
+        const slug = slugParts.join("/") || undefined;
+
+        return {
+            params: { lang, slug },
+            props: {
+                post,
+            },
+        };
+    });
 }
 
-const { lang, slug } = Astro.params;
-const post = Astro.props;
+const { post } = Astro.props;
+const lang = Astro.params.lang as import("../../../i18n/ui").Locale;
 const { Content, headings } = await render(post);
 ---
 
-<BlogPostLayout id={post.id} frontmatter={post.data} headings={headings}>
+<BlogPostLayout lang={lang} id={post.id} frontmatter={post.data} headings={headings}>
     <Content components={{ a: ExternalLink }} />
 </BlogPostLayout>

@@ -6,7 +6,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const t = useTranslations(defaultLang);
 ---
 
-<BaseLayout pageTitle={t("page.404.title")} description={t("page.404.desc")}>
+<BaseLayout lang={defaultLang} pageTitle={t("page.404.title")} description={t("page.404.desc")}>
     <main class="page-container">
         <h1>{t("page.404.heading")}</h1>
         <h3>{t("page.404.msg")}</h3>

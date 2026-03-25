@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { useTranslations } from "../../i18n/utils";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
@@ -9,16 +9,16 @@ import { getCollection } from "astro:content";
 
 export { getStaticPaths } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
+const lang = Astro.params.lang as import("../../i18n/ui").Locale;
 const t = useTranslations(lang);
 
 const allPosts = await getCollection("blog", ({ id }) => id.startsWith(`${lang}/`));
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
-<BaseLayout pageTitle={t("page.home.title")} description={t("page.home.desc")} image={pageHeaderBackground}>
+<BaseLayout lang={lang} pageTitle={t("page.home.title")} description={t("page.home.desc")} image={pageHeaderBackground}>
     <main class="container">
-        <Hero />
+        <Hero lang={lang} />
 
         <div class="ad-placeholder">
             <p>AD PLACEHOLDER</p>
@@ -34,7 +34,11 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
                     sortedPosts.map((post) => {
                         const slug = post.id.split("/").slice(1).join("/");
                         return (
-                            <BlogPostCard frontmatter={post.data} url={getRelativeLocaleUrl(lang, `posts/${slug}`)} />
+                            <BlogPostCard
+                                lang={lang}
+                                frontmatter={post.data}
+                                url={getRelativeLocaleUrl(lang, `posts/${slug}`)}
+                            />
                         );
                     })
                 }

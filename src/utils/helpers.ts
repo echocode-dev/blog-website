@@ -20,7 +20,7 @@ export function getRelatedPosts(
     .slice(0, limit);
 }
 
-export function getBlogJsonLd(frontmatter: CollectionEntry<"blog">, url: string) {
+export function getBlogJsonLd(frontmatter: CollectionEntry<"blog">["data"], url: string) {
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
