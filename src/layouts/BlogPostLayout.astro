@@ -9,7 +9,7 @@ import RelatedPostsWidget from "../components/RelatedPostsWidget.astro";
 import BlogPostMetaInfo from "../components/BlogPostMetaInfo.astro";
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
-import type { Locale } from "../i18n/ui";
+import { LOCALES, type Locale } from "../i18n/ui";
 import { useTranslations } from "../i18n/utils";
 
 interface Props {
@@ -22,7 +22,14 @@ interface Props {
 const { lang, id, frontmatter, headings } = Astro.props;
 const t = useTranslations(lang);
 
-const allTranslations = await getCollection("blog", (post) => post.data.translationKey === frontmatter.translationKey);
+const allTranslations = await getCollection("blog", (post) => {
+    const isSameKey = post.data.translationKey === frontmatter.translationKey;
+
+    const postLang = post.id.split("/")[0] as any;
+    const isLocaleActive = LOCALES.includes(postLang);
+
+    return isSameKey && isLocaleActive;
+});
 
 const alternateLinks = allTranslations.map((post) => {
     const postLang = post.id.split("/")[0];
