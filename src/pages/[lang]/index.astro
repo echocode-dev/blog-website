@@ -4,6 +4,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/Hero.astro";
 import BlogPostCard from "../../components/BlogPostCard.astro";
+import Newsletter from "../../components/Newsletter.astro";
 import pageHeaderBackground from "../../assets/code.jpg";
 import { getCollection } from "astro:content";
 
@@ -44,6 +45,10 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
                 }
             </div>
         </section>
+
+        <div class="newsletter-container">
+            <Newsletter lang={lang} />
+        </div>
     </main>
 </BaseLayout>
 
@@ -71,7 +76,7 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        margin: 0 1rem 2rem;
+        margin: 0 1rem;
     }
 
     .recents-header {
@@ -100,7 +105,20 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
         gap: 2rem;
     }
 
+    .newsletter-container {
+        display: flex;
+        margin: 0 1rem 2rem;
+    }
+
     @media screen and (min-width: 894px) {
+        .recents {
+            margin: 0 4rem;
+        }
+
+        .newsletter-container {
+            margin: 0 4rem 2rem;
+        }
+
         .container {
             flex: 1;
             margin: 1rem 2.5rem;
@@ -110,14 +128,9 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
             height: 150px;
         }
 
-        .recents-header {
-            margin: 0 4rem;
-        }
-
         .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            margin: 0 4rem;
         }
     }
 </style>
