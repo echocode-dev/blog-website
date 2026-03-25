@@ -12,29 +12,152 @@ const t = useTranslations(lang);
 ---
 
 <footer class="footer">
-    <div class="logo-button-container">
-        <LogoButton height={50} lang={lang} />
+    <div class="content">
+        <div class="logo-button-container">
+            <LogoButton height={80} lang={lang} />
+        </div>
+
+        <div class="useful-links">
+            <div class="footer-section">
+                <h3>{t("footer.company")}</h3>
+                <div class="entries">
+                    <a href="#">{t("footer.about")}</a>
+                    <a href="#">{t("footer.privacy")}</a>
+                    <a href="#">{t("footer.advertise")}</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>{t("footer.explore")}</h3>
+                <div class="entries">
+                    <a href="#">{t("footer.blog")}</a>
+                    <a href="#">{t("footer.services")}</a>
+                    <a href="#">{t("footer.jobs")}</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>{t("footer.social")}</h3>
+                <div class="entries">
+                    <a href="#">{t("footer.instagram")}</a>
+                    <a href="#">{t("footer.facebook")}</a>
+                    <a href="#">{t("footer.twitter")}</a>
+                    <a href="#">{t("footer.linkedin")}</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <h4 class="footer-copyright">{t("footer.copyright")}</h4>
+
+    <div class="copyright-container">
+        <h4 class="footer-copyright">{t("footer.copyright")}</h4>
+    </div>
 </footer>
 
 <style>
     .footer {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         border-top: 1px solid var(--border-color);
         background-color: var(--bg-navbar);
         color: var(--text-navbar);
+        padding: 3rem 1rem 1rem;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
     }
 
     .logo-button-container {
-        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
         opacity: 0.4;
     }
 
-    .footer-copyright {
+    .useful-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        width: 100%;
+    }
+
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
+    }
+
+    .footer-section h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1.2rem;
+    }
+
+    .entries {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .entries a {
+        font-style: normal;
+        text-decoration: none;
+        color: var(--text-navbar);
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+
+    .copyright-container {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--text-navbar);
+    }
+
+    .footer-copyright {
+        margin: 0;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-subtle);
+    }
+
+    @media (hover: hover) {
+        .entries a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .footer {
+            padding: 4rem 3rem 1rem;
+        }
+
+        .content {
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 2rem;
+        }
+
+        .logo-button-container {
+            flex: 0 0 25%;
+        }
+
+        .useful-links {
+            flex-direction: row;
+            align-items: flex-start;
+            flex: 1;
+            justify-content: space-around;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .footer-section {
+            align-items: flex-start;
+            text-align: left;
+        }
     }
 </style>

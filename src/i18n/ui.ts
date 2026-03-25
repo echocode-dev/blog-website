@@ -17,7 +17,25 @@ const enTranslations = {
   "nav.blog": "Blog",
 
   "hero.title": `${siteName} News`,
+
+  "footer.company": "Company",
+  "footer.about": "About Us",
+  "footer.privacy": "Privacy policy",
+  "footer.advertise": "Advertise",
+
+  "footer.explore": "Explore",
+  "footer.blog": "Blog",
+  "footer.services": "Services",
+  "footer.jobs": "Jobs",
+
+  "footer.social": "Social media",
+  "footer.instagram": "Instagram",
+  "footer.facebook": "Facebook",
+  "footer.twitter": "X",
+  "footer.linkedin": "LinkedIn",
+
   "footer.copyright": `© ${year} ${siteName}. All rights reserved.`,
+
   "card.footer.readmore": "Read more",
   "card.info.unknownDate": "Unknown date",
 
@@ -70,7 +88,25 @@ export const ui: Record<Locale, Record<TranslationKeys, string>> = {
     "nav.blog": "Blog",
 
     "hero.title": `Noticias de ${siteName}`,
+
+    "footer.company": "Compañía",
+    "footer.about": "Acerca de nosotros",
+    "footer.privacy": "Política de privacidad",
+    "footer.advertise": "Publicidad",
+
+    "footer.explore": "Explora",
+    "footer.blog": "Blog",
+    "footer.services": "Servicios",
+    "footer.jobs": "Empleos",
+
+    "footer.social": "Redes sociales",
+    "footer.instagram": "Instagram",
+    "footer.facebook": "Facebook",
+    "footer.twitter": "X",
+    "footer.linkedin": "LinkedIn",
+
     "footer.copyright": `© ${year} ${siteName}. Todos los derechos reservados.`,
+
     "card.footer.readmore": "Leer más",
     "card.info.unknownDate": "Fecha desconocida",
 
