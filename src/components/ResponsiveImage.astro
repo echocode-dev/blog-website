@@ -4,24 +4,20 @@ import { Image } from "astro:assets";
 const { src, alt, class: className, ...rest } = Astro.props;
 const isRemote = typeof src === "string";
 
-let isReachable = true;
-
-if (isRemote) {
-    try {
-        const response = await fetch(src, { method: "HEAD" });
-        if (!response.ok) {
-            isReachable = false;
-        }
-    } catch (error) {
-        isReachable = false;
-    }
-}
+const fallbackUrl = "/fallback-image.jpg";
 ---
 
 {
-    isReachable ? (
-        <Image src={src} alt={alt} class={className} inferSize={isRemote} {...rest} />
+    isRemote ? (
+        <Image
+            src={src}
+            alt={alt}
+            class={className}
+            inferSize={true}
+            onerror={`this.onerror=null; this.src='${fallbackUrl}';`}
+            {...rest}
+        />
     ) : (
-        <img src={src} alt={alt} class={className} {...rest} />
+        <Image src={src} alt={alt} class={className} {...rest} />
     )
 }
