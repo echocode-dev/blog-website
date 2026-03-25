@@ -1,4 +1,4 @@
-import { ui, defaultLang } from "./ui.ts";
+import { ui, LOCALES, defaultLang } from "./ui.ts";
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split("/");
@@ -10,4 +10,10 @@ export function useTranslations(lang: keyof typeof ui) {
   return function t(key: keyof (typeof ui)[typeof defaultLang]) {
     return ui[lang][key] || ui[defaultLang][key];
   };
+}
+
+export async function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
 }

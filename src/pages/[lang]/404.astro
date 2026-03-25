@@ -2,9 +2,7 @@
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export async function getStaticPaths() {
-    return [{ params: { lang: "en" } }, { params: { lang: "es" } }];
-}
+export { getStaticPaths } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);

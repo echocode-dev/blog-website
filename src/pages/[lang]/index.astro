@@ -7,9 +7,7 @@ import BlogPostCard from "../../components/BlogPostCard.astro";
 import pageHeaderBackground from "../../assets/code.jpg";
 import { getCollection } from "astro:content";
 
-export async function getStaticPaths() {
-    return [{ params: { lang: "en" } }, { params: { lang: "es" } }];
-}
+export { getStaticPaths } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
