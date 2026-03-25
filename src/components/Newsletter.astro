@@ -1,0 +1,135 @@
+---
+import type { Locale } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import SuscribeButton from "./SuscribeButton.astro";
+
+interface Props {
+    lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="container">
+    <h2 class="title">{t("newsletter.title")}</h2>
+    <form action="" class="newsletter-container">
+        <input id="email-input" type="email" placeholder={t("newsletter.email")} name="email" />
+    </form>
+
+    <div class="consent">
+        <input type="checkbox" class="newsletter-checkbox" />
+        <span>{t("newsletter.consent")}</span>
+    </div>
+
+    <SuscribeButton label={t("newsletter.suscribe")} />
+</div>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .title {
+        margin: 0;
+    }
+
+    .newsletter-container {
+        display: flex;
+        height: 44px;
+        gap: 0.5rem;
+        align-items: stretch;
+        border-radius: 32px;
+        background-color: var(--bg-page);
+    }
+
+    .newsletter-container input {
+        flex: 1;
+        height: auto;
+        color: var(--text-navbar);
+        padding: 0 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 32px;
+        background: none;
+        max-width: 400px;
+
+        box-sizing: border-box;
+    }
+
+    .consent {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .newsletter-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+
+        background-color: var(--bg-page);
+        width: 1.25rem;
+        height: 1.25rem;
+        max-width: 1.25rem;
+        min-width: 1.25rem;
+        border: 2px solid var(--text-subtle);
+        border-radius: 6px;
+        margin: 0;
+
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .newsletter-checkbox:checked {
+        border-color: var(--text-main);
+    }
+
+    .newsletter-checkbox::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+        background-size: 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .newsletter-checkbox:checked::after {
+        opacity: 1;
+    }
+
+    .newsletter-checkbox ~ .option-name {
+        transition: font-weight 0.3s ease;
+    }
+
+    .newsletter-checkbox:checked ~ .option-name {
+        font-weight: 600;
+        transition: font-weight 0.3s ease;
+    }
+
+    @media (hover: hover) {
+        .newsletter-checkbox:hover {
+            border-color: var(--text-main);
+        }
+    }
+
+    @media screen and (min-width: 894px) {
+        .container {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+</style>

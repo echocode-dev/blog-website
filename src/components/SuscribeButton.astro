@@ -1,0 +1,41 @@
+---
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button class="suscribe-btn" aria-label={label}>
+    <span class="suscribe-label">{label}</span>
+</button>
+
+<style>
+    .suscribe-btn {
+        color: var(--text-navbar);
+        background-color: var(--bg-page);
+        border: 1px solid var(--border-color);
+        border-radius: 32px;
+        display: flex;
+        padding: 0.5rem;
+        align-items: center;
+        width: fit-content;
+        height: 44px;
+        transition:
+            border-color 0.3s ease,
+            color 0.3s ease,
+            opacity 0.3s ease;
+    }
+
+    .suscribe-label {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    @media (hover: hover) {
+        .suscribe-btn:hover {
+            border-color: color-mix(in srgb, var(--border-color), transparent 50%);
+            color: color-mix(in srgb, var(--text-navbar), transparent 50%);
+        }
+    }
+</style>

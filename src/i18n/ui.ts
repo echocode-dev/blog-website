@@ -18,6 +18,11 @@ const enTranslations = {
 
   "hero.title": `${siteName} News`,
 
+  "newsletter.title": "Newsletter",
+  "newsletter.email": "Email",
+  "newsletter.consent": "I would like to receive the newsletter and I agree to the privacy policy.",
+  "newsletter.suscribe": "Suscribe",
+
   "footer.company": "Company",
   "footer.about": "About Us",
   "footer.privacy": "Privacy policy",
@@ -88,6 +93,11 @@ export const ui: Record<Locale, Record<TranslationKeys, string>> = {
     "nav.blog": "Blog",
 
     "hero.title": `Noticias de ${siteName}`,
+
+    "newsletter.title": "Newsletter",
+    "newsletter.email": "Correo",
+    "newsletter.consent": "Deseo recibir el boletín de noticias y acepto la política de privacidad.",
+    "newsletter.suscribe": "Suscribirse",
 
     "footer.company": "Compañía",
     "footer.about": "Acerca de nosotros",
