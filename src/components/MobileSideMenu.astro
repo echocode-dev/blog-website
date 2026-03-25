@@ -3,6 +3,12 @@ import CloseButton from "./CloseButton.astro";
 import SearchBox from "./SearchBox.astro";
 import LanguagesButton from "./LanguagesButton.astro";
 import NavLinks from "./NavLinks.astro";
+
+interface Props {
+    alternateLinks?: { lang: string; url: string }[];
+}
+
+const { alternateLinks = [] } = Astro.props;
 ---
 
 <aside id="side-menu" class="side-menu">
@@ -10,7 +16,9 @@ import NavLinks from "./NavLinks.astro";
         <div class="side-menu-header">
             <CloseButton id="close-menu" />
 
-            <LanguagesButton />
+            <div class="langs-button-container">
+                <LanguagesButton alternateLinks={alternateLinks} />
+            </div>
         </div>
 
         <SearchBox />
