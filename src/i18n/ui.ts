@@ -1,60 +1,68 @@
-export const languages = {
+export const LOCALES = ["en", "es"] as const;
+export type Locale = (typeof LOCALES)[number];
+
+export const languages: Record<Locale, string> = {
   en: "English",
   es: "Español",
 };
 
-export const defaultLang = "en";
+export const defaultLang: Locale = "en";
+
 export const siteName = "Echo Code";
 const year = new Date().getFullYear();
 
-export const ui = {
-  en: {
-    "nav.featured": "Featured",
-    "nav.recents": "Recents",
-    "nav.blog": "Blog",
+const enTranslations = {
+  "nav.featured": "Featured",
+  "nav.recents": "Recents",
+  "nav.blog": "Blog",
 
-    "hero.title": `${siteName} News`,
-    "footer.copyright": `© ${year} ${siteName}. All rights reserved.`,
-    "card.footer.readmore": "Read more",
+  "hero.title": `${siteName} News`,
+  "footer.copyright": `© ${year} ${siteName}. All rights reserved.`,
+  "card.footer.readmore": "Read more",
 
-    "widget.toc.title": "Table of content",
-    "widget.related.title": "Related posts",
-    "widget.related.none": "Nothing to show.",
+  "widget.toc.title": "Table of content",
+  "widget.related.title": "Related posts",
+  "widget.related.none": "Nothing to show.",
 
-    "label.updated": "Updated",
-    "label.filter.category": "Category",
-    "label.filter.author": "Author",
-    "label.filter.pubDate": "Publication date",
-    "label.filter.updatedDate": "Updated date",
+  "label.updated": "Updated",
+  "label.filter.category": "Category",
+  "label.filter.author": "Author",
+  "label.filter.pubDate": "Publication date",
+  "label.filter.updatedDate": "Updated date",
 
-    "btn.label.filters": "Filters",
-    "btn.label.close": "Close",
-    "btn.label.menu": "Open menu",
-    "btn.label.search": "Search",
-    "btn.label.theme": "Toggle theme",
-    "btn.label.langs": "Languages",
-    "btn.label.back-to-top": "Back to top",
+  "btn.label.filters": "Filters",
+  "btn.label.close": "Close",
+  "btn.label.menu": "Open menu",
+  "btn.label.search": "Search",
+  "btn.label.theme": "Toggle theme",
+  "btn.label.langs": "Languages",
+  "btn.label.back-to-top": "Back to top",
 
-    "logo.alt": `${siteName}'s logo`,
+  "logo.alt": `${siteName}'s logo`,
 
-    "page.home.title": "Home",
-    "page.home.desc": "Learn and explore with us the vast development landscape through different eyes!",
-    "page.home.recents": "Recents",
+  "page.home.title": "Home",
+  "page.home.desc": "Learn and explore with us the vast development landscape through different eyes!",
+  "page.home.recents": "Recents",
 
-    "page.search.title": "Search results",
-    "page.search.desc":
-      "What are we looking for? Information about a new technology? A tutorial? Or something entirely different...",
-    "page.search.results": "Results",
-    "page.search.empty.queryFilters": 'No posts found for "{query}" with filters applied.',
-    "page.search.empty.query": 'No posts found for "{query}".',
-    "page.search.empty.filters": "No posts match the selected filters.",
-    "page.search.error": "Search is currently unavailable.",
+  "page.search.title": "Search results",
+  "page.search.desc":
+    "What are we looking for? Information about a new technology? A tutorial? Or something entirely different...",
+  "page.search.results": "Results",
+  "page.search.empty.queryFilters": 'No posts found for "{query}" with filters applied.',
+  "page.search.empty.query": 'No posts found for "{query}".',
+  "page.search.empty.filters": "No posts match the selected filters.",
+  "page.search.error": "Search is currently unavailable.",
 
-    "page.404.title": "404",
-    "page.404.desc": "Not exactly what we were looking for :(",
-    "page.404.heading": "404",
-    "page.404.msg": "Page not found.",
-  },
+  "page.404.title": "404",
+  "page.404.desc": "Not exactly what we were looking for :(",
+  "page.404.heading": "404",
+  "page.404.msg": "Page not found.",
+} as const;
+
+export type TranslationKeys = keyof typeof enTranslations;
+
+export const ui: Record<Locale, Record<TranslationKeys, string>> = {
+  en: enTranslations,
   es: {
     "nav.featured": "Destacado",
     "nav.recents": "Reciente",
@@ -99,8 +107,8 @@ export const ui = {
     "page.search.error": "La función de búsqueda no se encuentra disponible en este momento.",
 
     "page.404.title": "404",
-    "page.404.desc": "Not exactly what we were looking for :(",
+    "page.404.desc": "No esperábamos que esto acabara así :(",
     "page.404.heading": "404",
     "page.404.msg": "Página no encontrada.",
   },
-} as const;
+};

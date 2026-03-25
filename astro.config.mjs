@@ -3,20 +3,17 @@ import sectionize from "@hbsnow/rehype-sectionize";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import pagefind from "astro-pagefind";
-
 import expressiveCode from "astro-expressive-code";
-
 import sitemap from "@astrojs/sitemap";
-
 import mdx from "@astrojs/mdx";
-
 import playformCompress from "@playform/compress";
+import { LOCALES, defaultLang } from "./src/i18n/ui";
 
 export default defineConfig({
   site: "https://echocode.dev",
   i18n: {
-    locales: ["es", "en"],
-    defaultLocale: "en",
+    locales: Array.from(LOCALES),
+    defaultLocale: defaultLang,
     routing: {
       prefixDefaultLocale: true,
       redirectToDefaultLocale: false,
