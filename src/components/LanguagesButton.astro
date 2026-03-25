@@ -15,7 +15,9 @@ const { alternateLinks = [], lang } = Astro.props;
 const t = useTranslations(lang);
 
 const prettyLang = languages[lang];
-const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
+const currentPath = Astro.url.pathname.replace(new RegExp(`^\\/${lang}(?:\\/|$)`), "");
+
+const isDynamicContent = alternateLinks.length > 0;
 ---
 
 <div class="langs-dropdown js-langs-dropdown">
@@ -27,15 +29,18 @@ const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
 
     <div class="langs-dropdown-content js-langs-dropdown-content">
         {
-            Object.entries(languages).map(([lang, label]) => {
-                const link = alternateLinks.find((item) => item.lang === lang);
+            Object.entries(languages).map(([langKey, label]) => {
+                const link = alternateLinks.find((item) => item.lang === langKey);
+
+                let targetUrl;
+                if (isDynamicContent) {
+                    targetUrl = link ? link.url : getRelativeLocaleUrl(langKey);
+                } else {
+                    targetUrl = getRelativeLocaleUrl(langKey, currentPath);
+                }
 
                 return (
-                    <a
-                        class="langs-dropdown-item"
-                        data-lang={lang}
-                        href={link ? link.url : getRelativeLocaleUrl(lang, currentPath)}
-                    >
+                    <a class="langs-dropdown-item" href={targetUrl}>
                         {label}
                     </a>
                 );
@@ -132,12 +137,6 @@ const currentPath = Astro.url.pathname.replace(`/${lang}/`, "");
 
 <script>
     document.addEventListener("click", (event) => {
-        const langOption = (event.target as HTMLElement).closest("[data-lang]");
-
-        if (langOption) {
-            localStorage.setItem("lang", (langOption as HTMLElement).dataset.lang as string);
-        }
-
         const clickedBtn = (event.target as HTMLElement).closest(".js-langs-btn");
 
         if (clickedBtn) {

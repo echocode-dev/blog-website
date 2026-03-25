@@ -28,6 +28,10 @@ const t = useTranslations(lang);
             image={image}
             alternateLinks={alternateLinks}
         />
+
+        <script is:inline>
+            localStorage.setItem("lang", document.documentElement.lang);
+        </script>
     </head>
     <body>
         <Header lang={lang} alternateLinks={alternateLinks} />

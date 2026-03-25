@@ -1,30 +1,32 @@
 ---
-import { useTranslations } from "../i18n/utils";
-import { defaultLang } from "../i18n/ui";
-import BaseHead from "../components/BaseHead.astro";
-import pageHeaderBackground from "../assets/code.jpg";
-
-const t = useTranslations(defaultLang);
+import { defaultLang, LOCALES } from "../i18n/ui";
 ---
 
-<script is:inline define:vars={{ defaultLang }}>
-    const storedLang = localStorage.getItem("lang") || defaultLang;
+<html lang={defaultLang}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Echo Code</title>
 
-    window.location.replace(`/${storedLang}/`);
-</script>
+        <meta name="robots" content="noindex, follow" />
 
-<head>
-    <BaseHead
-        lang={defaultLang}
-        pageTitle={t("page.home.title")}
-        description={t("page.home.desc")}
-        image={pageHeaderBackground}
-    />
-</head>
-<body></body>
+        <script is:inline define:vars={{ defaultLang, LOCALES }}>
+            let targetLang = localStorage.getItem("lang");
 
-<style>
-    body {
-        background-color: #1d2d44;
-    }
-</style>
+            if (!targetLang) {
+                const browserLang = navigator.language.split("-")[0];
+
+                if (LOCALES.includes(browserLang)) {
+                    targetLang = browserLang;
+                } else {
+                    targetLang = defaultLang;
+                }
+
+                localStorage.setItem("lang", targetLang);
+            }
+
+            window.location.replace(`/${targetLang}/`);
+        </script>
+    </head>
+    <body> </body>
+</html>
