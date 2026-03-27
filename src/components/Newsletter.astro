@@ -1,4 +1,5 @@
 ---
+import { Mails } from "@lucide/astro";
 import type { Locale } from "../i18n/ui";
 import { useTranslations } from "../i18n/utils";
 import SuscribeButton from "./SuscribeButton.astro";
@@ -12,7 +13,11 @@ const t = useTranslations(lang);
 ---
 
 <div class="container">
-    <h2 class="title">{t("newsletter.title")}</h2>
+    <div class="title">
+        <Mails class="newsletter-icon" />
+        <h2>{t("newsletter.title")}</h2>
+    </div>
+
     <form action="" class="newsletter-container">
         <input id="email-input" type="email" placeholder={t("newsletter.email")} name="email" />
     </form>
@@ -31,30 +36,43 @@ const t = useTranslations(lang);
         flex-direction: column;
         width: 100%;
         gap: 1rem;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #2ecc71;
+        background: linear-gradient(40deg, rgba(46, 204, 113, 0.6) 0%, rgba(20, 90, 50, 0.5) 100%);
     }
 
     .title {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .title h2 {
         margin: 0;
+    }
+
+    .newsletter-icon {
+        height: 100%;
     }
 
     .newsletter-container {
         display: flex;
-        height: 44px;
+        min-height: 44px;
         gap: 0.5rem;
         align-items: stretch;
         border-radius: 32px;
-        background-color: var(--bg-page);
+        flex: 1;
     }
 
     .newsletter-container input {
         flex: 1;
         height: auto;
-        color: var(--text-navbar);
+        color: var(--text-main);
         padding: 0 10px;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--text-main);
         border-radius: 32px;
-        background: none;
-        max-width: 400px;
+        background-color: var(--bg-page);
 
         box-sizing: border-box;
     }
@@ -91,6 +109,7 @@ const t = useTranslations(lang);
 
     .newsletter-checkbox:checked {
         border-color: var(--text-main);
+        background-color: var(--bg-navbar);
     }
 
     .newsletter-checkbox::after {
