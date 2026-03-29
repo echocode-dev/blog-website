@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import sectionize from "@hbsnow/rehype-sectionize";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -11,6 +11,14 @@ import { LOCALES, defaultLang } from "./src/i18n/ui";
 
 export default defineConfig({
   site: "https://echocode.dev",
+  fonts: [
+    {
+      name: "Inter",
+      cssVariable: "--font-inter",
+      provider: fontProviders.fontsource(),
+      weights: [400, 500, 600, 700],
+    },
+  ],
   i18n: {
     locales: Array.from(LOCALES),
     defaultLocale: defaultLang,
