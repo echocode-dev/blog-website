@@ -33,7 +33,7 @@ const allTranslations = await getCollection("blog", (post) => {
 
 const alternateLinks = allTranslations.map((post) => {
     const postLang = post.id.split("/")[0];
-    const postSlug = post.id.split("/").slice(1).join("/");
+    const postSlug = post.data.permalink;
     const url = new URL(getRelativeLocaleUrl(postLang, `posts/${postSlug}`), Astro.url.origin).toString();
 
     return { lang: postLang, url };

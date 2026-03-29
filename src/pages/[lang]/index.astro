@@ -33,7 +33,7 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pu
             <div class="posts-grid">
                 {
                     sortedPosts.map((post) => {
-                        const slug = post.id.split("/").slice(1).join("/");
+                        const slug = post.data.permalink;
                         return (
                             <BlogPostCard
                                 lang={lang}

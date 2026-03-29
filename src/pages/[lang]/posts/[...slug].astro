@@ -13,9 +13,9 @@ export async function getStaticPaths() {
     });
 
     return validPosts.map((post) => {
-        const [langString, ...slugParts] = post.id.split("/");
+        const langString = post.id.split("/")[0];
         const lang = langString as Locale;
-        const slug = slugParts.join("/") || undefined;
+        const slug = post.data.permalink || undefined;
 
         return {
             params: { lang, slug },

@@ -15,9 +15,10 @@ const blog = defineCollection({
       updatedDate: z.date().optional(),
       summary: z.string(),
       author: z.string(),
-      cover: z.union([image(), z.string().url()]),
+      cover: z.union([image(), z.url()]),
       coverAlt: z.string(),
       tags: z.array(z.string()),
+      permalink: z.string(),
       translationKey: z.string(),
     }),
 });

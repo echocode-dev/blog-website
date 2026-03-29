@@ -17,7 +17,7 @@ const t = useTranslations(lang);
     relatedPosts.length > 0 ? (
         <ul class="related-list">
             {relatedPosts.map((post) => {
-                const slug = post.id.replace(`${lang}/`, "").replace(/\.[^/.]+$/, "");
+                const slug = post.data.permalink;
                 return (
                     <li class="related-item">
                         <a href={getRelativeLocaleUrl(lang, `posts/${slug}`)} target="_blank" rel="noopener noreferrer">
