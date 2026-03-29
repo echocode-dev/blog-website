@@ -5,23 +5,22 @@
   "scripts": {
     "preview": "astro preview",
     "build:astro": "astro build",
-    "build:pagefind": "npx pagefind",
-    "build": "npm-run-all -s build:astro build:pagefind",
-    "copy:pagefind:dev": "npx shx cp -r dist/pagefind public/",
+    "build:pagefind": "bunx pagefind",
+    "build": "bun run --sequential build:{astro,pagefind}",
+    "copy:pagefind:dev": "bunx shx cp -r dist/pagefind public/",
     "dev:astro": "astro dev",
-    "dev": "npm-run-all -s build:pagefind copy:pagefind:dev dev:astro"
+    "dev": "bun run --sequential build:pagefind copy:pagefind:dev dev:astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/inter": "^5.2.8",
     "@hbsnow/rehype-sectionize": "^1.0.7",
-    "@lucide/astro": "^1.3.0",
-    "@playform/compress": "^0.2.1",
+    "@lucide/astro": "^1.7.0",
+    "@playform/compress": "^0.2.2",
     "astro": "^6.1.1",
-    "astro-expressive-code": "^0.41.6",
-    "astro-pagefind": "^1.8.5",
-    "npm-run-all": "^4.1.5",
+    "astro-expressive-code": "^0.41.7",
+    "astro-pagefind": "^1.8.6",
     "pagefind": "^1.4.0",
     "rehype-autolink-headings": "^7.1.0"
   },
