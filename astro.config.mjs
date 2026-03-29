@@ -31,7 +31,7 @@ export default defineConfig({
     layout: "constrained",
     responsiveStyles: true,
     // All the domains we get pics from should go here, so they get optimized by Astro
-    domains: ["docs.astro.build"],
+    domains: ["images.unsplash.com"],
   },
   integrations: [
     pagefind(),
