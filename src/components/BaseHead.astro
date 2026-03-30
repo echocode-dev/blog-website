@@ -24,7 +24,14 @@ const siteTitle = `${pageTitle ? `${pageTitle} | ` : ""}${siteName}`;
 const searchJsonLd = getSearchJsonLd(siteTitle, siteOrigin);
 ---
 
-<Font cssVariable="--font-inter" preload />
+<Font
+    cssVariable="--font-inter"
+    preload={[
+        { subset: "latin", style: "normal", weight: "400" },
+        { subset: "latin", style: "normal", weight: "600" },
+        { subset: "latin", style: "normal", weight: "700" },
+    ]}
+/>
 <meta name="robots" content="noindex,nofollow" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
